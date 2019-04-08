@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ReducedFM/src/Models/dnl/Gateway.dnl
--1376468104
+2139699828
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -135,7 +135,7 @@ public class Gateway extends AtomicModelImpl implements PhaseBased,
                     System.out.println("Value: " + value);
                     if (value > 2) {
                         System.out.println(
-                            "Warning! Warning! Value is greater than 2!");
+                            "#####=====>>>>> Warning! Warning! Value is greater than 2!");
                     }
                 }
 

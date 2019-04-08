@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ReducedFM/src/Models/dnl/Sensor2.dnl
--2119193541
+-2097161751
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -57,12 +57,12 @@ public class Sensor2 extends AtomicModelImpl implements PhaseBased,
 
     // Input ports
     //ID:INP:0
-    public final Port<Depth> inDepth = addInputPort("inDepth", Depth.class);
+    public final Port<Stimulus> inStimulus2 =
+        addInputPort("inStimulus2", Stimulus.class);
 
     //ENDID
     //ID:INP:1
-    public final Port<Stimulus> inStimulus2 =
-        addInputPort("inStimulus2", Stimulus.class);
+    public final Port<Depth> inDepth = addInputPort("inDepth", Depth.class);
 
     //ENDID
     // End input ports
@@ -148,19 +148,6 @@ public class Sensor2 extends AtomicModelImpl implements PhaseBased,
 
         // Fire state transition functions
         if (phaseIs("InitialState")) {
-            if (input.hasMessages(inDepth)) {
-                ArrayList<Message<Depth>> messageList =
-                    inDepth.getMessages(input);
-
-                holdIn("SendMessage1", 0.0);
-                // Fire state and port specific external transition functions
-                //ID:EXT:InitialState:inDepth
-                sendData = (Depth) messageList.get(0).getData();
-
-                //ENDID
-                // End external event code
-                return;
-            }
             if (input.hasMessages(inStimulus2)) {
                 ArrayList<Message<Stimulus>> messageList =
                     inStimulus2.getMessages(input);
@@ -170,6 +157,19 @@ public class Sensor2 extends AtomicModelImpl implements PhaseBased,
                 //ID:EXT:InitialState:inStimulus2
                 measureData = (Stimulus) messageList.get(0).getData();
                 sendData = new Depth(measureData.getValue());
+
+                //ENDID
+                // End external event code
+                return;
+            }
+            if (input.hasMessages(inDepth)) {
+                ArrayList<Message<Depth>> messageList =
+                    inDepth.getMessages(input);
+
+                holdIn("SendMessage1", 0.0);
+                // Fire state and port specific external transition functions
+                //ID:EXT:InitialState:inDepth
+                sendData = (Depth) messageList.get(0).getData();
 
                 //ENDID
                 // End external event code

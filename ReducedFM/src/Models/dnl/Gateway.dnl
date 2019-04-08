@@ -22,7 +22,7 @@ external event for s0 with Depth
 		int value = (int) valueReceived.getValue();
 		System.out.println("Value: " + value);
 		if(value > 2 ){
-			System.out.println("Warning! Warning! Value is greater than 2!");
+			System.out.println("#####=====>>>>> Warning! Warning! Value is greater than 2!");
 		}
 	}
 %>!

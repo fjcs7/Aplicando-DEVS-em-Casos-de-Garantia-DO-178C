@@ -5,13 +5,13 @@ the range of Stimulus's value is Integer!
 
 use sendData with type Depth!
 use measureData with type Stimulus!
-accepts input on Depth with type Depth! //enrivonment //sense!
 accepts input on Stimulus2 with type Stimulus!
+accepts input on Depth with type Depth! //enrivonment //sense!
 generates output on Depth with type Depth!
 
 to start passivate in InitialState!
-when in InitialState and receive Depth go to SendMessage1!
 when in InitialState and receive Stimulus2 go to MeasureStimulus!
+when in InitialState and receive Depth go to SendMessage1!
 
 hold in MeasureStimulus for time 0!
 from MeasureStimulus go to SendMessage2!

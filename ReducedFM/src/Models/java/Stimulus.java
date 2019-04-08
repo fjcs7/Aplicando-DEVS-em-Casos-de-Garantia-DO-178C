@@ -1,6 +1,6 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
-platform:/resource/ReducedFM/src/Models/dnl/StimulusGenerator.dnl
+platform:/resource/ReducedFM/src/Models/dnl/Sensor2.dnl
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
