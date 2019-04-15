@@ -1,31 +1,58 @@
-A Hunger has a value!
-the range of Hunger's value is Integer!
+use measureHunger with type Hunger!
+use measureSatiation with type Satiation!
+use measureLowNutrients with type LowNutrients!
 
-use measureData1 with type Hunger!
+accepts input on Satiation with type Satiation!
 generates output on Hunger with type Hunger!
 
 Initialize variables
 <%
-java.util.Random gerador = new java.util.Random();
-
-int numero2 = gerador.nextInt(10);
-measureData1 = new Hunger(numero2);
+	measureLowNutrients = new LowNutrients (new Integer(0));
+	measureSatiation = new Satiation (new Integer(0));
 %>!
 
-to start hold in s0 for time 1!
-from s0 go to s1!
-hold in s1 for time 1!
-after s1 output Hunger!
-from s1 go to s0!
+to start hold in initialEvent for time 1!
+after initialEvent output Hunger!
+from initialEvent go to NextEvent!
 
-//On the transition for assigned, perform the assignment
-Internal event for s1
+passivate in NextEvent!
+when in NextEvent and receive Satiation go to verifySatiation!
+when in NextEvent and receive LowNutrients go to verifyLowNutrients!
+
+hold in verifyLowNutrients for time 1!
+after verifyLowNutrients output Hunger!
+from verifyLowNutrients go to NextEvent!
+
+hold in verifySatiation for time 1!
+after verifySatiation output Hunger!
+from verifySatiation go to NextEvent!
+
+external event for verifySatiation with Satiation
 <%
-measureData1 = new Hunger(new Integer (1));
+	measureSatiation = (Satiation) messageList.get(0).getData();
+%>!
+
+external event for verifyLowNutrients with LowNutrients
+<%
+	measureSatiation = (LowNutrients) messageList.get(0).getData();
+%>!
+
+output event for initialEvent
+<%
+	measureHunger = new Hunger(new Integer(10));
+	output.add(outHunger, measureHunger);
+%>!
+
+
+output event for verifySatiation
+<%
+	measureHunger = new Hunger(10 - measureSatiation.getValue());
+	output.add(outHunger, measureHunger);
 %>!
 
 //On the transition going out from the state, perform the actions
-output event for s1
+output event for verifyLowNutrients
 <%
-output.add(outHunger, measureData1);
+	measureHunger = new Hunger(10 - measureLowNutrients.getValue());
+	output.add(outHunger, measureHunger);
 %>!

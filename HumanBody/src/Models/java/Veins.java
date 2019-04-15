@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/HumanBody/src/Models/dnl/Veins.dnl
--1528457780
+1326718167
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -15,7 +15,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import com.ms4systems.devs.core.message.Message;
 import com.ms4systems.devs.core.message.MessageBag;
@@ -36,22 +35,32 @@ public class Veins extends AtomicModelImpl implements PhaseBased,
     private static final long serialVersionUID = 1L;
 
     //ID:SVAR:0
-    private static final int ID_MEASUREDATA1 = 0;
+    private static final int ID_MEASURENUTRIENTS = 0;
+
+    //ENDID
+    //ID:SVAR:1
+    private static final int ID_MEASURELOWNUTRIENTS = 1;
 
     // Declare state variables
     private PropertyChangeSupport propertyChangeSupport =
         new PropertyChangeSupport(this);
-    protected LowNutrients measureData1;
+    protected Nutrients measureNutrients;
+    protected LowNutrients measureLowNutrients;
 
     //ENDID
-    String phase = "s0";
+    String phase = "InitialState";
     String previousPhase = null;
-    Double sigma = 1.0;
+    Double sigma = Double.POSITIVE_INFINITY;
     Double previousSigma = Double.NaN;
 
     // End state variables
 
     // Input ports
+    //ID:INP:0
+    public final Port<Nutrients> inNutrients =
+        addInputPort("inNutrients", Nutrients.class);
+
+    //ENDID
     // End input ports
 
     // Output ports
@@ -84,14 +93,12 @@ public class Veins extends AtomicModelImpl implements PhaseBased,
 
         currentTime = 0;
 
-        holdIn("s0", 1.0);
+        passivateIn("InitialState");
 
         // Initialize Variables
         //ID:INIT
-        Random gerador = new Random();
-
-        int numero2 = gerador.nextInt(10);
-        measureData1 = new LowNutrients(numero2);
+        measureNutrients = new Nutrients(new Integer(0));
+        measureLowNutrients = new LowNutrients(new Integer(0));
 
         //ENDID
         // End initialize variables
@@ -101,27 +108,13 @@ public class Veins extends AtomicModelImpl implements PhaseBased,
     public void internalTransition() {
         currentTime += sigma;
 
-        if (phaseIs("s0")) {
-            getSimulator().modelMessage("Internal transition from s0");
+        if (phaseIs("sendNutrients")) {
+            getSimulator().modelMessage("Internal transition from sendNutrients");
 
-            //ID:TRA:s0
-            holdIn("s1", 1.0);
-
-            //ENDID
-            return;
-        }
-        if (phaseIs("s1")) {
-            getSimulator().modelMessage("Internal transition from s1");
-
-            //ID:TRA:s1
-            holdIn("s0", 1.0);
-            //ENDID
-            // Internal event code
-            //ID:INT:s1
-            measureData1 = new LowNutrients(new Integer(1));
+            //ID:TRA:sendNutrients
+            passivateIn("InitialState");
 
             //ENDID
-            // End internal event code
             return;
         }
 
@@ -139,6 +132,21 @@ public class Veins extends AtomicModelImpl implements PhaseBased,
         previousSigma = sigma;
 
         // Fire state transition functions
+        if (phaseIs("InitialState")) {
+            if (input.hasMessages(inNutrients)) {
+                ArrayList<Message<Nutrients>> messageList =
+                    inNutrients.getMessages(input);
+
+                holdIn("sendNutrients", 0.0);
+                // Fire state and port specific external transition functions
+                //ID:EXT:InitialState:inNutrients
+                measureNutrients = (Nutrients) messageList.get(0).getData();
+
+                //ENDID
+                // End external event code
+                return;
+            }
+        }
     }
 
     @Override
@@ -157,10 +165,12 @@ public class Veins extends AtomicModelImpl implements PhaseBased,
     public MessageBag getOutput() {
         MessageBag output = new MessageBagImpl();
 
-        if (phaseIs("s1")) {
+        if (phaseIs("sendNutrients")) {
             // Output event code
-            //ID:OUT:s1
-            output.add(outLowNutrients, measureData1);
+            //ID:OUT:sendNutrients
+            measureLowNutrients = new LowNutrients(10 -
+                    measureNutrients.getValue());
+            output.add(outLowNutrients, measureLowNutrients);
 
             //ENDID
             // End output event code
@@ -202,36 +212,53 @@ public class Veins extends AtomicModelImpl implements PhaseBased,
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
-    // Getter/setter for measureData1
-    public void setMeasureData1(LowNutrients measureData1) {
-        propertyChangeSupport.firePropertyChange("measureData1",
-            this.measureData1, this.measureData1 = measureData1);
+    // Getter/setter for measureNutrients
+    public void setMeasureNutrients(Nutrients measureNutrients) {
+        propertyChangeSupport.firePropertyChange("measureNutrients",
+            this.measureNutrients, this.measureNutrients = measureNutrients);
     }
 
-    public LowNutrients getMeasureData1() {
-        return this.measureData1;
+    public Nutrients getMeasureNutrients() {
+        return this.measureNutrients;
     }
 
-    // End getter/setter for measureData1
+    // End getter/setter for measureNutrients
+
+    // Getter/setter for measureLowNutrients
+    public void setMeasureLowNutrients(LowNutrients measureLowNutrients) {
+        propertyChangeSupport.firePropertyChange("measureLowNutrients",
+            this.measureLowNutrients,
+            this.measureLowNutrients = measureLowNutrients);
+    }
+
+    public LowNutrients getMeasureLowNutrients() {
+        return this.measureLowNutrients;
+    }
+
+    // End getter/setter for measureLowNutrients
 
     // State variables
     public String[] getStateVariableNames() {
-        return new String[] { "measureData1" };
+        return new String[] { "measureNutrients", "measureLowNutrients" };
     }
 
     public Object[] getStateVariableValues() {
-        return new Object[] { measureData1 };
+        return new Object[] { measureNutrients, measureLowNutrients };
     }
 
     public Class<?>[] getStateVariableTypes() {
-        return new Class<?>[] { LowNutrients.class };
+        return new Class<?>[] { Nutrients.class, LowNutrients.class };
     }
 
     public void setStateVariableValue(int index, Object value) {
         switch (index) {
 
-            case ID_MEASUREDATA1:
-                setMeasureData1((LowNutrients) value);
+            case ID_MEASURENUTRIENTS:
+                setMeasureNutrients((Nutrients) value);
+                return;
+
+            case ID_MEASURELOWNUTRIENTS:
+                setMeasureLowNutrients((LowNutrients) value);
                 return;
 
             default:
@@ -313,6 +340,6 @@ public class Veins extends AtomicModelImpl implements PhaseBased,
     }
 
     public String[] getPhaseNames() {
-        return new String[] { "s0", "s1" };
+        return new String[] { "InitialState", "sendNutrients" };
     }
 }

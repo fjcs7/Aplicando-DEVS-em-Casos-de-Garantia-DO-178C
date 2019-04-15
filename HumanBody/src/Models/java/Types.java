@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
-platform:/resource/HumanBody/src/Models/dnl/Heart.dnl
-1312947405
+platform:/resource/HumanBody/src/Models/dnl/Types.dnl
+299428519
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -15,7 +15,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import com.ms4systems.devs.core.message.Message;
 import com.ms4systems.devs.core.message.MessageBag;
@@ -31,20 +30,14 @@ import com.ms4systems.devs.helpers.impl.SimulationOptionsImpl;
 import com.ms4systems.devs.simviewer.standalone.SimViewer;
 
 @SuppressWarnings("unused")
-public class Heart extends AtomicModelImpl implements PhaseBased,
+public class Types extends AtomicModelImpl implements PhaseBased,
     StateVariableBased {
     private static final long serialVersionUID = 1L;
-
-    //ID:SVAR:0
-    private static final int ID_MEASUREDATA = 0;
 
     // Declare state variables
     private PropertyChangeSupport propertyChangeSupport =
         new PropertyChangeSupport(this);
-    protected Blood measureData;
-
-    //ENDID
-    String phase = "initialState";
+    String phase = "InitialState";
     String previousPhase = null;
     Double sigma = Double.POSITIVE_INFINITY;
     Double previousSigma = Double.NaN;
@@ -62,15 +55,15 @@ public class Heart extends AtomicModelImpl implements PhaseBased,
     // This variable is just here so we can use @SuppressWarnings("unused")
     private final int unusedIntVariableForWarnings = 0;
 
-    public Heart() {
-        this("Heart");
+    public Types() {
+        this("Types");
     }
 
-    public Heart(String name) {
+    public Types(String name) {
         this(name, null);
     }
 
-    public Heart(String name, Simulator simulator) {
+    public Types(String name, Simulator simulator) {
         super(name, simulator);
     }
 
@@ -79,16 +72,8 @@ public class Heart extends AtomicModelImpl implements PhaseBased,
 
         currentTime = 0;
 
-        passivateIn("initialState");
+        passivateIn("InitialState");
 
-        // Initialize Variables
-        //ID:INIT
-        Random gerador = new Random();
-        int numero1 = gerador.nextInt(10);
-        measureData = new Blood(numero1);
-
-        //ENDID
-        // End initialize variables
     }
 
     @Override
@@ -141,12 +126,12 @@ public class Heart extends AtomicModelImpl implements PhaseBased,
 
         // Uncomment the following line to disable plotting for this model
         // options.setDisablePlotting(true);
-        Heart model = new Heart();
+        Types model = new Types();
         model.options = options;
 
         if (options.isDisableViewer()) { // Command line output only
             Simulation sim =
-                new SimulationImpl("Heart Simulation", model, options);
+                new SimulationImpl("Types Simulation", model, options);
             sim.startSimulation(0);
             sim.simulateIterations(Long.MAX_VALUE);
         } else { // Use SimViewer
@@ -164,37 +149,21 @@ public class Heart extends AtomicModelImpl implements PhaseBased,
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
-    // Getter/setter for measureData
-    public void setMeasureData(Blood measureData) {
-        propertyChangeSupport.firePropertyChange("measureData",
-            this.measureData, this.measureData = measureData);
-    }
-
-    public Blood getMeasureData() {
-        return this.measureData;
-    }
-
-    // End getter/setter for measureData
-
     // State variables
     public String[] getStateVariableNames() {
-        return new String[] { "measureData" };
+        return new String[] {  };
     }
 
     public Object[] getStateVariableValues() {
-        return new Object[] { measureData };
+        return new Object[] {  };
     }
 
     public Class<?>[] getStateVariableTypes() {
-        return new Class<?>[] { Blood.class };
+        return new Class<?>[] {  };
     }
 
     public void setStateVariableValue(int index, Object value) {
         switch (index) {
-
-            case ID_MEASUREDATA:
-                setMeasureData((Blood) value);
-                return;
 
             default:
                 return;
@@ -221,13 +190,13 @@ public class Heart extends AtomicModelImpl implements PhaseBased,
         URI dirUri;
         File dir;
         try {
-            dirUri = Heart.class.getResource(".").toURI();
+            dirUri = Types.class.getResource(".").toURI();
             dir = new File(dirUri);
         } catch (URISyntaxException e) {
             e.printStackTrace();
             throw new RuntimeException(
                 "Could not find Models directory. Invalid model URL: " +
-                Heart.class.getResource(".").toString());
+                Types.class.getResource(".").toString());
         }
         boolean foundModels = false;
         while (dir != null && dir.getParentFile() != null) {
@@ -275,6 +244,6 @@ public class Heart extends AtomicModelImpl implements PhaseBased,
     }
 
     public String[] getPhaseNames() {
-        return new String[] { "initialState" };
+        return new String[] { "InitialState" };
     }
 }

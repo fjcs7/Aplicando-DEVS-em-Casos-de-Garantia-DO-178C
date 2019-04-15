@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/HumanBody/src/Models/dnl/Stomach.dnl
--1722893474
+838676732
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 

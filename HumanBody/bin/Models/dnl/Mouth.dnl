@@ -1,29 +1,30 @@
 A Food has a value!
 the range of Food's value is Integer!
-use measureData with type Food!
+
+use measureFood with type Food!
+
+accepts input on Food with type Food!
 generates output on Food with type Food!
 
 Initialize variables
 <%
-java.util.Random gerador = new java.util.Random();
-int numero1 = gerador.nextInt(10);
-measureData = new Food(numero1);
+	measureFood = new Food(new Integer(0));
 %>!
 
-to start hold in s0 for time 1!
-from s0 go to s1!
-hold in s1 for time 1!
-after s1 output Food!
-from s1 go to s0!
+to start passivate in InitialState!
+when in InitialState and receive Food go to chewFood!
 
-//On the transition for assigned, perform the assignment
-Internal event for s1
+hold in chewFood for time 1!
+after chewFood output Food!
+from chewFood go to InitialState!
+
+external event for InitialState with Food
 <%
-measureData = new Food(new Integer (1));
+	measureFood = (Food) messageList.get(0).getData();
 %>!
 
 //On the transition going out from the state, perform the actions
-output event for s1
+output event for chewFood
 <%
-output.add(outFood, measureData);
+	output.add(outFood, measureFood);
 %>!

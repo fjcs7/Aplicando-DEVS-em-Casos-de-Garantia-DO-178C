@@ -1,6 +1,6 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
-platform:/resource/HumanBody/src/Models/dnl/Stomach.dnl
+platform:/resource/HumanBody/src/Models/dnl/Types.dnl
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 

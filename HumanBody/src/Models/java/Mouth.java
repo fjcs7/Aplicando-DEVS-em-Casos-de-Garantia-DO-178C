@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/HumanBody/src/Models/dnl/Mouth.dnl
-183081297
+457956410
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -15,7 +15,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import com.ms4systems.devs.core.message.Message;
 import com.ms4systems.devs.core.message.MessageBag;
@@ -36,22 +35,26 @@ public class Mouth extends AtomicModelImpl implements PhaseBased,
     private static final long serialVersionUID = 1L;
 
     //ID:SVAR:0
-    private static final int ID_MEASUREDATA = 0;
+    private static final int ID_MEASUREFOOD = 0;
 
     // Declare state variables
     private PropertyChangeSupport propertyChangeSupport =
         new PropertyChangeSupport(this);
-    protected Food measureData;
+    protected Food measureFood;
 
     //ENDID
-    String phase = "s0";
+    String phase = "InitialState";
     String previousPhase = null;
-    Double sigma = 1.0;
+    Double sigma = Double.POSITIVE_INFINITY;
     Double previousSigma = Double.NaN;
 
     // End state variables
 
     // Input ports
+    //ID:INP:0
+    public final Port<Food> inFood = addInputPort("inFood", Food.class);
+
+    //ENDID
     // End input ports
 
     // Output ports
@@ -83,13 +86,11 @@ public class Mouth extends AtomicModelImpl implements PhaseBased,
 
         currentTime = 0;
 
-        holdIn("s0", 1.0);
+        passivateIn("InitialState");
 
         // Initialize Variables
         //ID:INIT
-        Random gerador = new Random();
-        int numero1 = gerador.nextInt(10);
-        measureData = new Food(numero1);
+        measureFood = new Food(new Integer(0));
 
         //ENDID
         // End initialize variables
@@ -99,27 +100,13 @@ public class Mouth extends AtomicModelImpl implements PhaseBased,
     public void internalTransition() {
         currentTime += sigma;
 
-        if (phaseIs("s0")) {
-            getSimulator().modelMessage("Internal transition from s0");
+        if (phaseIs("chewFood")) {
+            getSimulator().modelMessage("Internal transition from chewFood");
 
-            //ID:TRA:s0
-            holdIn("s1", 1.0);
-
-            //ENDID
-            return;
-        }
-        if (phaseIs("s1")) {
-            getSimulator().modelMessage("Internal transition from s1");
-
-            //ID:TRA:s1
-            holdIn("s0", 1.0);
-            //ENDID
-            // Internal event code
-            //ID:INT:s1
-            measureData = new Food(new Integer(1));
+            //ID:TRA:chewFood
+            passivateIn("InitialState");
 
             //ENDID
-            // End internal event code
             return;
         }
 
@@ -137,6 +124,21 @@ public class Mouth extends AtomicModelImpl implements PhaseBased,
         previousSigma = sigma;
 
         // Fire state transition functions
+        if (phaseIs("InitialState")) {
+            if (input.hasMessages(inFood)) {
+                ArrayList<Message<Food>> messageList =
+                    inFood.getMessages(input);
+
+                holdIn("chewFood", 1.0);
+                // Fire state and port specific external transition functions
+                //ID:EXT:InitialState:inFood
+                measureFood = (Food) messageList.get(0).getData();
+
+                //ENDID
+                // End external event code
+                return;
+            }
+        }
     }
 
     @Override
@@ -155,10 +157,10 @@ public class Mouth extends AtomicModelImpl implements PhaseBased,
     public MessageBag getOutput() {
         MessageBag output = new MessageBagImpl();
 
-        if (phaseIs("s1")) {
+        if (phaseIs("chewFood")) {
             // Output event code
-            //ID:OUT:s1
-            output.add(outFood, measureData);
+            //ID:OUT:chewFood
+            output.add(outFood, measureFood);
 
             //ENDID
             // End output event code
@@ -200,25 +202,25 @@ public class Mouth extends AtomicModelImpl implements PhaseBased,
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
-    // Getter/setter for measureData
-    public void setMeasureData(Food measureData) {
-        propertyChangeSupport.firePropertyChange("measureData",
-            this.measureData, this.measureData = measureData);
+    // Getter/setter for measureFood
+    public void setMeasureFood(Food measureFood) {
+        propertyChangeSupport.firePropertyChange("measureFood",
+            this.measureFood, this.measureFood = measureFood);
     }
 
-    public Food getMeasureData() {
-        return this.measureData;
+    public Food getMeasureFood() {
+        return this.measureFood;
     }
 
-    // End getter/setter for measureData
+    // End getter/setter for measureFood
 
     // State variables
     public String[] getStateVariableNames() {
-        return new String[] { "measureData" };
+        return new String[] { "measureFood" };
     }
 
     public Object[] getStateVariableValues() {
-        return new Object[] { measureData };
+        return new Object[] { measureFood };
     }
 
     public Class<?>[] getStateVariableTypes() {
@@ -228,8 +230,8 @@ public class Mouth extends AtomicModelImpl implements PhaseBased,
     public void setStateVariableValue(int index, Object value) {
         switch (index) {
 
-            case ID_MEASUREDATA:
-                setMeasureData((Food) value);
+            case ID_MEASUREFOOD:
+                setMeasureFood((Food) value);
                 return;
 
             default:
@@ -311,6 +313,6 @@ public class Mouth extends AtomicModelImpl implements PhaseBased,
     }
 
     public String[] getPhaseNames() {
-        return new String[] { "s0", "s1" };
+        return new String[] { "InitialState", "chewFood" };
     }
 }

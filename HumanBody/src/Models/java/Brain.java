@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/HumanBody/src/Models/dnl/Brain.dnl
-66728127
+1963267691
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -15,7 +15,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import com.ms4systems.devs.core.message.Message;
 import com.ms4systems.devs.core.message.MessageBag;
@@ -36,15 +35,25 @@ public class Brain extends AtomicModelImpl implements PhaseBased,
     private static final long serialVersionUID = 1L;
 
     //ID:SVAR:0
-    private static final int ID_MEASUREDATA1 = 0;
+    private static final int ID_MEASUREHUNGER = 0;
+
+    //ENDID
+    //ID:SVAR:1
+    private static final int ID_MEASURESATIATION = 1;
+
+    //ENDID
+    //ID:SVAR:2
+    private static final int ID_MEASURELOWNUTRIENTS = 2;
 
     // Declare state variables
     private PropertyChangeSupport propertyChangeSupport =
         new PropertyChangeSupport(this);
-    protected Hunger measureData1;
+    protected Hunger measureHunger;
+    protected Satiation measureSatiation;
+    protected LowNutrients measureLowNutrients;
 
     //ENDID
-    String phase = "s0";
+    String phase = "initialEvent";
     String previousPhase = null;
     Double sigma = 1.0;
     Double previousSigma = Double.NaN;
@@ -52,6 +61,16 @@ public class Brain extends AtomicModelImpl implements PhaseBased,
     // End state variables
 
     // Input ports
+    //ID:INP:0
+    public final Port<Satiation> inSatiation =
+        addInputPort("inSatiation", Satiation.class);
+
+    //ENDID
+    //ID:INP:1
+    public final Port<Serializable> inLowNutrients =
+        addInputPort("inLowNutrients", Serializable.class);
+
+    //ENDID
     // End input ports
 
     // Output ports
@@ -84,14 +103,12 @@ public class Brain extends AtomicModelImpl implements PhaseBased,
 
         currentTime = 0;
 
-        holdIn("s0", 1.0);
+        holdIn("initialEvent", 1.0);
 
         // Initialize Variables
         //ID:INIT
-        Random gerador = new Random();
-
-        int numero2 = gerador.nextInt(10);
-        measureData1 = new Hunger(numero2);
+        measureLowNutrients = new LowNutrients(new Integer(0));
+        measureSatiation = new Satiation(new Integer(0));
 
         //ENDID
         // End initialize variables
@@ -101,27 +118,33 @@ public class Brain extends AtomicModelImpl implements PhaseBased,
     public void internalTransition() {
         currentTime += sigma;
 
-        if (phaseIs("s0")) {
-            getSimulator().modelMessage("Internal transition from s0");
+        if (phaseIs("initialEvent")) {
+            getSimulator().modelMessage("Internal transition from initialEvent");
 
-            //ID:TRA:s0
-            holdIn("s1", 1.0);
+            //ID:TRA:initialEvent
+            passivateIn("NextEvent");
 
             //ENDID
             return;
         }
-        if (phaseIs("s1")) {
-            getSimulator().modelMessage("Internal transition from s1");
+        if (phaseIs("verifyLowNutrients")) {
+            getSimulator()
+                .modelMessage("Internal transition from verifyLowNutrients");
 
-            //ID:TRA:s1
-            holdIn("s0", 1.0);
-            //ENDID
-            // Internal event code
-            //ID:INT:s1
-            measureData1 = new Hunger(new Integer(1));
+            //ID:TRA:verifyLowNutrients
+            passivateIn("NextEvent");
 
             //ENDID
-            // End internal event code
+            return;
+        }
+        if (phaseIs("verifySatiation")) {
+            getSimulator()
+                .modelMessage("Internal transition from verifySatiation");
+
+            //ID:TRA:verifySatiation
+            passivateIn("NextEvent");
+
+            //ENDID
             return;
         }
 
@@ -139,6 +162,30 @@ public class Brain extends AtomicModelImpl implements PhaseBased,
         previousSigma = sigma;
 
         // Fire state transition functions
+        if (phaseIs("NextEvent")) {
+            if (input.hasMessages(inSatiation)) {
+                ArrayList<Message<Satiation>> messageList =
+                    inSatiation.getMessages(input);
+
+                holdIn("verifySatiation", 1.0);
+
+                return;
+            }
+            if (input.hasMessages(inLowNutrients)) {
+                ArrayList<Message<Serializable>> messageList =
+                    inLowNutrients.getMessages(input);
+
+                holdIn("verifyLowNutrients", 1.0);
+
+                return;
+            }
+        }
+
+        if (phaseIs("verifyLowNutrients")) {
+        }
+
+        if (phaseIs("verifySatiation")) {
+        }
     }
 
     @Override
@@ -157,10 +204,29 @@ public class Brain extends AtomicModelImpl implements PhaseBased,
     public MessageBag getOutput() {
         MessageBag output = new MessageBagImpl();
 
-        if (phaseIs("s1")) {
+        if (phaseIs("initialEvent")) {
             // Output event code
-            //ID:OUT:s1
-            output.add(outHunger, measureData1);
+            //ID:OUT:initialEvent
+            measureHunger = new Hunger(new Integer(10));
+            output.add(outHunger, measureHunger);
+
+            //ENDID
+            // End output event code
+        }
+        if (phaseIs("verifyLowNutrients")) {
+            // Output event code
+            //ID:OUT:verifyLowNutrients
+            measureHunger = new Hunger(10 - measureLowNutrients.getValue());
+            output.add(outHunger, measureHunger);
+
+            //ENDID
+            // End output event code
+        }
+        if (phaseIs("verifySatiation")) {
+            // Output event code
+            //ID:OUT:verifySatiation
+            measureHunger = new Hunger(10 - measureSatiation.getValue());
+            output.add(outHunger, measureHunger);
 
             //ENDID
             // End output event code
@@ -202,36 +268,71 @@ public class Brain extends AtomicModelImpl implements PhaseBased,
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
-    // Getter/setter for measureData1
-    public void setMeasureData1(Hunger measureData1) {
-        propertyChangeSupport.firePropertyChange("measureData1",
-            this.measureData1, this.measureData1 = measureData1);
+    // Getter/setter for measureHunger
+    public void setMeasureHunger(Hunger measureHunger) {
+        propertyChangeSupport.firePropertyChange("measureHunger",
+            this.measureHunger, this.measureHunger = measureHunger);
     }
 
-    public Hunger getMeasureData1() {
-        return this.measureData1;
+    public Hunger getMeasureHunger() {
+        return this.measureHunger;
     }
 
-    // End getter/setter for measureData1
+    // End getter/setter for measureHunger
+
+    // Getter/setter for measureSatiation
+    public void setMeasureSatiation(Satiation measureSatiation) {
+        propertyChangeSupport.firePropertyChange("measureSatiation",
+            this.measureSatiation, this.measureSatiation = measureSatiation);
+    }
+
+    public Satiation getMeasureSatiation() {
+        return this.measureSatiation;
+    }
+
+    // End getter/setter for measureSatiation
+
+    // Getter/setter for measureLowNutrients
+    public void setMeasureLowNutrients(LowNutrients measureLowNutrients) {
+        propertyChangeSupport.firePropertyChange("measureLowNutrients",
+            this.measureLowNutrients,
+            this.measureLowNutrients = measureLowNutrients);
+    }
+
+    public LowNutrients getMeasureLowNutrients() {
+        return this.measureLowNutrients;
+    }
+
+    // End getter/setter for measureLowNutrients
 
     // State variables
     public String[] getStateVariableNames() {
-        return new String[] { "measureData1" };
+        return new String[] {
+            "measureHunger", "measureSatiation", "measureLowNutrients"
+        };
     }
 
     public Object[] getStateVariableValues() {
-        return new Object[] { measureData1 };
+        return new Object[] { measureHunger, measureSatiation, measureLowNutrients };
     }
 
     public Class<?>[] getStateVariableTypes() {
-        return new Class<?>[] { Hunger.class };
+        return new Class<?>[] { Hunger.class, Satiation.class, LowNutrients.class };
     }
 
     public void setStateVariableValue(int index, Object value) {
         switch (index) {
 
-            case ID_MEASUREDATA1:
-                setMeasureData1((Hunger) value);
+            case ID_MEASUREHUNGER:
+                setMeasureHunger((Hunger) value);
+                return;
+
+            case ID_MEASURESATIATION:
+                setMeasureSatiation((Satiation) value);
+                return;
+
+            case ID_MEASURELOWNUTRIENTS:
+                setMeasureLowNutrients((LowNutrients) value);
                 return;
 
             default:
@@ -313,6 +414,8 @@ public class Brain extends AtomicModelImpl implements PhaseBased,
     }
 
     public String[] getPhaseNames() {
-        return new String[] { "s0", "s1" };
+        return new String[] {
+            "initialEvent", "NextEvent", "verifyLowNutrients", "verifySatiation"
+        };
     }
 }
