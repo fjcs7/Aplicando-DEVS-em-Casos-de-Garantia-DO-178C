@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/HumanBody/src/Models/dnl/Intestine.dnl
--1290901472
+1275384229
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -15,7 +15,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import com.ms4systems.devs.core.message.Message;
 import com.ms4systems.devs.core.message.MessageBag;
@@ -36,17 +35,22 @@ public class Intestine extends AtomicModelImpl implements PhaseBased,
     private static final long serialVersionUID = 1L;
 
     //ID:SVAR:0
-    private static final int ID_MEASUREDATA = 0;
+    private static final int ID_MEASUREFOOD = 0;
+
+    //ENDID
+    //ID:SVAR:1
+    private static final int ID_MEASUREDATA = 1;
 
     // Declare state variables
     private PropertyChangeSupport propertyChangeSupport =
         new PropertyChangeSupport(this);
+    protected Food measureFood;
     protected Nutrients measureData;
 
     //ENDID
-    String phase = "s0";
+    String phase = "InitialState";
     String previousPhase = null;
-    Double sigma = 1.0;
+    Double sigma = Double.POSITIVE_INFINITY;
     Double previousSigma = Double.NaN;
 
     // End state variables
@@ -88,13 +92,11 @@ public class Intestine extends AtomicModelImpl implements PhaseBased,
 
         currentTime = 0;
 
-        holdIn("s0", 1.0);
+        passivateIn("InitialState");
 
         // Initialize Variables
         //ID:INIT
-        Random gerador = new Random();
-        int numero1 = gerador.nextInt(10);
-        measureData = new Nutrients(numero1);
+        measureData = new Nutrients(new Integer(0));
 
         //ENDID
         // End initialize variables
@@ -104,24 +106,16 @@ public class Intestine extends AtomicModelImpl implements PhaseBased,
     public void internalTransition() {
         currentTime += sigma;
 
-        if (phaseIs("s0")) {
-            getSimulator().modelMessage("Internal transition from s0");
+        if (phaseIs("generateNutrients")) {
+            getSimulator()
+                .modelMessage("Internal transition from generateNutrients");
 
-            //ID:TRA:s0
-            holdIn("s1", 1.0);
-
-            //ENDID
-            return;
-        }
-        if (phaseIs("s1")) {
-            getSimulator().modelMessage("Internal transition from s1");
-
-            //ID:TRA:s1
-            holdIn("s0", 1.0);
+            //ID:TRA:generateNutrients
+            passivateIn("InitialState");
             //ENDID
             // Internal event code
-            //ID:INT:s1
-            measureData = new Nutrients(new Integer(1));
+            //ID:INT:generateNutrients
+            measureData = new Nutrients(measureFood.getValue());
 
             //ENDID
             // End internal event code
@@ -142,6 +136,21 @@ public class Intestine extends AtomicModelImpl implements PhaseBased,
         previousSigma = sigma;
 
         // Fire state transition functions
+        if (phaseIs("InitialState")) {
+            if (input.hasMessages(inFood)) {
+                ArrayList<Message<Food>> messageList =
+                    inFood.getMessages(input);
+
+                holdIn("generateNutrients", 1.0);
+                // Fire state and port specific external transition functions
+                //ID:EXT:InitialState:inFood
+                measureFood = (Food) messageList.get(0).getData();
+
+                //ENDID
+                // End external event code
+                return;
+            }
+        }
     }
 
     @Override
@@ -160,9 +169,9 @@ public class Intestine extends AtomicModelImpl implements PhaseBased,
     public MessageBag getOutput() {
         MessageBag output = new MessageBagImpl();
 
-        if (phaseIs("s1")) {
+        if (phaseIs("generateNutrients")) {
             // Output event code
-            //ID:OUT:s1
+            //ID:OUT:generateNutrients
             output.add(outNutrients, measureData);
 
             //ENDID
@@ -205,6 +214,18 @@ public class Intestine extends AtomicModelImpl implements PhaseBased,
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
+    // Getter/setter for measureFood
+    public void setMeasureFood(Food measureFood) {
+        propertyChangeSupport.firePropertyChange("measureFood",
+            this.measureFood, this.measureFood = measureFood);
+    }
+
+    public Food getMeasureFood() {
+        return this.measureFood;
+    }
+
+    // End getter/setter for measureFood
+
     // Getter/setter for measureData
     public void setMeasureData(Nutrients measureData) {
         propertyChangeSupport.firePropertyChange("measureData",
@@ -219,19 +240,23 @@ public class Intestine extends AtomicModelImpl implements PhaseBased,
 
     // State variables
     public String[] getStateVariableNames() {
-        return new String[] { "measureData" };
+        return new String[] { "measureFood", "measureData" };
     }
 
     public Object[] getStateVariableValues() {
-        return new Object[] { measureData };
+        return new Object[] { measureFood, measureData };
     }
 
     public Class<?>[] getStateVariableTypes() {
-        return new Class<?>[] { Nutrients.class };
+        return new Class<?>[] { Food.class, Nutrients.class };
     }
 
     public void setStateVariableValue(int index, Object value) {
         switch (index) {
+
+            case ID_MEASUREFOOD:
+                setMeasureFood((Food) value);
+                return;
 
             case ID_MEASUREDATA:
                 setMeasureData((Nutrients) value);
@@ -316,6 +341,6 @@ public class Intestine extends AtomicModelImpl implements PhaseBased,
     }
 
     public String[] getPhaseNames() {
-        return new String[] { "s0", "s1" };
+        return new String[] { "InitialState", "generateNutrients" };
     }
 }
