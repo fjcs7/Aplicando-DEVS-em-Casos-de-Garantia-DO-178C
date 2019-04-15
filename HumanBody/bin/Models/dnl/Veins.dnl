@@ -1,0 +1,32 @@
+
+A LowNutrients has a value!
+the range of LowNutrients's value is Integer!
+
+use measureData1 with type LowNutrients!
+generates output on LowNutrients with type LowNutrients!
+
+Initialize variables
+<%
+java.util.Random gerador = new java.util.Random();
+
+int numero2 = gerador.nextInt(10);
+measureData1 = new LowNutrients(numero2);
+%>!
+
+to start hold in s0 for time 1!
+from s0 go to s1!
+hold in s1 for time 1!
+after s1 output LowNutrients!
+from s1 go to s0!
+
+//On the transition for assigned, perform the assignment
+Internal event for s1
+<%
+measureData1 = new LowNutrients(new Integer (1));
+%>!
+
+//On the transition going out from the state, perform the actions
+output event for s1
+<%
+output.add(outLowNutrients, measureData1);
+%>!

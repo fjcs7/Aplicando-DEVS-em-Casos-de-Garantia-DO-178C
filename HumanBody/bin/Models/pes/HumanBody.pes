@@ -1,0 +1,3 @@
+set name of model as HumanBody !
+pruned from HumanBody.ses !
+write class files !

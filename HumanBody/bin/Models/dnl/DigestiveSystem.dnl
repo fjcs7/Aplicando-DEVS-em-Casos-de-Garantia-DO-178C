@@ -1,0 +1,48 @@
+use measureData with type Food!
+generates output on Food with type Food!
+
+use measureData1 with type Satiation!
+generates output on Satiation with type Satiation!
+
+use measureData2 with type Nutrients!
+generates output on Nutrients with type Nutrients!
+
+
+Initialize variables
+<%
+java.util.Random gerador = new java.util.Random();
+int numero1 = gerador.nextInt(10);
+measureData = new Food(numero1);
+
+java.util.Random gerador1 = new java.util.Random();
+int numero2 = gerador1.nextInt(10);
+measureData1 = new Satiation(numero2);
+
+java.util.Random gerador2 = new java.util.Random();
+int numero3 = gerador2.nextInt(10);
+measureData2 = new Nutrients(numero3);
+%>!
+
+to start hold in s0 for time 1!
+from s0 go to s1!
+hold in s1 for time 1!
+after s1 output Food!
+after s1 output Satiation!
+after s1 output Nutrients!
+from s1 go to s0!
+
+//On the transition for assigned, perform the assignment
+Internal event for s1
+<%
+measureData = new Food(new Integer (1));
+measureData1 = new Satiation(new Integer (1));
+measureData2 = new Nutrients(new Integer (1));
+%>!
+
+//On the transition going out from the state, perform the actions
+output event for s1
+<%
+output.add(outFood, measureData);
+output.add(outSatiation, measureData1);
+output.add(outNutrients, measureData2);
+%>!
