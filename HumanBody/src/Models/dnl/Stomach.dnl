@@ -1,5 +1,7 @@
 A Satiation has a value!
 the range of Satiation's value is Integer!
+A Food has a value!
+the range of Food's value is Integer!
 
 use measureFood with type Food!
 use measureSatiation with type Satiation!

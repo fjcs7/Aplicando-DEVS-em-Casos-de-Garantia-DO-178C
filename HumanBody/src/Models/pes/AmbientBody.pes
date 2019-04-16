@@ -1,0 +1,4 @@
+set name of model as AmbientBody !
+pruned from AmbientBody.ses !
+mergeAll from AmbientBody.ses !
+write class files !

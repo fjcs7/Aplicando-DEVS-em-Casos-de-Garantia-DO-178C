@@ -1,3 +1,10 @@
+A Food has a value!
+the range of Food's value is Integer!
+A Nutrients has a value!
+the range of Nutrients's value is Integer!
+A Satiation has a value!
+the range of Satiation's value is Integer!
+
 use measureFood with type Food!
 use measureNutrients with type Nutrients!
 use measureSatiation with type Satiation!

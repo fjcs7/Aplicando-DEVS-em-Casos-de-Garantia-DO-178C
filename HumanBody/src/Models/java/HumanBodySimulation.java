@@ -11,32 +11,25 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.TreeSet;
 
-public class HumanBody extends CoupledModelImpl implements StateVariableBased{ 
+public class HumanBodySimulation extends CoupledModelImpl implements StateVariableBased{ 
 	private static final long serialVersionUID = 1L;
 	protected SimulationOptionsImpl options = new SimulationOptionsImpl();
 	
-		public final Port<? extends Serializable> outHunger= addOutputPort("outHunger",Serializable.class);
-		public final Port<? extends Serializable> inFood= addInputPort("inFood",Serializable.class);
-	public HumanBody(){
-		this("HumanBody");
+	public HumanBodySimulation(){
+		this("HumanBodySimulation");
 	}
-	public HumanBody(String nm) {
+	public HumanBodySimulation(String nm) {
 		super(nm);
 		make();
 	}
 	public void make(){
 
-		CirculatorySystem CirculatorySystem = new CirculatorySystem();
-		addChildModel(CirculatorySystem);
-		NervousSystem NervousSystem = new NervousSystem();
-		addChildModel(NervousSystem);
-		DigestiveSystem DigestiveSystem = new DigestiveSystem();
-		addChildModel(DigestiveSystem);
-		addCoupling(NervousSystem.outHunger,this.outHunger);
-		addCoupling(DigestiveSystem.outSatiation,NervousSystem.inSatiation);
-		addCoupling(this.inFood,DigestiveSystem.inFood);
-		addCoupling(CirculatorySystem.outLowNutrients,NervousSystem.inLowNutrients);
-		addCoupling(DigestiveSystem.outNutrients,CirculatorySystem.inNutrients);
+		HumanBody HumanBody = new HumanBody();
+		addChildModel(HumanBody);
+		ActionBody ActionBody = new ActionBody();
+		addChildModel(ActionBody);
+		addCoupling(HumanBody.outHunger,ActionBody.inHunger);
+		addCoupling(ActionBody.outFood,HumanBody.inFood);
 
 	}
     @Override
@@ -95,10 +88,10 @@ public class HumanBody extends CoupledModelImpl implements StateVariableBased{
 		// Uncomment the following line to disable plotting for this model
 		// options.setDisablePlotting(true);
 
-		HumanBody model = new HumanBody();
+		HumanBodySimulation model = new HumanBodySimulation();
 		model.options = options;
 		if(options.isDisableViewer()){ // Command Line output only
-			Simulation sim = new com.ms4systems.devs.core.simulation.impl.SimulationImpl("HumanBody Simulation",model,options);
+			Simulation sim = new com.ms4systems.devs.core.simulation.impl.SimulationImpl("HumanBodySimulation Simulation",model,options);
 			sim.startSimulation(0);
 			sim.simulateIterations(Long.MAX_VALUE);
 		}else { //Use SimViewer

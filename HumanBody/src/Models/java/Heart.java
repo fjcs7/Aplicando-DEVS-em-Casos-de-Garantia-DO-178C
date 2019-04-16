@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/HumanBody/src/Models/dnl/Heart.dnl
-1312947405
+-1996532762
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -55,6 +55,10 @@ public class Heart extends AtomicModelImpl implements PhaseBased,
     // End input ports
 
     // Output ports
+    //ID:OUTP:0
+    public final Port<Blood> outBlood = addOutputPort("outBlood", Blood.class);
+
+    //ENDID
     // End output ports
     protected SimulationOptionsImpl options = new SimulationOptionsImpl();
     protected double currentTime;

@@ -1,3 +1,12 @@
+A Hunger has a value!
+the range of Hunger's value is Integer!
+
+A LowNutrients has a value!
+the range of LowNutrients's value is Integer!
+
+A Nutrients has a value!
+the range of Nutrients's value is Integer!
+
 use measureHunger with type Hunger!
 use measureSatiation with type Satiation!
 use measureLowNutrients with type LowNutrients!

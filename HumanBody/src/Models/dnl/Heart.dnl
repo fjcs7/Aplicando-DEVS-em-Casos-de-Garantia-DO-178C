@@ -1,5 +1,8 @@
+A Blood has a value!
+the range of Blood's value is Integer!
+
 use measureData with type Blood!
-//generates output on Blood with type Blood!
+generates output on Blood with type Blood!
 
 Initialize variables
 <%
