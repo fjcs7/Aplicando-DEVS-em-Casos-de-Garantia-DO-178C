@@ -1,0 +1,11 @@
+From the flightDeck perspective, FlightDeck is made of Joystick, Pilot, AuralSystem, and FMS!
+
+From the flightDeck perspective, Joystick sends CmdJoystick to FlightDeck!
+From the flightDeck perspective, Pilot sends CmdJoystick to Joystick!
+From the flightDeck perspective, FMS sends CmdJoystick to Joystick!
+
+From the flightDeck perspective, Pilot sends CmdOnOff to FMS!
+
+From the flightDeck perspective, AuralSystem sends RightSound to Pilot!
+From the flightDeck perspective, AuralSystem sends LeftSound to Pilot!
+From the flightDeck perspective, FlightDeck sends FeedbackRoll to Pilot!

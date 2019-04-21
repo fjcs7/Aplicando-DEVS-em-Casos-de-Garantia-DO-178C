@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE entity SYSTEM "C:/Users/Fernando Junio/git/Simulacoes/ConformingTestDO-178C 6.3.1.a/src\ses.dtd" []>
+<entity  name = "Aircraft">
+<aspect  name = "Aircraft-aircraftDec">
+	<entity  name = "RollRateControl">
+	</entity>
+	<entity  name = "Right_Wing">
+	</entity>
+	<entity  name = "Left_Wing">
+	</entity>
+	<entity  name = "FlightDeck">
+	</entity>
+</aspect>
+</entity>

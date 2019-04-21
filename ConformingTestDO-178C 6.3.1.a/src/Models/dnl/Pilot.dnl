@@ -1,0 +1,19 @@
+A CmdJoystick has a value!
+the range of CmdJoystick's value is String!
+A Sound has a Value!
+the range of Sound's value is String!
+A CmdOnOff has a Value!
+the range of CmdOnOff's value is Boolean!
+A FeedbackRoll has a Value!
+the range of FeedbackRoll's value is Integer!
+
+use sedCommand with type CmdJoystick!
+
+accepts input on RightSound with type Sound!
+accepts input on LeftSound with type Sound! 
+accepts input on FeedbackRoll with type FeedbackRoll!
+ 
+generates output on CmdJoystick with type CmdJoystick!
+generates output on CmdOnOff with type CmdOnOff!
+
+to start passivate in InitialState!
