@@ -2,13 +2,14 @@ A CmdJoystick has a value!
 the range of CmdJoystick's value is String!
 A FeedbackRoll has a value!
 the range of FeedbackRoll's value is String!
-A AdverseYaw has a value!
-the range of AdverseYaw's value is String!
+A YawAngle has a value!
+the range of YawAngle's value is String!
 
 use measureCommand with type CmdJoystick!
 
 accepts input on CmdJoystick with type CmdJoystick!
-accepts input on AdverseYaw with type AdverseYaw!
-generates output on FeedbackRoll with type FeedbackRoll!  
+accepts input on YawAngle with type YawAngle!
+generates output on FeedbackRoll with type FeedbackRoll!
+generates output on CmdJoystick with type CmdJoystick!  
 
 to start passivate in InitialState!

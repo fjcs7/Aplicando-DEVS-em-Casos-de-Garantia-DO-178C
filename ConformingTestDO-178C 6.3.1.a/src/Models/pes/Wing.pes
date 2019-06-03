@@ -1,0 +1,4 @@
+set name of model as Wing !
+pruned from Wing.ses !
+mergeAll from Wing.ses !
+write class files !

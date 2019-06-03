@@ -7,15 +7,14 @@ import com.ms4systems.devs.extensions.PhaseBased;
 import com.ms4systems.devs.extensions.ProvidesTooltip;
 import com.ms4systems.devs.extensions.StateVariableBased;
 
-public class Right_Wing extends AtomicModelImpl implements PhaseBased, StateVariableBased, ProvidesTooltip { 
+public class ServoComandoAileron extends AtomicModelImpl implements PhaseBased, StateVariableBased, ProvidesTooltip { 
 	private static final long serialVersionUID = 1L;
 
 	public final Port<? extends Serializable> inCmdJoystick= addInputPort("inCmdJoystick",Serializable.class);
-	public final Port<? extends Serializable> outYawAngle= addOutputPort("outYawAngle",Serializable.class);
-	public Right_Wing(){
-		this("Right_Wing");
+	public ServoComandoAileron(){
+		this("ServoComandoAileron");
 	}
-	public Right_Wing(String nm) {
+	public ServoComandoAileron(String nm) {
 		super(nm);
 	}
 	public String getTooltip() {

@@ -1,0 +1,4 @@
+From the wing perspective, Wing is made of ServoComandoAileron, Aileron, and AnguleMeasure!
+
+From the wing perspective, Wing sends CmdJoystick to ServoComandoAileron!
+From the wing perspective, AnguleMeasure sends YawAngle to Wing!

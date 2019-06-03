@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/RollRateControl.dnl
-657620099
+1204250062
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -57,8 +57,8 @@ public class RollRateControl extends AtomicModelImpl implements PhaseBased,
 
     //ENDID
     //ID:INP:1
-    public final Port<AdverseYaw> inAdverseYaw =
-        addInputPort("inAdverseYaw", AdverseYaw.class);
+    public final Port<YawAngle> inYawAngle =
+        addInputPort("inYawAngle", YawAngle.class);
 
     //ENDID
     // End input ports
@@ -67,6 +67,11 @@ public class RollRateControl extends AtomicModelImpl implements PhaseBased,
     //ID:OUTP:0
     public final Port<FeedbackRoll> outFeedbackRoll =
         addOutputPort("outFeedbackRoll", FeedbackRoll.class);
+
+    //ENDID
+    //ID:OUTP:1
+    public final Port<CmdJoystick> outCmdJoystick =
+        addOutputPort("outCmdJoystick", CmdJoystick.class);
 
     //ENDID
     // End output ports

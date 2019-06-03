@@ -11,7 +11,7 @@ public class Left_Wing extends AtomicModelImpl implements PhaseBased, StateVaria
 	private static final long serialVersionUID = 1L;
 
 	public final Port<? extends Serializable> inCmdJoystick= addInputPort("inCmdJoystick",Serializable.class);
-	public final Port<? extends Serializable> outAdverseYaw= addOutputPort("outAdverseYaw",Serializable.class);
+	public final Port<? extends Serializable> outYawAngle= addOutputPort("outYawAngle",Serializable.class);
 	public Left_Wing(){
 		this("Left_Wing");
 	}
