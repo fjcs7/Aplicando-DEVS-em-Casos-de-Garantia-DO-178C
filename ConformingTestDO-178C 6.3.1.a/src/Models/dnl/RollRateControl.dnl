@@ -1,15 +1,30 @@
+add Library
+<%
+	import Models.utils.*;
+%>!
+
 A CmdJoystick has a value!
-the range of CmdJoystick's value is String!
+the range of CmdJoystick's value is CmdJoystick!
+A AngleRight has a value!
+the range of AngleRight's value is Double!
+A AngleLeft has a value!
+the range of AngleLeft's value is Double!
 A FeedbackRoll has a value!
 the range of FeedbackRoll's value is String!
-A YawAngle has a value!
-the range of YawAngle's value is String!
+A YawAngleLeft has a Double!
+the range of YawAngleLeft's value is Double!
+A YawAngleRight has a Double!
+the range of YawAngleRight's value is Double!
 
 use measureCommand with type CmdJoystick!
 
 accepts input on CmdJoystick with type CmdJoystick!
-accepts input on YawAngle with type YawAngle!
+accepts input on YawAngleLeft with type YawAngleLeft!
+accepts input on YawAngleRight with type YawAngleRight!
+
 generates output on FeedbackRoll with type FeedbackRoll!
-generates output on CmdJoystick with type CmdJoystick!  
+generates output on AngleLeft with type AngleLeft!
+generates output on AngleRight with type AngleRight!
 
 to start passivate in InitialState!
+

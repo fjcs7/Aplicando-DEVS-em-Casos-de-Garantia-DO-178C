@@ -1,22 +1,22 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
-platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/FMS.dnl
+platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/ServoComandoAileronL.dnl
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
 import java.io.Serializable;
 
-public class CmdJoystick implements Serializable {
+public class ExecutedCmdLeft implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    //ID:VAR:CmdJoystick:0
+    //ID:VAR:ExecutedCmdLeft:0
     Boolean value;
 
     //ENDIF
-    public CmdJoystick() {
+    public ExecutedCmdLeft() {
     }
 
-    public CmdJoystick(Boolean value) {
+    public ExecutedCmdLeft(Boolean value) {
         this.value = value;
     }
 
@@ -29,7 +29,7 @@ public class CmdJoystick implements Serializable {
     }
 
     public String toString() {
-        String str = "CmdJoystick";
+        String str = "ExecutedCmdLeft";
         str += "\n\tvalue: " + this.value;
         return str;
     }

@@ -7,14 +7,17 @@ import com.ms4systems.devs.extensions.PhaseBased;
 import com.ms4systems.devs.extensions.ProvidesTooltip;
 import com.ms4systems.devs.extensions.StateVariableBased;
 
-public class AnguleMeasure extends AtomicModelImpl implements PhaseBased, StateVariableBased, ProvidesTooltip { 
+public class Wings extends AtomicModelImpl implements PhaseBased, StateVariableBased, ProvidesTooltip { 
 	private static final long serialVersionUID = 1L;
 
-	public final Port<? extends Serializable> outYawAngle= addOutputPort("outYawAngle",Serializable.class);
-	public AnguleMeasure(){
-		this("AnguleMeasure");
+	public final Port<? extends Serializable> inAngleLeft= addInputPort("inAngleLeft",Serializable.class);
+	public final Port<? extends Serializable> inAngleRight= addInputPort("inAngleRight",Serializable.class);
+	public final Port<? extends Serializable> outYawAngleLeft= addOutputPort("outYawAngleLeft",Serializable.class);
+	public final Port<? extends Serializable> outYawAngleRight= addOutputPort("outYawAngleRight",Serializable.class);
+	public Wings(){
+		this("Wings");
 	}
-	public AnguleMeasure(String nm) {
+	public Wings(String nm) {
 		super(nm);
 	}
 	public String getTooltip() {

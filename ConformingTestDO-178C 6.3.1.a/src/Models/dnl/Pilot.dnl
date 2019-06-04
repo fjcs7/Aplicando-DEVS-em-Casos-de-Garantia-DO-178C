@@ -5,7 +5,7 @@ the range of Sound's value is String!
 A CmdOnOff has a Value!
 the range of CmdOnOff's value is Boolean!
 A FeedbackRoll has a Value!
-the range of FeedbackRoll's value is Integer!
+the range of FeedbackRoll's value is Boolean!
 
 use sedCommand with type CmdJoystick!
 

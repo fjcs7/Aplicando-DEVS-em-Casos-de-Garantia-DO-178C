@@ -1,35 +1,35 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
-platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/FMS.dnl
+platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/RollRateControl.dnl
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
 import java.io.Serializable;
 
-public class CmdJoystick implements Serializable {
+public class AngleRight implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    //ID:VAR:CmdJoystick:0
-    Boolean value;
+    //ID:VAR:AngleRight:0
+    Double value;
 
     //ENDIF
-    public CmdJoystick() {
+    public AngleRight() {
     }
 
-    public CmdJoystick(Boolean value) {
+    public AngleRight(Double value) {
         this.value = value;
     }
 
-    public void setValue(Boolean value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 
-    public Boolean isValue() {
+    public Double getValue() {
         return this.value;
     }
 
     public String toString() {
-        String str = "CmdJoystick";
+        String str = "AngleRight";
         str += "\n\tvalue: " + this.value;
         return str;
     }

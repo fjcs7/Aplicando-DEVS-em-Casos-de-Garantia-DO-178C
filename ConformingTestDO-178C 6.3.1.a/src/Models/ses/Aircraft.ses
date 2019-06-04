@@ -1,10 +1,10 @@
 From the aircraft perspective, Aircraft is made of FlightDeck, RollRateControl, and Wings!
-
-From the wing perspective, Wings are made of more than one Wing! 
-Wing can be Right or Left in side!
-
 From the aircraft perspective, FlightDeck sends CmdJoystick to RollRateControl!
-From the aircraft perspective, RollRateControl sends CmdJoystick to all Wing!
-From the aircraft perspective, all Wing sends YawAngle to RollRateControl!
+
+From the aircraft perspective, RollRateControl sends AngleLeft to Wings!
+From the aircraft perspective, RollRateControl sends AngleRight to Wings!
+
+From the aircraft perspective, Wings sends YawAngleLeft to RollRateControl!
+From the aircraft perspective, Wings sends YawAngleRight to RollRateControl!
 
 From the aircraft perspective, RollRateControl sends FeedbackRoll to FlightDeck!

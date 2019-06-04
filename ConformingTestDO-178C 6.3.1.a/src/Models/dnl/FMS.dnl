@@ -1,0 +1,30 @@
+add Library
+<%
+	import Models.utils.*;
+%>!
+
+A CmdJoystick has a value!
+the range of CmdJoystick's value is CmdJoystick!
+A Sound has a Value!
+the range of Sound's value is String!
+A CmdOnOff has a Value!
+the range of CmdOnOff's value is Boolean!
+A FeedbackRoll has a Value!
+the range of FeedbackRoll's value is Integer!
+A Sound has a value!
+the range of Sound's value is String!
+A FeedbackRoll has a Value!
+the range of FeedbackRoll's value is Boolean!
+
+use sedCommand with type CmdJoystick!
+
+accepts input on FeedbackRoll with type FeedbackRoll!
+accepts input on CmdOnOff with type CmdOnOff!
+accepts input on CmdJoystick with type CmdJoystick!
+
+generates output on RightSound with type Sound!
+generates output on LeftSound with type Sound!  
+generates output on CmdJoystick with type CmdJoystick!
+generates output on FeedbackRoll with type FeedbackRoll!
+
+to start passivate in InitialState!

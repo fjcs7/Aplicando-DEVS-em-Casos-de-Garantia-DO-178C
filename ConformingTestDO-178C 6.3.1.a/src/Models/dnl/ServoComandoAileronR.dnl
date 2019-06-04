@@ -1,0 +1,11 @@
+A AngleExecution has a value!
+the range of AngleExecution's value is Double!
+A ExecutedCmdRight has a value!
+the range of ExecutedCmdRight's value is Boolean!
+
+//use measureCommand with type CmdJoystick!
+
+accepts input on AngleExecution with type AngleExecution!
+generates output on ExecutedCmdRight with type ExecutedCmdRight!
+
+to start passivate in InitialState!

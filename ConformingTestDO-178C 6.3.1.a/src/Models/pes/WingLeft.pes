@@ -1,0 +1,4 @@
+set name of model as WingLeft !
+pruned from WingLeft.ses !
+mergeAll from WingLeft.ses !
+write class files !

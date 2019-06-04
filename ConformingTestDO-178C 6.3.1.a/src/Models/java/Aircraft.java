@@ -26,18 +26,16 @@ public class Aircraft extends CoupledModelImpl implements StateVariableBased{
 
 		RollRateControl RollRateControl = new RollRateControl();
 		addChildModel(RollRateControl);
-		Right_Wing Right_Wing = new Right_Wing();
-		addChildModel(Right_Wing);
-		Left_Wing Left_Wing = new Left_Wing();
-		addChildModel(Left_Wing);
+		Wings Wings = new Wings();
+		addChildModel(Wings);
 		FlightDeck FlightDeck = new FlightDeck();
 		addChildModel(FlightDeck);
-		addCoupling(Left_Wing.outYawAngle,RollRateControl.inYawAngle);
-		addCoupling(Right_Wing.outYawAngle,RollRateControl.inYawAngle);
-		addCoupling(RollRateControl.outCmdJoystick,Left_Wing.inCmdJoystick);
-		addCoupling(RollRateControl.outCmdJoystick,Right_Wing.inCmdJoystick);
 		addCoupling(FlightDeck.outCmdJoystick,RollRateControl.inCmdJoystick);
+		addCoupling(RollRateControl.outAngleRight,Wings.inAngleRight);
+		addCoupling(Wings.outYawAngleRight,RollRateControl.inYawAngleRight);
+		addCoupling(RollRateControl.outAngleLeft,Wings.inAngleLeft);
 		addCoupling(RollRateControl.outFeedbackRoll,FlightDeck.inFeedbackRoll);
+		addCoupling(Wings.outYawAngleLeft,RollRateControl.inYawAngleLeft);
 
 	}
     @Override

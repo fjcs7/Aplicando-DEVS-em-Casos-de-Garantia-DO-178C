@@ -7,15 +7,18 @@ import com.ms4systems.devs.extensions.PhaseBased;
 import com.ms4systems.devs.extensions.ProvidesTooltip;
 import com.ms4systems.devs.extensions.StateVariableBased;
 
-public class Right_Wing extends AtomicModelImpl implements PhaseBased, StateVariableBased, ProvidesTooltip { 
+public class WingRight extends AtomicModelImpl implements PhaseBased, StateVariableBased, ProvidesTooltip { 
 	private static final long serialVersionUID = 1L;
 
-	public final Port<? extends Serializable> inCmdJoystick= addInputPort("inCmdJoystick",Serializable.class);
-	public final Port<? extends Serializable> outYawAngle= addOutputPort("outYawAngle",Serializable.class);
-	public Right_Wing(){
-		this("Right_Wing");
+	public final Port<? extends Serializable> inYawAngleRight= addInputPort("inYawAngleRight",Serializable.class);
+	public final Port<? extends Serializable> inExecutedCmdRight= addInputPort("inExecutedCmdRight",Serializable.class);
+	public final Port<? extends Serializable> inAngleRight= addInputPort("inAngleRight",Serializable.class);
+	public final Port<? extends Serializable> outAngleExecution= addOutputPort("outAngleExecution",Serializable.class);
+	public final Port<? extends Serializable> outExecutedCmdRight= addOutputPort("outExecutedCmdRight",Serializable.class);
+	public WingRight(){
+		this("WingRight");
 	}
-	public Right_Wing(String nm) {
+	public WingRight(String nm) {
 		super(nm);
 	}
 	public String getTooltip() {

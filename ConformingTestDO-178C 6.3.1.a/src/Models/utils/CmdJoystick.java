@@ -1,4 +1,4 @@
-package utils;
+package Models.utils;
 
 public class CmdJoystick {
 	private static double rigth = 0.0;

@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
-platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/RollRateControl.dnl
-1279867750
+platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/ServoComandoAileronL.dnl
+-350578278
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -23,31 +23,20 @@ import com.ms4systems.devs.core.message.impl.MessageBagImpl;
 import com.ms4systems.devs.core.model.impl.AtomicModelImpl;
 import com.ms4systems.devs.core.simulation.Simulation;
 import com.ms4systems.devs.core.simulation.Simulator;
+import com.ms4systems.devs.core.simulation.impl.SimulationImpl;
 import com.ms4systems.devs.extensions.PhaseBased;
 import com.ms4systems.devs.extensions.StateVariableBased;
 import com.ms4systems.devs.helpers.impl.SimulationOptionsImpl;
 import com.ms4systems.devs.simviewer.standalone.SimViewer;
 
-// Custom library code
-//ID:LIB:0
-import Models.utils.*;
-
-//ENDID
-// End custom library code
 @SuppressWarnings("unused")
-public class RollRateControl extends AtomicModelImpl implements PhaseBased,
+public class ServoComandoAileronL extends AtomicModelImpl implements PhaseBased,
     StateVariableBased {
     private static final long serialVersionUID = 1L;
-
-    //ID:SVAR:0
-    private static final int ID_MEASURECOMMAND = 0;
 
     // Declare state variables
     private PropertyChangeSupport propertyChangeSupport =
         new PropertyChangeSupport(this);
-    protected CmdJoystick measureCommand;
-
-    //ENDID
     String phase = "InitialState";
     String previousPhase = null;
     Double sigma = Double.POSITIVE_INFINITY;
@@ -57,36 +46,16 @@ public class RollRateControl extends AtomicModelImpl implements PhaseBased,
 
     // Input ports
     //ID:INP:0
-    public final Port<CmdJoystick> inCmdJoystick =
-        addInputPort("inCmdJoystick", CmdJoystick.class);
-
-    //ENDID
-    //ID:INP:1
-    public final Port<YawAngleLeft> inYawAngleLeft =
-        addInputPort("inYawAngleLeft", YawAngleLeft.class);
-
-    //ENDID
-    //ID:INP:2
-    public final Port<YawAngleRight> inYawAngleRight =
-        addInputPort("inYawAngleRight", YawAngleRight.class);
+    public final Port<AngleExecution> inAngleExecution =
+        addInputPort("inAngleExecution", AngleExecution.class);
 
     //ENDID
     // End input ports
 
     // Output ports
     //ID:OUTP:0
-    public final Port<FeedbackRoll> outFeedbackRoll =
-        addOutputPort("outFeedbackRoll", FeedbackRoll.class);
-
-    //ENDID
-    //ID:OUTP:1
-    public final Port<AngleLeft> outAngleLeft =
-        addOutputPort("outAngleLeft", AngleLeft.class);
-
-    //ENDID
-    //ID:OUTP:2
-    public final Port<AngleRight> outAngleRight =
-        addOutputPort("outAngleRight", AngleRight.class);
+    public final Port<ExecutedCmdLeft> outExecutedCmdLeft =
+        addOutputPort("outExecutedCmdLeft", ExecutedCmdLeft.class);
 
     //ENDID
     // End output ports
@@ -96,15 +65,15 @@ public class RollRateControl extends AtomicModelImpl implements PhaseBased,
     // This variable is just here so we can use @SuppressWarnings("unused")
     private final int unusedIntVariableForWarnings = 0;
 
-    public RollRateControl() {
-        this("RollRateControl");
+    public ServoComandoAileronL() {
+        this("ServoComandoAileronL");
     }
 
-    public RollRateControl(String name) {
+    public ServoComandoAileronL(String name) {
         this(name, null);
     }
 
-    public RollRateControl(String name, Simulator simulator) {
+    public ServoComandoAileronL(String name, Simulator simulator) {
         super(name, simulator);
     }
 
@@ -167,13 +136,13 @@ public class RollRateControl extends AtomicModelImpl implements PhaseBased,
 
         // Uncomment the following line to disable plotting for this model
         // options.setDisablePlotting(true);
-        RollRateControl model = new RollRateControl();
+        ServoComandoAileronL model = new ServoComandoAileronL();
         model.options = options;
 
         if (options.isDisableViewer()) { // Command line output only
             Simulation sim =
-                new com.ms4systems.devs.core.simulation.impl.SimulationImpl("RollRateControl Simulation",
-                    model, options);
+                new SimulationImpl("ServoComandoAileronL Simulation", model,
+                    options);
             sim.startSimulation(0);
             sim.simulateIterations(Long.MAX_VALUE);
         } else { // Use SimViewer
@@ -191,37 +160,21 @@ public class RollRateControl extends AtomicModelImpl implements PhaseBased,
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
-    // Getter/setter for measureCommand
-    public void setMeasureCommand(CmdJoystick measureCommand) {
-        propertyChangeSupport.firePropertyChange("measureCommand",
-            this.measureCommand, this.measureCommand = measureCommand);
-    }
-
-    public CmdJoystick getMeasureCommand() {
-        return this.measureCommand;
-    }
-
-    // End getter/setter for measureCommand
-
     // State variables
     public String[] getStateVariableNames() {
-        return new String[] { "measureCommand" };
+        return new String[] {  };
     }
 
     public Object[] getStateVariableValues() {
-        return new Object[] { measureCommand };
+        return new Object[] {  };
     }
 
     public Class<?>[] getStateVariableTypes() {
-        return new Class<?>[] { CmdJoystick.class };
+        return new Class<?>[] {  };
     }
 
     public void setStateVariableValue(int index, Object value) {
         switch (index) {
-
-            case ID_MEASURECOMMAND:
-                setMeasureCommand((CmdJoystick) value);
-                return;
 
             default:
                 return;
@@ -248,13 +201,13 @@ public class RollRateControl extends AtomicModelImpl implements PhaseBased,
         URI dirUri;
         File dir;
         try {
-            dirUri = RollRateControl.class.getResource(".").toURI();
+            dirUri = ServoComandoAileronL.class.getResource(".").toURI();
             dir = new File(dirUri);
         } catch (URISyntaxException e) {
             e.printStackTrace();
             throw new RuntimeException(
                 "Could not find Models directory. Invalid model URL: " +
-                RollRateControl.class.getResource(".").toString());
+                ServoComandoAileronL.class.getResource(".").toString());
         }
         boolean foundModels = false;
         while (dir != null && dir.getParentFile() != null) {
