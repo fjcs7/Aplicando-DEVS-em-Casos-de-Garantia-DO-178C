@@ -13,8 +13,9 @@ the range of CmdOnOff's value is Boolean!
 A FeedbackRoll has a Value!
 the range of FeedbackRoll's value is Boolean!
 
-use sedCommand with type CmdJoystick!
+use sendCommand with type CmdJoystick and default "new CmdJoystick()"!
 use archive with type ReadFiles!
+//use commands with type String[]
 
 accepts input on RightSound with type Sound!
 accepts input on LeftSound with type Sound! 
@@ -51,9 +52,12 @@ from SendLeftCorrectionCommand go to WaitFeedbackRoll!
 
 output event for SendNormalCommand
 <%
-	CmdJoystick cmdJoy = new CmdJoystick();
+	System.out.println(archive.hasNextRow());
+	sendCommand = new CmdJoystick();
+	sendCommand = CmdJoystick.parseStringToCmdJoystick("Right:0.0;Left:1.0;Up:0.0;Down:0.0");
 	if(archive.hasNextRow()){
-		cmdJoy = CmdJoystick.parseStringToCmdJoystick(archive.getNextRow());
+		sendCommand = CmdJoystick.parseStringToCmdJoystick(archive.getNextRow());
 	}
-	output.add(outCmdJoystick, cmdJoy);
+	System.out.println(sendCommand);
+	output.add(outCmdJoystick, sendCommand);
 %>!

@@ -2,7 +2,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/Pilot.dnl
--869046901
+-464932443
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -47,9 +47,9 @@ public class Pilot extends AtomicModelImpl
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     
 //ID:SVAR:0
-private static final int ID_SEDCOMMAND = 0;
-protected CmdJoystick sedCommand
-;
+private static final int ID_SENDCOMMAND = 0;
+protected CmdJoystick sendCommand
+ = new CmdJoystick();
 //ENDID
 //ID:SVAR:1
 private static final int ID_ARCHIVE = 1;
@@ -119,6 +119,8 @@ public Pilot(){ this("Pilot"); }
         
         currentTime=0;
         
+        // Default state variable initialization
+        sendCommand = new CmdJoystick();
 
 		holdIn("InitialState",0.0);
         
@@ -268,11 +270,14 @@ public Pilot(){ this("Pilot"); }
 // Output event code
 //ID:OUT:SendNormalCommand
 
-	CmdJoystick cmdJoy = new CmdJoystick();
+	System.out.println(archive.hasNextRow());
+	sendCommand = new CmdJoystick();
+	sendCommand = CmdJoystick.parseStringToCmdJoystick("Right:0.0;Left:1.0;Up:0.0;Down:0.0");
 	if(archive.hasNextRow()){
-		cmdJoy = CmdJoystick.parseStringToCmdJoystick(archive.getNextRow());
+		sendCommand = CmdJoystick.parseStringToCmdJoystick(archive.getNextRow());
 	}
-	output.add(outCmdJoystick, cmdJoy);
+	System.out.println(sendCommand);
+	output.add(outCmdJoystick, sendCommand);
 
 //ENDID
 // End output event code
@@ -339,16 +344,16 @@ null
 	  }
 
     
-   // Getter/setter for sedCommand
-    public void setSedCommand(CmdJoystick sedCommand) {
-        propertyChangeSupport.firePropertyChange("sedCommand", this.sedCommand,this.sedCommand = sedCommand);
+   // Getter/setter for sendCommand
+    public void setSendCommand(CmdJoystick sendCommand) {
+        propertyChangeSupport.firePropertyChange("sendCommand", this.sendCommand,this.sendCommand = sendCommand);
     }
-    public CmdJoystick getSedCommand() {
-        return this.sedCommand;
+    public CmdJoystick getSendCommand() {
+        return this.sendCommand;
     }
     
 	     
-    // End getter/setter for sedCommand
+    // End getter/setter for sendCommand
     
    // Getter/setter for archive
     public void setArchive(ReadFiles archive) {
@@ -364,12 +369,12 @@ null
     // State variables
     public String[] getStateVariableNames() {
          return new String[] {
-            "sedCommand","archive"
+            "sendCommand","archive"
         };
     };
     public Object[] getStateVariableValues() {
          return new Object[] {
-            sedCommand,archive
+            sendCommand,archive
         };
     };
     
@@ -383,8 +388,8 @@ null
     public void setStateVariableValue(int index, Object value) {
     	switch(index) {
     		
-    		case ID_SEDCOMMAND:
-			    setSedCommand((CmdJoystick)value);
+    		case ID_SENDCOMMAND:
+			    setSendCommand((CmdJoystick)value);
     			return;
 			
     		case ID_ARCHIVE:

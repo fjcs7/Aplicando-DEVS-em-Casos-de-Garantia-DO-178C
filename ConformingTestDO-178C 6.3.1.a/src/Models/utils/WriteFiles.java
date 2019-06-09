@@ -6,34 +6,44 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 public class WriteFiles {
-	private String path = "C:\\Users\\Fernando Junio\\git\\Simulacoes\\SimulationFMArq\\";
-	public void writeInFile(String entrada){
-		try{
+	private String path = System.getProperty("user.dir");
+
+	public void writeInLogFile(String value) {
+		String logTime = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS")
+										.format(new Date());
+		this.writeInFile(new StringBuffer(logTime)
+								.append("  ")
+								.append(value).toString());
+	}
+
+	public void writeInFile(String value) {
+		try {
 			File file = new File(path);
-			BufferedWriter writer = new BufferedWriter(new FileWriter(file,true));
-			writer.write("Valor Recebido em: " + new SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS").format(new Date()));
-			writer.write("   " + entrada);
+			BufferedWriter writer = new BufferedWriter(new FileWriter(file,
+					true));
+			writer.write(value);
 			writer.newLine();
-			//Criando o conteúdo do arquivo
+			// Criando o conteúdo do arquivo
 			writer.flush();
-			//Fechando conexão e escrita do arquivo.
+			// Fechando conexão e escrita do arquivo.
 			writer.close();
 			System.out.println("Arquivo gravado em: " + path);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public void setFileName(String name){
-		this.path = this.path + '\\' + name; 
+
+	public void setFileName(String name) {
+		this.path = this.path + '\\' + name;
 	}
-	
-	public void setCompletPath(String completePath){
-		this.path = completePath; 
+
+	public void setCompletPath(String completePath) {
+		this.path = completePath;
 	}
-	
-	public String getAtualPath(){
+
+	public String getAtualPath() {
 		return this.path;
 	}
 }
