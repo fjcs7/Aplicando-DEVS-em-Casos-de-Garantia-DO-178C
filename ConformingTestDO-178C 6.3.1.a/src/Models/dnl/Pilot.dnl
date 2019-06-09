@@ -2,6 +2,7 @@ add library
 <%
 	import Models.utils.CmdJoystick;
 	import Models.utils.ReadFiles;
+    import java.util.*;
 %>!
 
 A CmdJoystick has a value!
@@ -15,6 +16,8 @@ the range of FeedbackRoll's value is Boolean!
 
 use sendCommand with type CmdJoystick and default "new CmdJoystick()"!
 use archive with type ReadFiles!
+//use index with type int!
+use listText with type List<String>!
 //use commands with type String[]
 
 accepts input on RightSound with type Sound!
@@ -28,6 +31,15 @@ Initialize variables
 <%
 	archive = new ReadFiles("PilotCommands.txt");
 	archive.ReadFile();
+	List<String> listText = new ArrayList<String>();
+	while(archive.hasNextRow()){
+		if(archive.hasNextRow()){
+			listText.add(archive.getNextRow());
+		}
+	}
+	for(String item : listText){
+		System.out.println(item);
+	}
 %>!
 
 to start hold in InitialState for time 0.0!
@@ -55,9 +67,9 @@ output event for SendNormalCommand
 	System.out.println(archive.hasNextRow());
 	sendCommand = new CmdJoystick();
 	sendCommand = CmdJoystick.parseStringToCmdJoystick("Right:0.0;Left:1.0;Up:0.0;Down:0.0");
-	if(archive.hasNextRow()){
+	/*if(archive.hasNextRow()){
 		sendCommand = CmdJoystick.parseStringToCmdJoystick(archive.getNextRow());
-	}
+	}*/
 	System.out.println(sendCommand);
 	output.add(outCmdJoystick, sendCommand);
 %>!
