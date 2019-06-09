@@ -1,0 +1,75 @@
+add library
+<%
+	import Models.utils.CmdJoystick;
+	import Models.utils.ReadFiles;
+    import java.util.*;
+%>!
+
+A CmdJoystick has a value!
+the range of CmdJoystick's value is CmdJoystick!
+A Sound has a Value!
+the range of Sound's value is String!
+A CmdOnOff has a Value!
+the range of CmdOnOff's value is Boolean!
+A FeedbackRoll has a Value!
+the range of FeedbackRoll's value is Boolean!
+
+use sendCommand with type CmdJoystick and default "new CmdJoystick()"!
+use archive with type ReadFiles!
+//use index with type int!
+use listText with type List<String>!
+//use commands with type String[]
+
+accepts input on RightSound with type Sound!
+accepts input on LeftSound with type Sound! 
+accepts input on FeedbackRoll with type FeedbackRoll!
+ 
+generates output on CmdJoystick with type CmdJoystick!
+generates output on CmdOnOff with type CmdOnOff!
+
+Initialize variables
+<%
+	archive = new ReadFiles("PilotCommands.txt");
+	archive.ReadFile();
+	List<String> listText = new ArrayList<String>();
+	while(archive.hasNextRow()){
+		if(archive.hasNextRow()){
+			listText.add(archive.getNextRow());
+		}
+	}
+	for(String item : listText){
+		System.out.println(item);
+	}
+%>!
+
+to start hold in InitialState for time 0.0!
+from InitialState go to SendNormalCommand!
+
+hold in SendNormalCommand for time 0.0!
+after SendNormalCommand output FeedbackRoll!
+from SendNormalCommand go to WaitFeedbackRoll!
+
+passivate in WaitFeedbackRoll!
+when in WaitFeedbackRoll and receive FeedbackRoll go to SendNormalCommand!
+when in WaitFeedbackRoll and receive RightSound go to SendRightCorrectionCommand!
+when in WaitFeedbackRoll and receive LeftSound go to SendLeftCorrectionCommand!
+
+hold in SendRightCorrectionCommand for time 0.0!
+after SendRightCorrectionCommand output FeedbackRoll!
+from SendRightCorrectionCommand go to WaitFeedbackRoll!
+
+hold in SendLeftCorrectionCommand for time 0.0!
+after SendLeftCorrectionCommand output FeedbackRoll!
+from SendLeftCorrectionCommand go to WaitFeedbackRoll!
+
+output event for SendNormalCommand
+<%
+	System.out.println(archive.hasNextRow());
+	sendCommand = new CmdJoystick();
+	sendCommand = CmdJoystick.parseStringToCmdJoystick("Right:0.0;Left:1.0;Up:0.0;Down:0.0");
+	/*if(archive.hasNextRow()){
+		sendCommand = CmdJoystick.parseStringToCmdJoystick(archive.getNextRow());
+	}*/
+	System.out.println(sendCommand);
+	output.add(outCmdJoystick, sendCommand);
+%>!
