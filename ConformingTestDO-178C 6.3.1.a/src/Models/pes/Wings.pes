@@ -1,4 +1,3 @@
 set name of model as Wings !
-pruned from Wings.ses !
-mergeAll from Wings.ses !
+pruned from Aircraft.ses !
 write class files !

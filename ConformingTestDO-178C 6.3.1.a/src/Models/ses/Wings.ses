@@ -9,8 +9,5 @@ From the wings perspective, ServoComandoAileronR sends ExecutedCmdRight to WingR
 From the wings perspective, Wings sends AngleLeft to WingLeft!
 From the wings perspective, Wings sends AngleRight to WingRight!
 
-From the wings perspective, Wings sends YawAngleLeft to WingLeft!
-From the wings perspective, Wings sends YawAngleRight to WingRight!
-
-From the wings perspective, WingLeft sends ExecutedCmdLeft to Wings!
-From the wings perspective, WingRight sends ExecutedCmdRight to Wings!
+From the wings perspective, WingLeft sends YawAngleLeft to Wings!
+From the wings perspective, WingRight sends YawAngleRight to Wings!

@@ -1,6 +1,0 @@
-From the aircraft perspective, Aircraft is made of FlightDeck and RollRateControl!
-From the aircraft perspective, FlightDeck sends  outCmdJoystick to RollRateControl as inCmdJoystick!
-
-From the flightDeck perspective, FlightDeck is made of Joystick, FMS, and Pilot!
-From the flightDeck perspective, Joystick sends  outCmdJoystick to FlightDeck as outCmdJoystick!
-
