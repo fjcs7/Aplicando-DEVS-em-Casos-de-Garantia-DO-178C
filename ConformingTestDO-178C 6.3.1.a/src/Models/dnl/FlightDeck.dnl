@@ -1,0 +1,10 @@
+
+accepts input on FeedbackRoll !
+generates output on CmdJoystick !
+
+to start, hold in sendCmdJoystick for time 1!
+after sendCmdJoystick output CmdJoystick!
+from sendCmdJoystick go to waitforFeedbackRoll!
+passivate in waitforFeedbackRoll !
+when in waitforFeedbackRoll and receive FeedbackRoll go to passive!
+passivate in passive!

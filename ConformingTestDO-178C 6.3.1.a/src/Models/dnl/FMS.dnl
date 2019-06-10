@@ -13,8 +13,6 @@ A FeedbackRoll has a Value!
 the range of FeedbackRoll's value is Integer!
 A Sound has a value!
 the range of Sound's value is String!
-A FeedbackRoll has a Value!
-the range of FeedbackRoll's value is Boolean!
 
 use sendCommand with type CmdJoystick!
 

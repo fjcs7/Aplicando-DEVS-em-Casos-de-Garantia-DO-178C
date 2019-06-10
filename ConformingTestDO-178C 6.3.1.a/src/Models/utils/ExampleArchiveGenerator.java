@@ -28,6 +28,8 @@ public class ExampleArchiveGenerator {
 			//System.out.println(item);
 			cmdJoy = CmdJoystick.parseStringToCmdJoystick(item);
 			System.out.println(cmdJoy);
+			System.out.println("angleLeftMesure:" + angleLeftMesure(cmdJoy));
+			System.out.println("angleRightMesure:" + angleRightMesure(cmdJoy));
 		}
 		System.out.println(listText.get(0));
 		/*//cmdJoy = CmdJoystick.parseStringToCmdJoystick(archive.getNextRow());
@@ -70,4 +72,21 @@ public class ExampleArchiveGenerator {
 		}
 	}
 
+	private static Double angleLeftMesure(CmdJoystick cmd){
+		
+		Double _return = 0.0;
+		_return += cmd.getLeft();
+		_return += ((-1) *cmd.getRigth());
+		
+		return _return;
+	}
+	
+	private static Double angleRightMesure(CmdJoystick cmd){
+		
+		Double _return = 0.0;
+		_return += cmd.getRigth();
+		_return += ((-1) *cmd.getLeft());
+		
+		return _return;
+	}
 }

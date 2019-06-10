@@ -2,7 +2,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/RollRateControl.dnl
-857273050
+-760152799
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -48,6 +48,16 @@ public class RollRateControl extends AtomicModelImpl
 //ID:SVAR:0
 private static final int ID_MEASURECOMMAND = 0;
 protected CmdJoystick measureCommand
+;
+//ENDID
+//ID:SVAR:1
+private static final int ID_SENDANGLELEFT = 1;
+protected AngleLeft sendAngleLeft
+;
+//ENDID
+//ID:SVAR:2
+private static final int ID_SENDANGLERIGHT = 2;
+protected AngleRight sendAngleRight
 ;
 //ENDID
     String phase = "InitialState";
@@ -116,6 +126,15 @@ public RollRateControl(){ this("RollRateControl"); }
 
 		passivateIn("InitialState");
         
+        // Initialize Variables
+        //ID:INIT
+        
+	measureCommand = new CmdJoystick();
+	sendAngleLeft  = new AngleLeft(0.0);
+	sendAngleRight = new AngleRight(0.0);
+
+        //ENDID
+        // End initialize variables
         
         
         
@@ -129,7 +148,16 @@ public RollRateControl(){ this("RollRateControl"); }
         
         
         
-        
+		if (phaseIs("SendJoystickCommand")) {
+		    getSimulator().modelMessage("Internal transition from SendJoystickCommand");
+		     
+			//ID:TRA:SendJoystickCommand
+			passivateIn("InitialState");
+			//ENDID
+			
+		    return;
+		}
+
     
         //passivate();
     };
@@ -151,6 +179,29 @@ public RollRateControl(){ this("RollRateControl"); }
         
         
         // Fire state transition functions
+			if (phaseIs("InitialState")) {
+                 
+			     
+				if (input.hasMessages(inCmdJoystick)){
+					ArrayList<Message<CmdJoystick>> messageList = inCmdJoystick.getMessages(input);
+                    
+					holdIn("SendJoystickCommand",0.0);
+					// Fire state and port specific external transition functions
+					//ID:EXT:InitialState:inCmdJoystick
+					
+	measureCommand = (CmdJoystick)messageList.get(0).getData();
+	sendAngleLeft = new AngleLeft(angleLeftMesure(measureCommand));
+	sendAngleRight = new AngleRight(angleRightMesure(measureCommand));
+
+					//ENDID
+					// End external event code
+					
+					
+					                        
+					return;
+				}
+			}
+
 
 
         
@@ -179,12 +230,44 @@ public RollRateControl(){ this("RollRateControl"); }
         MessageBag output = new MessageBagImpl();
         
         
+		if (phaseIs("SendJoystickCommand")) {
+// Output event code
+//ID:OUT:SendJoystickCommand
+
+	output.add(outAngleLeft, sendAngleLeft);
+	output.add(outAngleRight, sendAngleRight);		
+
+//ENDID
+// End output event code
+		}
         return output;
     }
  
     
     
     // Custom function definitions
+    
+    //ID:CUST:0
+    
+	private Double angleLeftMesure(CmdJoystick cmd){
+		
+		Double _return = 0.0;
+		_return += cmd.getLeft();
+		_return += ((-1) *cmd.getRigth());
+		
+		return _return;
+	}
+	
+	private Double angleRightMesure(CmdJoystick cmd){
+		
+		Double _return = 0.0;
+		_return += cmd.getRigth();
+		_return += ((-1) *cmd.getLeft());
+		
+		return _return;
+	}
+
+    //ENDID
     
     // End custom function definitions
  	
@@ -241,22 +324,44 @@ public RollRateControl(){ this("RollRateControl"); }
     
 	     
     // End getter/setter for measureCommand
+    
+   // Getter/setter for sendAngleLeft
+    public void setSendAngleLeft(AngleLeft sendAngleLeft) {
+        propertyChangeSupport.firePropertyChange("sendAngleLeft", this.sendAngleLeft,this.sendAngleLeft = sendAngleLeft);
+    }
+    public AngleLeft getSendAngleLeft() {
+        return this.sendAngleLeft;
+    }
+    
+	     
+    // End getter/setter for sendAngleLeft
+    
+   // Getter/setter for sendAngleRight
+    public void setSendAngleRight(AngleRight sendAngleRight) {
+        propertyChangeSupport.firePropertyChange("sendAngleRight", this.sendAngleRight,this.sendAngleRight = sendAngleRight);
+    }
+    public AngleRight getSendAngleRight() {
+        return this.sendAngleRight;
+    }
+    
+	     
+    // End getter/setter for sendAngleRight
  
     // State variables
     public String[] getStateVariableNames() {
          return new String[] {
-            "measureCommand"
+            "measureCommand","sendAngleLeft","sendAngleRight"
         };
     };
     public Object[] getStateVariableValues() {
          return new Object[] {
-            measureCommand
+            measureCommand,sendAngleLeft,sendAngleRight
         };
     };
     
     public Class<?>[] getStateVariableTypes() {
     	return new Class<?>[] {
-    		CmdJoystick.class
+    		CmdJoystick.class,AngleLeft.class,AngleRight.class
     	};
     }
     
@@ -266,6 +371,14 @@ public RollRateControl(){ this("RollRateControl"); }
     		
     		case ID_MEASURECOMMAND:
 			    setMeasureCommand((CmdJoystick)value);
+    			return;
+			
+    		case ID_SENDANGLELEFT:
+			    setSendAngleLeft((AngleLeft)value);
+    			return;
+			
+    		case ID_SENDANGLERIGHT:
+			    setSendAngleRight((AngleRight)value);
     			return;
 			
 			default:
@@ -340,7 +453,7 @@ public RollRateControl(){ this("RollRateControl"); }
     }
     public String[] getPhaseNames() {
         return new String[] {
-            "InitialState"
+            "InitialState","SendJoystickCommand"
         };
     }
  

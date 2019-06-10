@@ -10,13 +10,22 @@ the range of AngleRight's value is Double!
 A AngleLeft has a value!
 the range of AngleLeft's value is Double!
 A FeedbackRoll has a value!
-the range of FeedbackRoll's value is String!
+the range of FeedbackRoll's value is Integer!
 A YawAngleLeft has a Double!
 the range of YawAngleLeft's value is Double!
 A YawAngleRight has a Double!
 the range of YawAngleRight's value is Double!
 
 use measureCommand with type CmdJoystick!
+use sendAngleLeft with type AngleLeft!
+use sendAngleRight with type AngleRight!
+
+Initialize variables
+<%
+	measureCommand = new CmdJoystick();
+	sendAngleLeft  = new AngleLeft(0.0);
+	sendAngleRight = new AngleRight(0.0);
+%>!
 
 accepts input on CmdJoystick with type CmdJoystick!
 accepts input on YawAngleLeft with type YawAngleLeft!
@@ -27,4 +36,43 @@ generates output on AngleLeft with type AngleLeft!
 generates output on AngleRight with type AngleRight!
 
 to start passivate in InitialState!
+when in InitialState and receive CmdJoystick go to SendJoystickCommand!
 
+hold in SendJoystickCommand for time 0.0!
+after SendJoystickCommand output AngleLeft!
+after SendJoystickCommand output AngleRight!
+from SendJoystickCommand go to InitialState!
+
+external event for InitialState with CmdJoystick
+<%
+	measureCommand = (CmdJoystick)messageList.get(0).getData();
+	sendAngleLeft = new AngleLeft(angleLeftMesure(measureCommand));
+	sendAngleRight = new AngleRight(angleRightMesure(measureCommand));
+%>!
+
+output event for SendJoystickCommand
+<%
+	output.add(outAngleLeft, sendAngleLeft);
+	output.add(outAngleRight, sendAngleRight);		
+%>!
+
+add additional code
+<%
+	private Double angleLeftMesure(CmdJoystick cmd){
+		
+		Double _return = 0.0;
+		_return += cmd.getLeft();
+		_return += ((-1) *cmd.getRigth());
+		
+		return _return;
+	}
+	
+	private Double angleRightMesure(CmdJoystick cmd){
+		
+		Double _return = 0.0;
+		_return += cmd.getRigth();
+		_return += ((-1) *cmd.getLeft());
+		
+		return _return;
+	}
+%>! 

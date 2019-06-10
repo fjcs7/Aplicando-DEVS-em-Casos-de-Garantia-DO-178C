@@ -12,7 +12,7 @@ the range of Sound's value is String!
 A CmdOnOff has a Value!
 the range of CmdOnOff's value is Boolean!
 A FeedbackRoll has a Value!
-the range of FeedbackRoll's value is Boolean!
+the range of FeedbackRoll's value is Integer!
 
 use sendCommand with type CmdJoystick and default "new CmdJoystick()"!
 //use archive with type ReadFiles!
