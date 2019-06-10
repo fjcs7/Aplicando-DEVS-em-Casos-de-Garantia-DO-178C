@@ -25,12 +25,10 @@ from SendCommand go to InitialState!
 
 external event for InitialState with CmdJoystick
 <%
-	System.out.println((CmdJoystick)messageList.get(0).getData());
 	sendCommand = (CmdJoystick)messageList.get(0).getData();
 %>!
 
 output event for SendCommand
 <%
-	System.out.println(sendCommand);
 	output.add(outCmdJoystick, sendCommand);		
 %>!

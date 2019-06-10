@@ -16,7 +16,12 @@ the range of Sound's value is String!
 A FeedbackRoll has a Value!
 the range of FeedbackRoll's value is Boolean!
 
-use sedCommand with type CmdJoystick!
+use sendCommand with type CmdJoystick!
+
+Initialize variables
+<%
+	sendCommand = new CmdJoystick();
+%>!
 
 accepts input on FeedbackRoll with type FeedbackRoll!
 accepts input on CmdOnOff with type CmdOnOff!
@@ -28,3 +33,18 @@ generates output on CmdJoystick with type CmdJoystick!
 generates output on FeedbackRoll with type FeedbackRoll!
 
 to start passivate in InitialState!
+when in InitialState and receive CmdJoystick go to SendJoystickCommand!
+
+hold in SendJoystickCommand for time 0.0!
+after SendJoystickCommand output CmdJoystick!
+from SendJoystickCommand go to InitialState!
+
+external event for InitialState with CmdJoystick
+<%
+	sendCommand = (CmdJoystick)messageList.get(0).getData();
+%>!
+
+output event for SendJoystickCommand
+<%
+	output.add(outCmdJoystick, sendCommand);		
+%>!

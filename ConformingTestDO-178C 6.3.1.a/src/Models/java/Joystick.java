@@ -2,7 +2,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/Joystick.dnl
-64340508
+-1996310013
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -165,7 +165,6 @@ public Joystick(){ this("Joystick"); }
 					// Fire state and port specific external transition functions
 					//ID:EXT:InitialState:inCmdJoystick
 					
-	System.out.println((CmdJoystick)messageList.get(0).getData());
 	sendCommand = (CmdJoystick)messageList.get(0).getData();
 
 					//ENDID
@@ -209,7 +208,6 @@ public Joystick(){ this("Joystick"); }
 // Output event code
 //ID:OUT:SendCommand
 
-	System.out.println(sendCommand);
 	output.add(outCmdJoystick, sendCommand);		
 
 //ENDID

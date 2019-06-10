@@ -2,7 +2,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/FMS.dnl
-731906719
+1738702113
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -46,8 +46,8 @@ public class FMS extends AtomicModelImpl
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     
 //ID:SVAR:0
-private static final int ID_SEDCOMMAND = 0;
-protected CmdJoystick sedCommand
+private static final int ID_SENDCOMMAND = 0;
+protected CmdJoystick sendCommand
 ;
 //ENDID
     String phase = "InitialState";
@@ -119,6 +119,13 @@ public FMS(){ this("FMS"); }
 
 		passivateIn("InitialState");
         
+        // Initialize Variables
+        //ID:INIT
+        
+	sendCommand = new CmdJoystick();
+
+        //ENDID
+        // End initialize variables
         
         
         
@@ -132,7 +139,16 @@ public FMS(){ this("FMS"); }
         
         
         
-        
+		if (phaseIs("SendJoystickCommand")) {
+		    getSimulator().modelMessage("Internal transition from SendJoystickCommand");
+		     
+			//ID:TRA:SendJoystickCommand
+			passivateIn("InitialState");
+			//ENDID
+			
+		    return;
+		}
+
     
         //passivate();
     };
@@ -154,6 +170,27 @@ public FMS(){ this("FMS"); }
         
         
         // Fire state transition functions
+			if (phaseIs("InitialState")) {
+                 
+			     
+				if (input.hasMessages(inCmdJoystick)){
+					ArrayList<Message<CmdJoystick>> messageList = inCmdJoystick.getMessages(input);
+                    
+					holdIn("SendJoystickCommand",0.0);
+					// Fire state and port specific external transition functions
+					//ID:EXT:InitialState:inCmdJoystick
+					
+	sendCommand = (CmdJoystick)messageList.get(0).getData();
+
+					//ENDID
+					// End external event code
+					
+					
+					                        
+					return;
+				}
+			}
+
 
 
         
@@ -182,6 +219,15 @@ public FMS(){ this("FMS"); }
         MessageBag output = new MessageBagImpl();
         
         
+		if (phaseIs("SendJoystickCommand")) {
+// Output event code
+//ID:OUT:SendJoystickCommand
+
+	output.add(outCmdJoystick, sendCommand);		
+
+//ENDID
+// End output event code
+		}
         return output;
     }
  
@@ -234,26 +280,26 @@ public FMS(){ this("FMS"); }
 	  }
 
     
-   // Getter/setter for sedCommand
-    public void setSedCommand(CmdJoystick sedCommand) {
-        propertyChangeSupport.firePropertyChange("sedCommand", this.sedCommand,this.sedCommand = sedCommand);
+   // Getter/setter for sendCommand
+    public void setSendCommand(CmdJoystick sendCommand) {
+        propertyChangeSupport.firePropertyChange("sendCommand", this.sendCommand,this.sendCommand = sendCommand);
     }
-    public CmdJoystick getSedCommand() {
-        return this.sedCommand;
+    public CmdJoystick getSendCommand() {
+        return this.sendCommand;
     }
     
 	     
-    // End getter/setter for sedCommand
+    // End getter/setter for sendCommand
  
     // State variables
     public String[] getStateVariableNames() {
          return new String[] {
-            "sedCommand"
+            "sendCommand"
         };
     };
     public Object[] getStateVariableValues() {
          return new Object[] {
-            sedCommand
+            sendCommand
         };
     };
     
@@ -267,8 +313,8 @@ public FMS(){ this("FMS"); }
     public void setStateVariableValue(int index, Object value) {
     	switch(index) {
     		
-    		case ID_SEDCOMMAND:
-			    setSedCommand((CmdJoystick)value);
+    		case ID_SENDCOMMAND:
+			    setSendCommand((CmdJoystick)value);
     			return;
 			
 			default:
@@ -343,7 +389,7 @@ public FMS(){ this("FMS"); }
     }
     public String[] getPhaseNames() {
         return new String[] {
-            "InitialState"
+            "InitialState","SendJoystickCommand"
         };
     }
  
