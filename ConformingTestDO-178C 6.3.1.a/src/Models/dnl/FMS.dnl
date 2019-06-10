@@ -1,6 +1,6 @@
 add Library
 <%
-	import Models.utils.*;
+	import Models.utils.CmdJoystick;
 %>!
 
 A CmdJoystick has a value!

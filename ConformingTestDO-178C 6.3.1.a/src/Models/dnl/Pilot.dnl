@@ -15,8 +15,8 @@ A FeedbackRoll has a Value!
 the range of FeedbackRoll's value is Boolean!
 
 use sendCommand with type CmdJoystick and default "new CmdJoystick()"!
-use archive with type ReadFiles!
-//use index with type int!
+//use archive with type ReadFiles!
+use index with type int and default "0"!
 use listText with type List<String>!
 //use commands with type String[]
 
@@ -27,20 +27,6 @@ accepts input on FeedbackRoll with type FeedbackRoll!
 generates output on CmdJoystick with type CmdJoystick!
 generates output on CmdOnOff with type CmdOnOff!
 
-Initialize variables
-<%
-	archive = new ReadFiles("PilotCommands.txt");
-	archive.ReadFile();
-	List<String> listText = new ArrayList<String>();
-	while(archive.hasNextRow()){
-		if(archive.hasNextRow()){
-			listText.add(archive.getNextRow());
-		}
-	}
-	for(String item : listText){
-		System.out.println(item);
-	}
-%>!
 
 to start hold in InitialState for time 0.0!
 from InitialState go to SendNormalCommand!
@@ -62,14 +48,21 @@ hold in SendLeftCorrectionCommand for time 0.0!
 after SendLeftCorrectionCommand output FeedbackRoll!
 from SendLeftCorrectionCommand go to WaitFeedbackRoll!
 
+internal event for InitialState
+<%
+	ReadFiles archive = new ReadFiles();
+	archive.setCompletPath("C:\\Users\\Fernando Junio\\git\\Simulacoes\\ConformingTestDO-178C 6.3.1.a\\PilotCommands.txt");
+	listText = archive.ReadAllFileInList();
+%>!
+
 output event for SendNormalCommand
 <%
-	System.out.println(archive.hasNextRow());
+	
 	sendCommand = new CmdJoystick();
-	sendCommand = CmdJoystick.parseStringToCmdJoystick("Right:0.0;Left:1.0;Up:0.0;Down:0.0");
-	/*if(archive.hasNextRow()){
-		sendCommand = CmdJoystick.parseStringToCmdJoystick(archive.getNextRow());
-	}*/
-	System.out.println(sendCommand);
-	output.add(outCmdJoystick, sendCommand);
+
+	if(listText.size() >= index){
+		sendCommand = CmdJoystick.parseStringToCmdJoystick(listText.get(0));
+		index++;
+		output.add(outCmdJoystick, sendCommand);		
+	}
 %>!

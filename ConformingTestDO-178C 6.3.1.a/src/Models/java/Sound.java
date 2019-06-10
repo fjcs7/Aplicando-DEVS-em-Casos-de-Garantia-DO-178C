@@ -1,6 +1,6 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
-platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/Pilot.dnl
+platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/FMS.dnl
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -10,27 +10,27 @@ public class Sound implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //ID:VAR:Sound:0
-    Object Value;
+    Boolean value;
 
     //ENDIF
     public Sound() {
     }
 
-    public Sound(Object Value) {
-        this.Value = Value;
+    public Sound(Boolean value) {
+        this.value = value;
     }
 
-    public void setValue(Object Value) {
-        this.Value = Value;
+    public void setValue(Boolean value) {
+        this.value = value;
     }
 
-    public Object getValue() {
-        return this.Value;
+    public Boolean isValue() {
+        return this.value;
     }
 
     public String toString() {
         String str = "Sound";
-        str += "\n\tValue: " + this.Value;
+        str += "\n\tvalue: " + this.value;
         return str;
     }
 }

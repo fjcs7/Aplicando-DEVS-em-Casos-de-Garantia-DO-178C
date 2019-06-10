@@ -1,0 +1,36 @@
+add library
+<%
+	import Models.utils.CmdJoystick;
+%>!
+
+A CmdJoystick has a value!
+the range of CmdJoystick's value is CmdJoystick!
+
+use sendCommand with type CmdJoystick!
+
+Initialize variables
+<%
+	sendCommand = new CmdJoystick();
+%>!
+
+accepts input on CmdJoystick with type CmdJoystick!
+generates output on CmdJoystick with type CmdJoystick!
+
+to start passivate in InitialState!
+when in InitialState and receive CmdJoystick go to SendCommand!
+
+hold in SendCommand for time 0.0!
+after SendCommand output CmdJoystick!
+from SendCommand go to InitialState!
+
+external event for InitialState with CmdJoystick
+<%
+	System.out.println((CmdJoystick)messageList.get(0).getData());
+	sendCommand = (CmdJoystick)messageList.get(0).getData();
+%>!
+
+output event for SendCommand
+<%
+	System.out.println(sendCommand);
+	output.add(outCmdJoystick, sendCommand);		
+%>!

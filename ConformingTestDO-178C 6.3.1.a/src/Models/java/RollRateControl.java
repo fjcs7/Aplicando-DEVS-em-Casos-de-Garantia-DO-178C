@@ -1,20 +1,19 @@
+
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/RollRateControl.dnl
-1279867750
+857273050
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
 import java.io.File;
-import java.io.Serializable;
-
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.io.Serializable;
 import java.util.ArrayList;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import com.ms4systems.devs.core.message.Message;
 import com.ms4systems.devs.core.message.MessageBag;
@@ -30,220 +29,265 @@ import com.ms4systems.devs.simviewer.standalone.SimViewer;
 
 // Custom library code
 //ID:LIB:0
-import Models.utils.*;
+
+	import Models.utils.CmdJoystick;
 
 //ENDID
 // End custom library code
+
+
 @SuppressWarnings("unused")
-public class RollRateControl extends AtomicModelImpl implements PhaseBased,
-    StateVariableBased {
-    private static final long serialVersionUID = 1L;
-
-    //ID:SVAR:0
-    private static final int ID_MEASURECOMMAND = 0;
-
+public class RollRateControl extends AtomicModelImpl
+        implements PhaseBased, StateVariableBased 
+        {
+    private static final long serialVersionUID = 1L;    
+    
     // Declare state variables
-    private PropertyChangeSupport propertyChangeSupport =
-        new PropertyChangeSupport(this);
-    protected CmdJoystick measureCommand;
-
-    //ENDID
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+    
+//ID:SVAR:0
+private static final int ID_MEASURECOMMAND = 0;
+protected CmdJoystick measureCommand
+;
+//ENDID
     String phase = "InitialState";
     String previousPhase = null;
     Double sigma = Double.POSITIVE_INFINITY;
     Double previousSigma = Double.NaN;
-
+    
+    
+    
     // End state variables
 
-    // Input ports
-    //ID:INP:0
-    public final Port<CmdJoystick> inCmdJoystick =
-        addInputPort("inCmdJoystick", CmdJoystick.class);
-
-    //ENDID
-    //ID:INP:1
-    public final Port<YawAngleLeft> inYawAngleLeft =
-        addInputPort("inYawAngleLeft", YawAngleLeft.class);
-
-    //ENDID
-    //ID:INP:2
-    public final Port<YawAngleRight> inYawAngleRight =
-        addInputPort("inYawAngleRight", YawAngleRight.class);
-
-    //ENDID
+    	
+	
+// Input ports
+//ID:INP:0
+public final Port<CmdJoystick> inCmdJoystick = addInputPort("inCmdJoystick",CmdJoystick.class);
+//ENDID
+//ID:INP:1
+public final Port<YawAngleLeft> inYawAngleLeft = addInputPort("inYawAngleLeft",YawAngleLeft.class);
+//ENDID
+//ID:INP:2
+public final Port<YawAngleRight> inYawAngleRight = addInputPort("inYawAngleRight",YawAngleRight.class);
+//ENDID
     // End input ports
-
+    
     // Output ports
-    //ID:OUTP:0
-    public final Port<FeedbackRoll> outFeedbackRoll =
-        addOutputPort("outFeedbackRoll", FeedbackRoll.class);
-
-    //ENDID
-    //ID:OUTP:1
-    public final Port<AngleLeft> outAngleLeft =
-        addOutputPort("outAngleLeft", AngleLeft.class);
-
-    //ENDID
-    //ID:OUTP:2
-    public final Port<AngleRight> outAngleRight =
-        addOutputPort("outAngleRight", AngleRight.class);
-
-    //ENDID
+//ID:OUTP:0
+public final Port<FeedbackRoll> outFeedbackRoll = addOutputPort("outFeedbackRoll",FeedbackRoll.class);
+//ENDID
+//ID:OUTP:1
+public final Port<AngleLeft> outAngleLeft = addOutputPort("outAngleLeft",AngleLeft.class);
+//ENDID
+//ID:OUTP:2
+public final Port<AngleRight> outAngleRight = addOutputPort("outAngleRight",AngleRight.class);
+//ENDID
     // End output ports
-    protected SimulationOptionsImpl options = new SimulationOptionsImpl();
-    protected double currentTime;
 
-    // This variable is just here so we can use @SuppressWarnings("unused")
-    private final int unusedIntVariableForWarnings = 0;
+    
+    
 
-    public RollRateControl() {
-        this("RollRateControl");
+        
+    
+ protected SimulationOptionsImpl options = new SimulationOptionsImpl();
+ protected double currentTime; 
+ 
+
+	
+public RollRateControl(){ this("RollRateControl"); }
+
+    public RollRateControl(String name){
+        this(name,null);
     }
-
-    public RollRateControl(String name) {
-        this(name, null);
-    }
-
+    
     public RollRateControl(String name, Simulator simulator) {
-        super(name, simulator);
+        super(name,simulator);
     }
+    
 
-    public void initialize() {
+	
+	
+ public void initialize(){
         super.initialize();
+        
+        currentTime=0;
+        
 
-        currentTime = 0;
-
-        passivateIn("InitialState");
-
+		passivateIn("InitialState");
+        
+        
+        
+        
     }
+ 
 
-    @Override
+    
+ @Override
     public void internalTransition() {
         currentTime += sigma;
-
+        
+        
+        
+        
+    
         //passivate();
-    }
+    };
+ 
 
-    @Override
+    
+ @Override
     public void externalTransition(double timeElapsed, MessageBag input) {
         currentTime += timeElapsed;
         // Subtract time remaining until next internal transition (no effect if sigma == Infinity)
         sigma -= timeElapsed;
-
+        
         // Store prior data
         previousPhase = phase;
         previousSigma = sigma;
-
+        
+        
+        
+        
+        
         // Fire state transition functions
-    }
 
-    @Override
+
+        
+        
+    };
+ 
+    
+    
+ @Override
     public void confluentTransition(MessageBag input) {
         // confluentTransition with internalTransition first (by default)
         internalTransition();
         externalTransition(0, input);
     }
-
-    @Override
-    public Double getTimeAdvance() {
-        return sigma;
-    }
-
-    @Override
+ 
+    
+    
+     @Override
+    public Double getTimeAdvance() {return sigma;};
+ 
+ 
+	
+    
+ @Override
     public MessageBag getOutput() {
         MessageBag output = new MessageBagImpl();
-
+        
+        
         return output;
     }
-
+ 
+    
+    
     // Custom function definitions
-
+    
     // End custom function definitions
-    public static void main(String[] args) {
-        SimulationOptionsImpl options = new SimulationOptionsImpl(args, true);
+ 	
 
+    
+ 	
+	
+	
+ public static void main(String[] args) {
+    
+        SimulationOptionsImpl options = new SimulationOptionsImpl(args,true);
+        
         // Uncomment the following line to disable SimViewer for this model
         // options.setDisableViewer(true);
 
         // Uncomment the following line to disable plotting for this model
         // options.setDisablePlotting(true);
+        
         RollRateControl model = new RollRateControl();
         model.options = options;
-
+        
         if (options.isDisableViewer()) { // Command line output only
-            Simulation sim =
-                new com.ms4systems.devs.core.simulation.impl.SimulationImpl("RollRateControl Simulation",
-                    model, options);
+            Simulation sim = new com.ms4systems.devs.core.simulation.impl.SimulationImpl("RollRateControl Simulation", model, options);
             sim.startSimulation(0);
             sim.simulateIterations(Long.MAX_VALUE);
-        } else { // Use SimViewer
-            SimViewer viewer = new SimViewer();
-            viewer.open(model, options);
         }
-    }
+        else { // Use SimViewer
+            SimViewer viewer = new SimViewer();
+            viewer.open(model,options);
+        }
 
-    public void addPropertyChangeListener(String propertyName,
-        PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
     }
+ 
+	
+    
 
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
-    }
+	 public void addPropertyChangeListener(String propertyName,
+	      PropertyChangeListener listener) {
+	    propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
+	  }
+	
+	  public void removePropertyChangeListener(PropertyChangeListener listener) {
+	    propertyChangeSupport.removePropertyChangeListener(listener);
+	  }
 
-    // Getter/setter for measureCommand
+    
+   // Getter/setter for measureCommand
     public void setMeasureCommand(CmdJoystick measureCommand) {
-        propertyChangeSupport.firePropertyChange("measureCommand",
-            this.measureCommand, this.measureCommand = measureCommand);
+        propertyChangeSupport.firePropertyChange("measureCommand", this.measureCommand,this.measureCommand = measureCommand);
     }
-
     public CmdJoystick getMeasureCommand() {
         return this.measureCommand;
     }
-
+    
+	     
     // End getter/setter for measureCommand
-
+ 
     // State variables
     public String[] getStateVariableNames() {
-        return new String[] { "measureCommand" };
-    }
-
+         return new String[] {
+            "measureCommand"
+        };
+    };
     public Object[] getStateVariableValues() {
-        return new Object[] { measureCommand };
-    }
-
+         return new Object[] {
+            measureCommand
+        };
+    };
+    
     public Class<?>[] getStateVariableTypes() {
-        return new Class<?>[] { CmdJoystick.class };
+    	return new Class<?>[] {
+    		CmdJoystick.class
+    	};
     }
-
+    
+    
     public void setStateVariableValue(int index, Object value) {
-        switch (index) {
-
-            case ID_MEASURECOMMAND:
-                setMeasureCommand((CmdJoystick) value);
-                return;
-
-            default:
-                return;
-        }
-    }
-
+    	switch(index) {
+    		
+    		case ID_MEASURECOMMAND:
+			    setMeasureCommand((CmdJoystick)value);
+    			return;
+			
+			default:
+			return;
+    	}
+    } 
+ 
+    	
+    
     // Convenience functions
-    protected void passivate() {
-        passivateIn("passive");
-    }
-
+    protected void passivate() { passivateIn("passive"); }
+    
     protected void passivateIn(String phase) {
-        holdIn(phase, Double.POSITIVE_INFINITY);
+       holdIn(phase,Double.POSITIVE_INFINITY);
     }
-
+    
     protected void holdIn(String phase, Double sigma) {
-        this.phase = phase;
-        this.sigma = sigma;
-        getSimulator()
-            .modelMessage("Holding in phase " + phase + " for time " + sigma);
+       this.phase = phase;
+       this.sigma = sigma;
+       getSimulator().modelMessage("Holding in phase " + phase + " for time " + sigma);
     }
-
+    
     protected static File getModelsDirectory() {
         URI dirUri;
         File dir;
@@ -252,23 +296,18 @@ public class RollRateControl extends AtomicModelImpl implements PhaseBased,
             dir = new File(dirUri);
         } catch (URISyntaxException e) {
             e.printStackTrace();
-            throw new RuntimeException(
-                "Could not find Models directory. Invalid model URL: " +
-                RollRateControl.class.getResource(".").toString());
+            throw new RuntimeException("Could not find Models directory. Invalid model URL: " + RollRateControl.class.getResource(".").toString());
         }
         boolean foundModels = false;
-        while (dir != null && dir.getParentFile() != null) {
-            if (dir.getName().equalsIgnoreCase("java") &&
-                  dir.getParentFile().getName().equalsIgnoreCase("models")) {
+        while (dir!=null && dir.getParentFile()!=null) {
+            if (dir.getName().equalsIgnoreCase("java") && 
+                    dir.getParentFile().getName().equalsIgnoreCase("models"))
                 return dir.getParentFile();
-            }
             dir = dir.getParentFile();
         }
-        throw new RuntimeException(
-            "Could not find Models directory from model path: " +
-            dirUri.toASCIIString());
+        throw new RuntimeException("Could not find Models directory from model path: " + dirUri.toASCIIString());
     }
-
+    
     protected static File getDataFile(String fileName) {
         return getDataFile(fileName, "txt");
     }
@@ -276,32 +315,39 @@ public class RollRateControl extends AtomicModelImpl implements PhaseBased,
     protected static File getDataFile(String fileName, String directoryName) {
         File modelDir = getModelsDirectory();
         File dir = new File(modelDir, directoryName);
-        if (dir == null) {
-            throw new RuntimeException("Could not find '" + directoryName +
-                "' directory from model path: " + modelDir.getAbsolutePath());
-        }
-        File dataFile = new File(dir, fileName);
-        if (dataFile == null) {
-            throw new RuntimeException("Could not find '" + fileName +
-                "' file in directory: " + dir.getAbsolutePath());
-        }
+        if (dir==null)
+            throw new RuntimeException(
+                    "Could not find '" + directoryName +"' directory from model path: " + modelDir.getAbsolutePath());
+        File dataFile = new File(dir,fileName);
+        if (dataFile==null)
+            throw new RuntimeException(
+                    "Could not find '" + fileName +"' file in directory: " + dir.getAbsolutePath());
         return dataFile;
     }
-
+    
     protected void msg(String msg) {
         getSimulator().modelMessage(msg);
     }
-
-    // Phase display
+ 
+        
+    
+     // Phase display
     public boolean phaseIs(String phase) {
         return this.phase.equals(phase);
     }
-
     public String getPhase() {
         return phase;
     }
-
     public String[] getPhaseNames() {
-        return new String[] { "InitialState" };
+        return new String[] {
+            "InitialState"
+        };
     }
+ 
+    
+    
+    
+
+    // This variable is just here so we can use @SuppressWarnings("unused")
+    private final int unusedIntVariableForWarnings = 0;
 }

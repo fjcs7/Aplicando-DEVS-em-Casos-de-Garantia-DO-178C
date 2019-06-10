@@ -3,9 +3,6 @@ package Models.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.print.attribute.HashAttributeSet;
-
-
 public class ExampleArchiveGenerator {
 
 	/**
@@ -32,7 +29,7 @@ public class ExampleArchiveGenerator {
 			cmdJoy = CmdJoystick.parseStringToCmdJoystick(item);
 			System.out.println(cmdJoy);
 		}
-		System.out.println(listText.get(5));
+		System.out.println(listText.get(0));
 		/*//cmdJoy = CmdJoystick.parseStringToCmdJoystick(archive.getNextRow());
 			System.out.println(cmdJoy);
 			*/
