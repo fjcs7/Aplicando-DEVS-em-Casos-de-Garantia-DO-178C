@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/WingRight.dnl
--1205767805
+-2091987007
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -34,10 +34,21 @@ public class WingRight extends AtomicModelImpl implements PhaseBased,
     StateVariableBased {
     private static final long serialVersionUID = 1L;
 
+    //ID:SVAR:0
+    private static final int ID_RECEIVEDCMDANGLE = 0;
+
+    //ENDID
+    //ID:SVAR:1
+    private static final int ID_ANGLEACTUALMEASURE = 1;
+
     // Declare state variables
     private PropertyChangeSupport propertyChangeSupport =
         new PropertyChangeSupport(this);
-    String phase = "waitforAngleLeft";
+    protected AngleExecution receivedCmdAngle;
+    protected AngleExecution angleActualMeasure;
+
+    //ENDID
+    String phase = "InitialState";
     String previousPhase = null;
     Double sigma = Double.POSITIVE_INFINITY;
     Double previousSigma = Double.NaN;
@@ -55,11 +66,6 @@ public class WingRight extends AtomicModelImpl implements PhaseBased,
         addInputPort("inExecutedCmdRight", Serializable.class);
 
     //ENDID
-    //ID:INP:2
-    public final Port<Serializable> inAngleLeft =
-        addInputPort("inAngleLeft", Serializable.class);
-
-    //ENDID
     // End input ports
 
     // Output ports
@@ -71,11 +77,6 @@ public class WingRight extends AtomicModelImpl implements PhaseBased,
     //ID:OUTP:1
     public final Port<Serializable> outAngleExecution =
         addOutputPort("outAngleExecution", Serializable.class);
-
-    //ENDID
-    //ID:OUTP:2
-    public final Port<Serializable> outYawAngleLeft =
-        addOutputPort("outYawAngleLeft", Serializable.class);
 
     //ENDID
     // End output ports
@@ -102,30 +103,37 @@ public class WingRight extends AtomicModelImpl implements PhaseBased,
 
         currentTime = 0;
 
-        passivateIn("waitforAngleLeft");
+        passivateIn("InitialState");
 
+        // Initialize Variables
+        //ID:INIT
+        receivedCmdAngle = new AngleExecution(0.0);
+        angleActualMeasure = new AngleExecution(0.0);
+
+        //ENDID
+        // End initialize variables
     }
 
     @Override
     public void internalTransition() {
         currentTime += sigma;
 
-        if (phaseIs("sendYawAngleLeft")) {
+        if (phaseIs("SendYawAngleRight")) {
             getSimulator()
-                .modelMessage("Internal transition from sendYawAngleLeft");
+                .modelMessage("Internal transition from SendYawAngleRight");
 
-            //ID:TRA:sendYawAngleLeft
-            holdIn("sendYawAngleRight", 0.0);
+            //ID:TRA:SendYawAngleRight
+            passivateIn("InitialState");
 
             //ENDID
             return;
         }
-        if (phaseIs("sendYawAngleRight")) {
+        if (phaseIs("SendActualAngleRight")) {
             getSimulator()
-                .modelMessage("Internal transition from sendYawAngleRight");
+                .modelMessage("Internal transition from SendActualAngleRight");
 
-            //ID:TRA:sendYawAngleRight
-            passivateIn("passive");
+            //ID:TRA:SendActualAngleRight
+            passivateIn("InitialState");
 
             //ENDID
             return;
@@ -145,23 +153,27 @@ public class WingRight extends AtomicModelImpl implements PhaseBased,
         previousSigma = sigma;
 
         // Fire state transition functions
-        if (phaseIs("waitforAngleLeft")) {
-            if (input.hasMessages(inAngleLeft)) {
-                ArrayList<Message<Serializable>> messageList =
-                    inAngleLeft.getMessages(input);
-
-                passivateIn("waitforAngleRight");
-
-                return;
-            }
-        }
-
-        if (phaseIs("waitforAngleRight")) {
+        if (phaseIs("InitialState")) {
             if (input.hasMessages(inAngleRight)) {
                 ArrayList<Message<Serializable>> messageList =
                     inAngleRight.getMessages(input);
 
-                holdIn("sendYawAngleLeft", 0.0);
+                holdIn("SendYawAngleRight", 0.0);
+
+                // Fire state and port specific external transition functions
+                //ID:EXT:InitialState:inAngleRight
+                AngleRight angle = (AngleRight) messageList.get(0).getData();
+                receivedCmdAngle = new AngleExecution(angle.getValue());
+
+                //ENDID
+                // End external event code
+                return;
+            }
+            if (input.hasMessages(inExecutedCmdRight)) {
+                ArrayList<Message<Serializable>> messageList =
+                    inExecutedCmdRight.getMessages(input);
+
+                holdIn("SendActualAngleRight", 0.0);
 
                 return;
             }
@@ -184,11 +196,16 @@ public class WingRight extends AtomicModelImpl implements PhaseBased,
     public MessageBag getOutput() {
         MessageBag output = new MessageBagImpl();
 
-        if (phaseIs("sendYawAngleLeft")) {
-            output.add(outYawAngleLeft, null);
+        if (phaseIs("SendYawAngleRight")) {
+            // Output event code
+            //ID:OUT:SendYawAngleRight
+            output.add(outAngleExecution, receivedCmdAngle);
+
+            //ENDID
+            // End output event code
         }
-        if (phaseIs("sendYawAngleRight")) {
-            output.add(outYawAngleRight, null);
+        if (phaseIs("SendActualAngleRight")) {
+            output.add(outAngleExecution, null);
         }
         return output;
     }
@@ -227,21 +244,54 @@ public class WingRight extends AtomicModelImpl implements PhaseBased,
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
+    // Getter/setter for receivedCmdAngle
+    public void setReceivedCmdAngle(AngleExecution receivedCmdAngle) {
+        propertyChangeSupport.firePropertyChange("receivedCmdAngle",
+            this.receivedCmdAngle, this.receivedCmdAngle = receivedCmdAngle);
+    }
+
+    public AngleExecution getReceivedCmdAngle() {
+        return this.receivedCmdAngle;
+    }
+
+    // End getter/setter for receivedCmdAngle
+
+    // Getter/setter for angleActualMeasure
+    public void setAngleActualMeasure(AngleExecution angleActualMeasure) {
+        propertyChangeSupport.firePropertyChange("angleActualMeasure",
+            this.angleActualMeasure,
+            this.angleActualMeasure = angleActualMeasure);
+    }
+
+    public AngleExecution getAngleActualMeasure() {
+        return this.angleActualMeasure;
+    }
+
+    // End getter/setter for angleActualMeasure
+
     // State variables
     public String[] getStateVariableNames() {
-        return new String[] {  };
+        return new String[] { "receivedCmdAngle", "angleActualMeasure" };
     }
 
     public Object[] getStateVariableValues() {
-        return new Object[] {  };
+        return new Object[] { receivedCmdAngle, angleActualMeasure };
     }
 
     public Class<?>[] getStateVariableTypes() {
-        return new Class<?>[] {  };
+        return new Class<?>[] { AngleExecution.class, AngleExecution.class };
     }
 
     public void setStateVariableValue(int index, Object value) {
         switch (index) {
+
+            case ID_RECEIVEDCMDANGLE:
+                setReceivedCmdAngle((AngleExecution) value);
+                return;
+
+            case ID_ANGLEACTUALMEASURE:
+                setAngleActualMeasure((AngleExecution) value);
+                return;
 
             default:
                 return;
@@ -323,8 +373,7 @@ public class WingRight extends AtomicModelImpl implements PhaseBased,
 
     public String[] getPhaseNames() {
         return new String[] {
-            "waitforAngleLeft", "waitforAngleRight", "sendYawAngleLeft",
-            "sendYawAngleRight", "passive"
+            "InitialState", "SendYawAngleRight", "SendActualAngleRight"
         };
     }
 }

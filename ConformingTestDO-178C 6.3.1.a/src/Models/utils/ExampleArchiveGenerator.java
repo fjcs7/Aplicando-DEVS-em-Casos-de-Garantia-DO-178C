@@ -9,8 +9,8 @@ public class ExampleArchiveGenerator {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		//GererateArchSample();
-		TesteArchSample();
+		GererateArchSample();
+		//TesteArchSample();
 	}
 	public static void TesteArchSample(){
 		ReadFiles archive = new ReadFiles("PilotCommands.txt");

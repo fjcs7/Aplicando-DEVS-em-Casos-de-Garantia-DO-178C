@@ -10,21 +10,21 @@ public class AngleExecution implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //ID:VAR:AngleExecution:0
-    Boolean value;
+    Double value;
 
     //ENDIF
     public AngleExecution() {
     }
 
-    public AngleExecution(Boolean value) {
+    public AngleExecution(Double value) {
         this.value = value;
     }
 
-    public void setValue(Boolean value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 
-    public Boolean isValue() {
+    public Double getValue() {
         return this.value;
     }
 

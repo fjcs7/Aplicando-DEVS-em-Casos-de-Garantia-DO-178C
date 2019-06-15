@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReadFiles {
-	private String path = System.getProperty("user.dir");
+	private String path = System.getProperty("user.dir")+"\\src\\Models\\txt";
 	private BufferedReader br;
 
 	public ReadFiles() {

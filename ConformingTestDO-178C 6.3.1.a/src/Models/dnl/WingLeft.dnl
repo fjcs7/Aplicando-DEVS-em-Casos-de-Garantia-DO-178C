@@ -1,0 +1,46 @@
+A ExecutedCmdLeft has a value!
+the range of ExecutedCmdLeft's value is Boolean!
+A YawAngleLeft has a Double!
+the range of YawAngleLeft's value is Double!
+A AngleLeft has a value!
+the range of AngleLeft's value is Double!
+A AngleExecution has a value!
+the range of AngleExecution's value is Double!
+
+accepts input on AngleLeft !
+accepts input on ExecutedCmdLeft !
+
+generates output on YawAngleLeft !
+generates output on AngleExecution !
+
+use receivedCmdAngle with type AngleExecution!
+use angleActualMeasure with type AngleExecution!
+
+Initialize variables
+<%
+	receivedCmdAngle = new AngleExecution(0.0);
+	angleActualMeasure = new AngleExecution(0.0);
+%>!
+
+to start passivate in InitialState !
+when in InitialState and receive AngleLeft go to SendYawAngleLeft!
+when in InitialState and receive ExecutedCmdLeft go to SendActualAngleLeft!
+
+hold in SendYawAngleLeft for time 0!
+after SendYawAngleLeft output AngleExecution!
+from SendYawAngleLeft go to InitialState!
+
+hold in SendActualAngleLeft for time 0!
+after SendActualAngleLeft output AngleExecution!
+from SendActualAngleLeft go to InitialState!
+
+external event for InitialState with AngleLeft
+<%
+	AngleLeft angle = (AngleLeft)messageList.get(0).getData();
+	receivedCmdAngle = new AngleExecution(angle.getValue());
+%>!
+
+output event for SendYawAngleLeft
+<%
+	output.add(outAngleExecution, receivedCmdAngle);		
+%>!

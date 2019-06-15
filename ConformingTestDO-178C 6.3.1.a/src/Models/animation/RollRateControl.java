@@ -14,9 +14,9 @@ import java.io.*;
 
 public class RollRateControl extends WriteAnimation.GenericInputOutput{ 
 	public final Port<Serializable> inCmdJoystick = addInputPort("inCmdJoystick",Serializable.class);
-	public final Port<Serializable> outAngleLeft = addOutputPort("outAngleLeft",Serializable.class);
-	public final Port<Serializable> outAngleRight = addOutputPort("outAngleRight",Serializable.class);
 	public final Port<Serializable> outFeedbackRoll = addOutputPort("outFeedbackRoll",Serializable.class);
+	public final Port<Serializable> outAngleRight = addOutputPort("outAngleRight",Serializable.class);
+	public final Port<Serializable> outAngleLeft = addOutputPort("outAngleLeft",Serializable.class);
 	public final Port<Serializable> inYawAngleLeft = addInputPort("inYawAngleLeft",Serializable.class);
 	public final Port<Serializable> inYawAngleRight = addInputPort("inYawAngleRight",Serializable.class);
 	public RollRateControl(){
@@ -27,14 +27,14 @@ public class RollRateControl extends WriteAnimation.GenericInputOutput{
 	}
 	public void initialize() {
 		super.initialize();
-		addInPortToOutPort(getInputPort("inCmdJoystick"),getOutputPort("outAngleLeft"));
-		addInPortToOutPort(getInputPort("inCmdJoystick"),getOutputPort("outAngleRight"));
 		addInPortToOutPort(getInputPort("inCmdJoystick"),getOutputPort("outFeedbackRoll"));
-		addInPortToOutPort(getInputPort("inYawAngleLeft"),getOutputPort("outAngleLeft"));
-		addInPortToOutPort(getInputPort("inYawAngleLeft"),getOutputPort("outAngleRight"));
+		addInPortToOutPort(getInputPort("inCmdJoystick"),getOutputPort("outAngleRight"));
+		addInPortToOutPort(getInputPort("inCmdJoystick"),getOutputPort("outAngleLeft"));
 		addInPortToOutPort(getInputPort("inYawAngleLeft"),getOutputPort("outFeedbackRoll"));
-		addInPortToOutPort(getInputPort("inYawAngleRight"),getOutputPort("outAngleLeft"));
-		addInPortToOutPort(getInputPort("inYawAngleRight"),getOutputPort("outAngleRight"));
+		addInPortToOutPort(getInputPort("inYawAngleLeft"),getOutputPort("outAngleRight"));
+		addInPortToOutPort(getInputPort("inYawAngleLeft"),getOutputPort("outAngleLeft"));
 		addInPortToOutPort(getInputPort("inYawAngleRight"),getOutputPort("outFeedbackRoll"));
+		addInPortToOutPort(getInputPort("inYawAngleRight"),getOutputPort("outAngleRight"));
+		addInPortToOutPort(getInputPort("inYawAngleRight"),getOutputPort("outAngleLeft"));
 	}
 }

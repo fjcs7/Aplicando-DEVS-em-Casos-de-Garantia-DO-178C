@@ -10,21 +10,21 @@ public class ExecutedCmdRight implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //ID:VAR:ExecutedCmdRight:0
-    Boolean value;
+    Double value;
 
     //ENDIF
     public ExecutedCmdRight() {
     }
 
-    public ExecutedCmdRight(Boolean value) {
+    public ExecutedCmdRight(Double value) {
         this.value = value;
     }
 
-    public void setValue(Boolean value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 
-    public Boolean isValue() {
+    public Double getValue() {
         return this.value;
     }
 

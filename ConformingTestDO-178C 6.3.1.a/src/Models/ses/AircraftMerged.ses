@@ -1,0 +1,30 @@
+From the aircraft perspective, Aircraft is made of Wings, FlightDeck, and RollRateControl!
+From the aircraft perspective, FlightDeck sends  outCmdJoystick to RollRateControl as inCmdJoystick!
+From the aircraft perspective, RollRateControl sends  outAngleRight to Wings as inAngleRight!
+From the aircraft perspective, Wings sends  outYawAngleRight to RollRateControl as inYawAngleRight!
+From the aircraft perspective, RollRateControl sends  outAngleLeft to Wings as inAngleLeft!
+From the aircraft perspective, RollRateControl sends  outFeedbackRoll to FlightDeck as inFeedbackRoll!
+From the aircraft perspective, Wings sends  outYawAngleLeft to RollRateControl as inYawAngleLeft!
+
+From the wings perspective, Wings is made of WingRight, ServoComandoAileronR, ServoComandoAileronL, and WingLeft!
+From the wings perspective, Wings sends  inAngleRight to WingRight as inAngleRight!
+From the wings perspective, ServoComandoAileronR sends  outExecutedCmdRight to WingRight as inExecutedCmdRight!
+From the wings perspective, Wings sends  inAngleLeft to WingLeft as inAngleLeft!
+From the wings perspective, WingRight sends  outYawAngleRight to Wings as outYawAngleRight!
+From the wings perspective, ServoComandoAileronL sends  outExecutedCmdLeft to WingLeft as inExecutedCmdLeft!
+From the wings perspective, WingLeft sends  outYawAngleLeft to Wings as outYawAngleLeft!
+From the wings perspective, WingLeft sends  outAngleExecution to ServoComandoAileronL as inAngleExecution!
+From the wings perspective, WingRight sends  outAngleExecution to ServoComandoAileronR as inAngleExecution!
+
+From the flightDeck perspective, FlightDeck is made of Joystick, FMS, AuralSystem, and Pilot!
+From the flightDeck perspective, Pilot sends  outCmdJoystick to Joystick as inCmdJoystick!
+From the flightDeck perspective, AuralSystem sends  outLeftSound to Pilot as inLeftSound!
+From the flightDeck perspective, FMS sends  outLeftSound to AuralSystem as inLeftSound!
+From the flightDeck perspective, Joystick sends  outCmdJoystick to FMS as inCmdJoystick!
+From the flightDeck perspective, Pilot sends  outCmdOnOff to FMS as inCmdOnOff!
+From the flightDeck perspective, FlightDeck sends  inFeedbackRoll to FMS as inFeedbackRoll!
+From the flightDeck perspective, FMS sends  outRightSound to AuralSystem as inRightSound!
+From the flightDeck perspective, FMS sends  outFeedbackRoll to Pilot as inFeedbackRoll!
+From the flightDeck perspective, FMS sends  outCmdJoystick to FlightDeck as outCmdJoystick!
+From the flightDeck perspective, AuralSystem sends  outRightSound to Pilot as inRightSound!
+

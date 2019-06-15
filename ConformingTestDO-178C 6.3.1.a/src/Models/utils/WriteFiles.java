@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class WriteFiles {
-	private String path = System.getProperty("user.dir");
+	private String path = System.getProperty("user.dir")+"\\src\\Models\\txt";
 
 	public void writeInLogFile(String value) {
 		String logTime = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS")
