@@ -10,7 +10,7 @@ the range of AngleRight's value is Double!
 A AngleLeft has a value!
 the range of AngleLeft's value is Double!
 A FeedbackRoll has a value!
-the range of FeedbackRoll's value is Integer!
+the range of FeedbackRoll's value is integer!
 A YawAngleLeft has a Double!
 the range of YawAngleLeft's value is Double!
 A YawAngleRight has a Double!

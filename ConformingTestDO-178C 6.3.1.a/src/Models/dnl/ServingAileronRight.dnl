@@ -30,7 +30,8 @@ from ExecuteReceivedCommand go to InitialState!
 external event for InitialState with AngleExecution
 <%
 	measureCommand = (AngleExecution)messageList.get(0).getData();
-	sendCommand = new ExecutedCmd((measureCommand.getValue() != 0.0));
+	sendCommand = new ExecutedCmd((measureCommand.getValue() != 0.0),
+								   measureCommand.getValue());
 %>!
 
 output event for ExecuteReceivedCommand

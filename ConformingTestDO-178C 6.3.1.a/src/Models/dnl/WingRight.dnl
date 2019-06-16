@@ -5,7 +5,7 @@ add library
 
 A ExecutedCmd has a value!
 the range of ExecutedCmd's value is ExecutedCmd!
-A YawAngleRight has a Double!
+A YawAngleRight has a value!
 the range of YawAngleRight's value is Double!
 A AngleRight has a value!
 the range of AngleRight's value is Double!
@@ -19,12 +19,12 @@ generates output on YawAngleRight !
 generates output on AngleExecution !
 
 use receivedCmdAngle with type AngleExecution!
-use angleActualMeasure with type AngleExecution!
+use angleActualMeasure with type YawAngleRight!
 
 Initialize variables
 <%
 	receivedCmdAngle = new AngleExecution(0.0);
-	angleActualMeasure = new AngleExecution(0.0);
+	angleActualMeasure = new YawAngleRight(0.0);
 %>!
 
 to start passivate in InitialState !
@@ -48,4 +48,17 @@ external event for InitialState with AngleRight
 output event for SendYawAngleRight
 <%
 	output.add(outAngleExecution, receivedCmdAngle);		
+%>!
+
+external event for InitialState with ExecutedCmd
+<%
+	ExecutedCmd cmd = (ExecutedCmd)messageList.get(0).getData();
+	if(cmd.isExecuted()){
+		angleActualMeasure = new YawAngleRight(angleActualMeasure.getValue() + cmd.getExecAngle());
+	}
+%>!
+
+output event for SendActualAngleRight
+<%
+	output.add(outYawAngleRight, angleActualMeasure);		
 %>!

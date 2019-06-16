@@ -7,11 +7,11 @@ add library
 
 A CmdJoystick has a value!
 the range of CmdJoystick's value is CmdJoystick!
-A Sound has a Value!
+A Sound has a value!
 the range of Sound's value is String!
-A CmdOnOff has a Value!
+A CmdOnOff has a value!
 the range of CmdOnOff's value is Boolean!
-A FeedbackRoll has a Value!
+A FeedbackRoll has a value!
 the range of FeedbackRoll's value is Integer!
 
 use sendCommand with type CmdJoystick and default "new CmdJoystick()"!

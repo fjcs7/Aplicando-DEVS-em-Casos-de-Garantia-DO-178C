@@ -2,7 +2,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/WingLeft.dnl
-1531246604
+1871700276
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -52,7 +52,7 @@ protected AngleExecution receivedCmdAngle
 //ENDID
 //ID:SVAR:1
 private static final int ID_ANGLEACTUALMEASURE = 1;
-protected AngleExecution angleActualMeasure
+protected YawAngleLeft angleActualMeasure
 ;
 //ENDID
     String phase = "InitialState";
@@ -119,7 +119,7 @@ public WingLeft(){ this("WingLeft"); }
         //ID:INIT
         
 	receivedCmdAngle = new AngleExecution(0.0);
-	angleActualMeasure = new AngleExecution(0.0);
+	angleActualMeasure = new YawAngleLeft(0.0);
 
         //ENDID
         // End initialize variables
@@ -200,6 +200,16 @@ public WingLeft(){ this("WingLeft"); }
 					ArrayList<Message<Serializable>> messageList = inExecutedCmd.getMessages(input);
                     
 					holdIn("SendActualAngleLeft",0.0);
+					// Fire state and port specific external transition functions
+					//ID:EXT:InitialState:inExecutedCmd
+					
+	ExecutedCmd cmd = (ExecutedCmd)messageList.get(0).getData();
+	if(cmd.isExecuted()){
+		angleActualMeasure = new YawAngleLeft(angleActualMeasure.getValue() + cmd.getExecAngle());
+	}
+
+					//ENDID
+					// End external event code
 					
 					
 					                        
@@ -246,9 +256,13 @@ public WingLeft(){ this("WingLeft"); }
 // End output event code
 		}
 		if (phaseIs("SendActualAngleLeft")) {
-output.add(outAngleExecution,
-null
-);
+// Output event code
+//ID:OUT:SendActualAngleLeft
+
+	output.add(outYawAngleLeft, angleActualMeasure);		
+
+//ENDID
+// End output event code
 		}
         return output;
     }
@@ -314,10 +328,10 @@ null
     // End getter/setter for receivedCmdAngle
     
    // Getter/setter for angleActualMeasure
-    public void setAngleActualMeasure(AngleExecution angleActualMeasure) {
+    public void setAngleActualMeasure(YawAngleLeft angleActualMeasure) {
         propertyChangeSupport.firePropertyChange("angleActualMeasure", this.angleActualMeasure,this.angleActualMeasure = angleActualMeasure);
     }
-    public AngleExecution getAngleActualMeasure() {
+    public YawAngleLeft getAngleActualMeasure() {
         return this.angleActualMeasure;
     }
     
@@ -338,7 +352,7 @@ null
     
     public Class<?>[] getStateVariableTypes() {
     	return new Class<?>[] {
-    		AngleExecution.class,AngleExecution.class
+    		AngleExecution.class,YawAngleLeft.class
     	};
     }
     
@@ -351,7 +365,7 @@ null
     			return;
 			
     		case ID_ANGLEACTUALMEASURE:
-			    setAngleActualMeasure((AngleExecution)value);
+			    setAngleActualMeasure((YawAngleLeft)value);
     			return;
 			
 			default:

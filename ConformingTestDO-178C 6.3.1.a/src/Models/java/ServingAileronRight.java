@@ -2,7 +2,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/ServingAileronRight.dnl
--316867514
+-2118086794
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -172,7 +172,8 @@ public ServingAileronRight(){ this("ServingAileronRight"); }
 					//ID:EXT:InitialState:inAngleExecution
 					
 	measureCommand = (AngleExecution)messageList.get(0).getData();
-	sendCommand = new ExecutedCmd((measureCommand.getValue() != 0.0));
+	sendCommand = new ExecutedCmd((measureCommand.getValue() != 0.0),
+								   measureCommand.getValue());
 
 					//ENDID
 					// End external event code

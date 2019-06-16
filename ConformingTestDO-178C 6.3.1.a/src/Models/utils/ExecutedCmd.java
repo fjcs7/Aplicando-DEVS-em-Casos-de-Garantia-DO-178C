@@ -5,29 +5,45 @@ import java.io.Serializable;
 public class ExecutedCmd implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    //ID:VAR:ExecutedCmdLeft:0
-    Boolean value;
+    private Boolean isExecuted;
+    private Double execAngle;
 
-    //ENDIF
+    public Double getExecAngle() {
+		return execAngle;
+	}
+
+	public void setExecAngle(Double execAngle) {
+		this.execAngle = execAngle;
+	}
+
     public ExecutedCmd() {
-    	this.value = false;
+    	this.isExecuted = false;
+    	this.execAngle = 0.0;
     }
 
     public ExecutedCmd(Boolean value) {
-        this.value = value;
+        this.isExecuted = value;
+    }
+    public ExecutedCmd(Boolean value, Double execAngle) {
+        this.isExecuted = value;
+        this.execAngle = execAngle;
     }
 
-    public void setValue(Boolean value) {
-        this.value = value;
+    public void setIsExecuted(Boolean value) {
+        this.isExecuted = value;
     }
 
-    public Boolean getValue() {
-        return this.value;
+    public Boolean isExecuted() {
+        return this.isExecuted;
     }
 
+    @Override
     public String toString() {
-        String str = "ExecutedCmdLeft";
-        str += "\n\tvalue: " + this.value;
-        return str;
+        return new StringBuffer("ExecutedCmd")
+        				.append("\n\tisExecuted: ")
+        				.append(this.isExecuted.toString())
+        				.append("\n\texecAngle: ")
+        				.append(this.execAngle.toString())
+        				.toString();
     }
 }

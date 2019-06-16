@@ -10,27 +10,27 @@ public class YawAngleRight implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //ID:VAR:YawAngleRight:0
-    Object Double;
+    Double value;
 
     //ENDIF
     public YawAngleRight() {
     }
 
-    public YawAngleRight(Object Double) {
-        this.Double = Double;
+    public YawAngleRight(Double value) {
+        this.value = value;
     }
 
-    public void setDouble(Object Double) {
-        this.Double = Double;
+    public void setValue(Double value) {
+        this.value = value;
     }
 
-    public Object getDouble() {
-        return this.Double;
+    public Double getValue() {
+        return this.value;
     }
 
     public String toString() {
         String str = "YawAngleRight";
-        str += "\n\tDouble: " + this.Double;
+        str += "\n\tvalue: " + this.value;
         return str;
     }
 }

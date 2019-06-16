@@ -10,27 +10,27 @@ public class CmdOnOff implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //ID:VAR:CmdOnOff:0
-    Object Value;
+    Integer value;
 
     //ENDIF
     public CmdOnOff() {
     }
 
-    public CmdOnOff(Object Value) {
-        this.Value = Value;
+    public CmdOnOff(Integer value) {
+        this.value = value;
     }
 
-    public void setValue(Object Value) {
-        this.Value = Value;
+    public void setValue(Integer value) {
+        this.value = value;
     }
 
-    public Object getValue() {
-        return this.Value;
+    public Integer getValue() {
+        return this.value;
     }
 
     public String toString() {
         String str = "CmdOnOff";
-        str += "\n\tValue: " + this.Value;
+        str += "\n\tvalue: " + this.value;
         return str;
     }
 }

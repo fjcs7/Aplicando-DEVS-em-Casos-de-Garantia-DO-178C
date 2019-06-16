@@ -10,27 +10,27 @@ public class Sound implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //ID:VAR:Sound:0
-    Object Value;
+    Integer value;
 
     //ENDIF
     public Sound() {
     }
 
-    public Sound(Object Value) {
-        this.Value = Value;
+    public Sound(Integer value) {
+        this.value = value;
     }
 
-    public void setValue(Object Value) {
-        this.Value = Value;
+    public void setValue(Integer value) {
+        this.value = value;
     }
 
-    public Object getValue() {
-        return this.Value;
+    public Integer getValue() {
+        return this.value;
     }
 
     public String toString() {
         String str = "Sound";
-        str += "\n\tValue: " + this.Value;
+        str += "\n\tvalue: " + this.value;
         return str;
     }
 }
