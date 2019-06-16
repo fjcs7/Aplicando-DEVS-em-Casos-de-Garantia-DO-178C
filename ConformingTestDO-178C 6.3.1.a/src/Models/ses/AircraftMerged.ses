@@ -6,15 +6,15 @@ From the aircraft perspective, RollRateControl sends  outAngleLeft to Wings as i
 From the aircraft perspective, RollRateControl sends  outFeedbackRoll to FlightDeck as inFeedbackRoll!
 From the aircraft perspective, Wings sends  outYawAngleLeft to RollRateControl as inYawAngleLeft!
 
-From the wings perspective, Wings is made of WingRight, ServoComandoAileronR, ServoComandoAileronL, and WingLeft!
+From the wings perspective, Wings is made of WingRight, ServingAileronRight, ServingAileronLeft, and WingLeft!
 From the wings perspective, Wings sends  inAngleRight to WingRight as inAngleRight!
-From the wings perspective, ServoComandoAileronR sends  outExecutedCmdRight to WingRight as inExecutedCmdRight!
+From the wings perspective, ServingAileronLeft sends  outExecutedCmd to WingLeft as inExecutedCmd!
 From the wings perspective, Wings sends  inAngleLeft to WingLeft as inAngleLeft!
 From the wings perspective, WingRight sends  outYawAngleRight to Wings as outYawAngleRight!
-From the wings perspective, ServoComandoAileronL sends  outExecutedCmdLeft to WingLeft as inExecutedCmdLeft!
 From the wings perspective, WingLeft sends  outYawAngleLeft to Wings as outYawAngleLeft!
-From the wings perspective, WingLeft sends  outAngleExecution to ServoComandoAileronL as inAngleExecution!
-From the wings perspective, WingRight sends  outAngleExecution to ServoComandoAileronR as inAngleExecution!
+From the wings perspective, WingLeft sends  outAngleExecution to ServingAileronLeft as inAngleExecution!
+From the wings perspective, WingRight sends  outAngleExecution to ServingAileronRight as inAngleExecution!
+From the wings perspective, ServingAileronRight sends  outExecutedCmd to WingRight as inExecutedCmd!
 
 From the flightDeck perspective, FlightDeck is made of Joystick, FMS, AuralSystem, and Pilot!
 From the flightDeck perspective, Pilot sends  outCmdJoystick to Joystick as inCmdJoystick!

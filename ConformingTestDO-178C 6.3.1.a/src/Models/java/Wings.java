@@ -32,18 +32,18 @@ public class Wings extends CoupledModelImpl implements StateVariableBased{
 		addChildModel(WingLeft);
 		WingRight WingRight = new WingRight();
 		addChildModel(WingRight);
-		ServoComandoAileronR ServoComandoAileronR = new ServoComandoAileronR();
-		addChildModel(ServoComandoAileronR);
-		ServoComandoAileronL ServoComandoAileronL = new ServoComandoAileronL();
-		addChildModel(ServoComandoAileronL);
+		ServingAileronRight ServingAileronRight = new ServingAileronRight();
+		addChildModel(ServingAileronRight);
+		ServingAileronLeft ServingAileronLeft = new ServingAileronLeft();
+		addChildModel(ServingAileronLeft);
 		addCoupling(this.inAngleRight,WingRight.inAngleRight);
-		addCoupling(ServoComandoAileronR.outExecutedCmdRight,WingRight.inExecutedCmdRight);
+		addCoupling(ServingAileronLeft.outExecutedCmd,WingLeft.inExecutedCmd);
 		addCoupling(this.inAngleLeft,WingLeft.inAngleLeft);
 		addCoupling(WingRight.outYawAngleRight,this.outYawAngleRight);
-		addCoupling(ServoComandoAileronL.outExecutedCmdLeft,WingLeft.inExecutedCmdLeft);
 		addCoupling(WingLeft.outYawAngleLeft,this.outYawAngleLeft);
-		addCoupling(WingLeft.outAngleExecution,ServoComandoAileronL.inAngleExecution);
-		addCoupling(WingRight.outAngleExecution,ServoComandoAileronR.inAngleExecution);
+		addCoupling(WingLeft.outAngleExecution,ServingAileronLeft.inAngleExecution);
+		addCoupling(WingRight.outAngleExecution,ServingAileronRight.inAngleExecution);
+		addCoupling(ServingAileronRight.outExecutedCmd,WingRight.inExecutedCmd);
 
 	}
     @Override

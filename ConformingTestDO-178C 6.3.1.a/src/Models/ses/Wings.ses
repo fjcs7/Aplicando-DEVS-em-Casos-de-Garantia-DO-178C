@@ -1,13 +1,13 @@
-From the wings perspective, Wings is made of WingLeft, WingRight, ServoComandoAileronR, and ServoComandoAileronL!
+From the wings perspective, Wings is made of WingLeft, WingRight, ServingAileronRight, and ServingAileronLeft!
 
 From the wings perspective, Wings sends AngleLeft to WingLeft!
 From the wings perspective, Wings sends AngleRight to WingRight!
 
-From the wings perspective, WingLeft sends AngleExecution to ServoComandoAileronL!
-From the wings perspective, ServoComandoAileronL sends ExecutedCmdLeft to WingLeft!
+From the wings perspective, WingLeft sends AngleExecution to ServingAileronLeft!
+From the wings perspective, ServingAileronLeft sends ExecutedCmd to WingLeft!
 
-From the wings perspective, WingRight sends AngleExecution to ServoComandoAileronR!
-From the wings perspective, ServoComandoAileronR sends ExecutedCmdRight to WingRight!
+From the wings perspective, WingRight sends AngleExecution to ServingAileronRight!
+From the wings perspective, ServingAileronRight sends ExecutedCmd to WingRight!
 
 From the wings perspective, WingLeft sends YawAngleLeft to Wings!
 From the wings perspective, WingRight sends YawAngleRight to Wings!

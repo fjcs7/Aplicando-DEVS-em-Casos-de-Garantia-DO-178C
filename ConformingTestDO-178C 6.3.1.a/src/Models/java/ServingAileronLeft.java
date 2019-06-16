@@ -1,8 +1,8 @@
 
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
-platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/WingRight.dnl
-55583097
+platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/ServingAileronLeft.dnl
+-316867514
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -37,7 +37,7 @@ import com.ms4systems.devs.simviewer.standalone.SimViewer;
 
 
 @SuppressWarnings("unused")
-public class WingRight extends AtomicModelImpl
+public class ServingAileronLeft extends AtomicModelImpl
         implements PhaseBased, StateVariableBased 
         {
     private static final long serialVersionUID = 1L;    
@@ -46,13 +46,13 @@ public class WingRight extends AtomicModelImpl
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     
 //ID:SVAR:0
-private static final int ID_RECEIVEDCMDANGLE = 0;
-protected AngleExecution receivedCmdAngle
+private static final int ID_MEASURECOMMAND = 0;
+protected AngleExecution measureCommand
 ;
 //ENDID
 //ID:SVAR:1
-private static final int ID_ANGLEACTUALMEASURE = 1;
-protected AngleExecution angleActualMeasure
+private static final int ID_SENDCOMMAND = 1;
+protected ExecutedCmd sendCommand
 ;
 //ENDID
     String phase = "InitialState";
@@ -68,19 +68,13 @@ protected AngleExecution angleActualMeasure
 	
 // Input ports
 //ID:INP:0
-public final Port<Serializable> inAngleRight = addInputPort("inAngleRight",Serializable.class);
-//ENDID
-//ID:INP:1
-public final Port<Serializable> inExecutedCmd = addInputPort("inExecutedCmd",Serializable.class);
+public final Port<AngleExecution> inAngleExecution = addInputPort("inAngleExecution",AngleExecution.class);
 //ENDID
     // End input ports
     
     // Output ports
 //ID:OUTP:0
-public final Port<Serializable> outYawAngleRight = addOutputPort("outYawAngleRight",Serializable.class);
-//ENDID
-//ID:OUTP:1
-public final Port<Serializable> outAngleExecution = addOutputPort("outAngleExecution",Serializable.class);
+public final Port<ExecutedCmd> outExecutedCmd = addOutputPort("outExecutedCmd",ExecutedCmd.class);
 //ENDID
     // End output ports
 
@@ -94,13 +88,13 @@ public final Port<Serializable> outAngleExecution = addOutputPort("outAngleExecu
  
 
 	
-public WingRight(){ this("WingRight"); }
+public ServingAileronLeft(){ this("ServingAileronLeft"); }
 
-    public WingRight(String name){
+    public ServingAileronLeft(String name){
         this(name,null);
     }
     
-    public WingRight(String name, Simulator simulator) {
+    public ServingAileronLeft(String name, Simulator simulator) {
         super(name,simulator);
     }
     
@@ -118,8 +112,8 @@ public WingRight(){ this("WingRight"); }
         // Initialize Variables
         //ID:INIT
         
-	receivedCmdAngle = new AngleExecution(0.0);
-	angleActualMeasure = new AngleExecution(0.0);
+	measureCommand = new AngleExecution(0.0);
+	sendCommand = new ExecutedCmd();
 
         //ENDID
         // End initialize variables
@@ -136,19 +130,10 @@ public WingRight(){ this("WingRight"); }
         
         
         
-		if (phaseIs("SendYawAngleRight")) {
-		    getSimulator().modelMessage("Internal transition from SendYawAngleRight");
+		if (phaseIs("ExecuteReceivedCommand")) {
+		    getSimulator().modelMessage("Internal transition from ExecuteReceivedCommand");
 		     
-			//ID:TRA:SendYawAngleRight
-			passivateIn("InitialState");
-			//ENDID
-			
-		    return;
-		}
-		if (phaseIs("SendActualAngleRight")) {
-		    getSimulator().modelMessage("Internal transition from SendActualAngleRight");
-		     
-			//ID:TRA:SendActualAngleRight
+			//ID:TRA:ExecuteReceivedCommand
 			passivateIn("InitialState");
 			//ENDID
 			
@@ -179,15 +164,15 @@ public WingRight(){ this("WingRight"); }
 			if (phaseIs("InitialState")) {
                  
 			     
-				if (input.hasMessages(inAngleRight)){
-					ArrayList<Message<Serializable>> messageList = inAngleRight.getMessages(input);
+				if (input.hasMessages(inAngleExecution)){
+					ArrayList<Message<AngleExecution>> messageList = inAngleExecution.getMessages(input);
                     
-					holdIn("SendYawAngleRight",0.0);
+					holdIn("ExecuteReceivedCommand",0.0);
 					// Fire state and port specific external transition functions
-					//ID:EXT:InitialState:inAngleRight
+					//ID:EXT:InitialState:inAngleExecution
 					
-	AngleRight angle = (AngleRight)messageList.get(0).getData();
-	receivedCmdAngle = new AngleExecution(angle.getValue());
+	measureCommand = (AngleExecution)messageList.get(0).getData();
+	sendCommand = new ExecutedCmd((measureCommand.getValue() != 0.0));
 
 					//ENDID
 					// End external event code
@@ -196,17 +181,7 @@ public WingRight(){ this("WingRight"); }
 					                        
 					return;
 				}
-				if (input.hasMessages(inExecutedCmd)){
-					ArrayList<Message<Serializable>> messageList = inExecutedCmd.getMessages(input);
-                    
-					holdIn("SendActualAngleRight",0.0);
-					
-					
-					                        
-					return;
-				}
 			}
-
 
 
 
@@ -236,19 +211,14 @@ public WingRight(){ this("WingRight"); }
         MessageBag output = new MessageBagImpl();
         
         
-		if (phaseIs("SendYawAngleRight")) {
+		if (phaseIs("ExecuteReceivedCommand")) {
 // Output event code
-//ID:OUT:SendYawAngleRight
+//ID:OUT:ExecuteReceivedCommand
 
-	output.add(outAngleExecution, receivedCmdAngle);		
+	output.add(outExecutedCmd, sendCommand);		
 
 //ENDID
 // End output event code
-		}
-		if (phaseIs("SendActualAngleRight")) {
-output.add(outAngleExecution,
-null
-);
 		}
         return output;
     }
@@ -274,11 +244,11 @@ null
         // Uncomment the following line to disable plotting for this model
         // options.setDisablePlotting(true);
         
-        WingRight model = new WingRight();
+        ServingAileronLeft model = new ServingAileronLeft();
         model.options = options;
         
         if (options.isDisableViewer()) { // Command line output only
-            Simulation sim = new com.ms4systems.devs.core.simulation.impl.SimulationImpl("WingRight Simulation", model, options);
+            Simulation sim = new com.ms4systems.devs.core.simulation.impl.SimulationImpl("ServingAileronLeft Simulation", model, options);
             sim.startSimulation(0);
             sim.simulateIterations(Long.MAX_VALUE);
         }
@@ -302,43 +272,43 @@ null
 	  }
 
     
-   // Getter/setter for receivedCmdAngle
-    public void setReceivedCmdAngle(AngleExecution receivedCmdAngle) {
-        propertyChangeSupport.firePropertyChange("receivedCmdAngle", this.receivedCmdAngle,this.receivedCmdAngle = receivedCmdAngle);
+   // Getter/setter for measureCommand
+    public void setMeasureCommand(AngleExecution measureCommand) {
+        propertyChangeSupport.firePropertyChange("measureCommand", this.measureCommand,this.measureCommand = measureCommand);
     }
-    public AngleExecution getReceivedCmdAngle() {
-        return this.receivedCmdAngle;
-    }
-    
-	     
-    // End getter/setter for receivedCmdAngle
-    
-   // Getter/setter for angleActualMeasure
-    public void setAngleActualMeasure(AngleExecution angleActualMeasure) {
-        propertyChangeSupport.firePropertyChange("angleActualMeasure", this.angleActualMeasure,this.angleActualMeasure = angleActualMeasure);
-    }
-    public AngleExecution getAngleActualMeasure() {
-        return this.angleActualMeasure;
+    public AngleExecution getMeasureCommand() {
+        return this.measureCommand;
     }
     
 	     
-    // End getter/setter for angleActualMeasure
+    // End getter/setter for measureCommand
+    
+   // Getter/setter for sendCommand
+    public void setSendCommand(ExecutedCmd sendCommand) {
+        propertyChangeSupport.firePropertyChange("sendCommand", this.sendCommand,this.sendCommand = sendCommand);
+    }
+    public ExecutedCmd getSendCommand() {
+        return this.sendCommand;
+    }
+    
+	     
+    // End getter/setter for sendCommand
  
     // State variables
     public String[] getStateVariableNames() {
          return new String[] {
-            "receivedCmdAngle","angleActualMeasure"
+            "measureCommand","sendCommand"
         };
     };
     public Object[] getStateVariableValues() {
          return new Object[] {
-            receivedCmdAngle,angleActualMeasure
+            measureCommand,sendCommand
         };
     };
     
     public Class<?>[] getStateVariableTypes() {
     	return new Class<?>[] {
-    		AngleExecution.class,AngleExecution.class
+    		AngleExecution.class,ExecutedCmd.class
     	};
     }
     
@@ -346,12 +316,12 @@ null
     public void setStateVariableValue(int index, Object value) {
     	switch(index) {
     		
-    		case ID_RECEIVEDCMDANGLE:
-			    setReceivedCmdAngle((AngleExecution)value);
+    		case ID_MEASURECOMMAND:
+			    setMeasureCommand((AngleExecution)value);
     			return;
 			
-    		case ID_ANGLEACTUALMEASURE:
-			    setAngleActualMeasure((AngleExecution)value);
+    		case ID_SENDCOMMAND:
+			    setSendCommand((ExecutedCmd)value);
     			return;
 			
 			default:
@@ -378,11 +348,11 @@ null
         URI dirUri;
         File dir;
         try {
-            dirUri = WingRight.class.getResource(".").toURI();
+            dirUri = ServingAileronLeft.class.getResource(".").toURI();
             dir = new File(dirUri);
         } catch (URISyntaxException e) {
             e.printStackTrace();
-            throw new RuntimeException("Could not find Models directory. Invalid model URL: " + WingRight.class.getResource(".").toString());
+            throw new RuntimeException("Could not find Models directory. Invalid model URL: " + ServingAileronLeft.class.getResource(".").toString());
         }
         boolean foundModels = false;
         while (dir!=null && dir.getParentFile()!=null) {
@@ -426,7 +396,7 @@ null
     }
     public String[] getPhaseNames() {
         return new String[] {
-            "InitialState","SendYawAngleRight","SendActualAngleRight"
+            "InitialState","ExecuteReceivedCommand"
         };
     }
  

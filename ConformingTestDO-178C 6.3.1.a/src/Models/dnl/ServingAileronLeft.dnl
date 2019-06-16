@@ -1,0 +1,39 @@
+add library
+<%
+	import Models.utils.ExecutedCmd;
+%>!
+
+A ExecutedCmd has a value!
+the range of ExecutedCmd's value is ExecutedCmd!
+A AngleExecution has a value!
+the range of AngleExecution's value is Double!
+
+use measureCommand with type AngleExecution!
+use sendCommand with type ExecutedCmd!
+
+Initialize variables
+<%
+	measureCommand = new AngleExecution(0.0);
+	sendCommand = new ExecutedCmd();
+%>!
+
+accepts input on AngleExecution with type AngleExecution!
+generates output on ExecutedCmd with type ExecutedCmd!
+
+to start passivate in InitialState!
+when in InitialState and receive AngleExecution go to ExecuteReceivedCommand!
+
+hold in ExecuteReceivedCommand for time 0!
+after ExecuteReceivedCommand output ExecutedCmd!
+from ExecuteReceivedCommand go to InitialState!
+
+external event for InitialState with AngleExecution
+<%
+	measureCommand = (AngleExecution)messageList.get(0).getData();
+	sendCommand = new ExecutedCmd((measureCommand.getValue() != 0.0));
+%>!
+
+output event for ExecuteReceivedCommand
+<%
+	output.add(outExecutedCmd, sendCommand);		
+%>!

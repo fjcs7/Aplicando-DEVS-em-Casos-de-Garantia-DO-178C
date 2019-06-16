@@ -6,17 +6,17 @@ package Models.java;
 
 import java.io.Serializable;
 
-public class ExecutedCmdRight implements Serializable {
+public class ExecutedCmd implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    //ID:VAR:ExecutedCmdRight:0
+    //ID:VAR:ExecutedCmd:0
     Double value;
 
     //ENDIF
-    public ExecutedCmdRight() {
+    public ExecutedCmd() {
     }
 
-    public ExecutedCmdRight(Double value) {
+    public ExecutedCmd(Double value) {
         this.value = value;
     }
 
@@ -29,7 +29,7 @@ public class ExecutedCmdRight implements Serializable {
     }
 
     public String toString() {
-        String str = "ExecutedCmdRight";
+        String str = "ExecutedCmd";
         str += "\n\tvalue: " + this.value;
         return str;
     }

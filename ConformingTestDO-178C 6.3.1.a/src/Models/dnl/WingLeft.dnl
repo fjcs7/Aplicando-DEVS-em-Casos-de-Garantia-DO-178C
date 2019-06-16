@@ -1,5 +1,11 @@
-A ExecutedCmdLeft has a value!
-the range of ExecutedCmdLeft's value is Boolean!
+add library
+<%
+	import Models.utils.ExecutedCmd;
+%>!
+
+A ExecutedCmd has a value!
+the range of ExecutedCmd's value is ExecutedCmd!
+
 A YawAngleLeft has a Double!
 the range of YawAngleLeft's value is Double!
 A AngleLeft has a value!
@@ -8,7 +14,7 @@ A AngleExecution has a value!
 the range of AngleExecution's value is Double!
 
 accepts input on AngleLeft !
-accepts input on ExecutedCmdLeft !
+accepts input on ExecutedCmd !
 
 generates output on YawAngleLeft !
 generates output on AngleExecution !
@@ -22,9 +28,9 @@ Initialize variables
 	angleActualMeasure = new AngleExecution(0.0);
 %>!
 
-to start passivate in InitialState !
+to start passivate in InitialState!
 when in InitialState and receive AngleLeft go to SendYawAngleLeft!
-when in InitialState and receive ExecutedCmdLeft go to SendActualAngleLeft!
+when in InitialState and receive ExecutedCmd go to SendActualAngleLeft!
 
 hold in SendYawAngleLeft for time 0!
 after SendYawAngleLeft output AngleExecution!
