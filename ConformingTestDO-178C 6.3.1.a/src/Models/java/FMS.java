@@ -2,7 +2,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/FMS.dnl
-1491314372
+1480794586
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -262,8 +262,11 @@ public FMS(){ this("FMS"); }
 // Output event code
 //ID:OUT:MeasureFeedbackRoll
 
-	output.add(outLeftSound, new Sound("OFF"));
-	output.add(outRightSound, new Sound("OFF"));		
+	if (measureFeedback.isRollProblemn()){
+		output.add(outLeftSound, new Sound("OFF"));
+		output.add(outRightSound, new Sound("OFF"));
+	}
+	output.add(outFeedbackRoll, measureFeedback);		
 
 //ENDID
 // End output event code

@@ -60,11 +60,13 @@ output event for SendJoystickCommand
 external event for MeasureFeedbackRoll with FeedbackRoll
 <%
 	measureFeedback = (FeedbackRoll)messageList.get(0).getData();
-	output.add(outFeedbackRoll, measureFeedback);
 %>!
 
 output event for MeasureFeedbackRoll
 <%
-	output.add(outLeftSound, new Sound("OFF"));
-	output.add(outRightSound, new Sound("OFF"));		
+	if (measureFeedback.isRollProblemn()){
+		output.add(outLeftSound, new Sound("OFF"));
+		output.add(outRightSound, new Sound("OFF"));
+	}
+	output.add(outFeedbackRoll, measureFeedback);		
 %>!

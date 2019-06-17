@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/Pilot.dnl
--1201676200
+525271200
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -252,7 +252,7 @@ public class Pilot extends AtomicModelImpl implements PhaseBased,
 
             if (listText.size() >= index) {
                 sendCommand = CmdJoystick.parseStringToCmdJoystick(listText.get(
-                            0));
+                            index));
                 index++;
                 output.add(outCmdJoystick, sendCommand);
             }

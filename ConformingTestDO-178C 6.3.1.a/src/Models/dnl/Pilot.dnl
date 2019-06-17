@@ -10,10 +10,11 @@ A CmdJoystick has a value!
 the range of CmdJoystick's value is CmdJoystick!
 A FeedbackRoll has a value!
 the range of FeedbackRoll's value is FeedbackRoll!
-A Sound has a value!
-the range of Sound's value is String!
 A CmdOnOff has a value!
 the range of CmdOnOff's value is Boolean!
+
+A Sound has a value!
+the range of Sound's value is String!
 
 use sendCommand with type CmdJoystick and default "new CmdJoystick()"!
 //use archive with type ReadFiles!
@@ -61,7 +62,7 @@ output event for SendNormalCommand
 	sendCommand = new CmdJoystick();
 
 	if(listText.size() >= index){
-		sendCommand = CmdJoystick.parseStringToCmdJoystick(listText.get(0));
+		sendCommand = CmdJoystick.parseStringToCmdJoystick(listText.get(index));
 		index++;
 		output.add(outCmdJoystick, sendCommand);		
 	}
