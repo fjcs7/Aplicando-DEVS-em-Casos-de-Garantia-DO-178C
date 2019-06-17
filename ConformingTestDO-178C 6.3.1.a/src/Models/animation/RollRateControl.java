@@ -1,18 +1,13 @@
 package Models.animation;
-import com.ms4systems.devs.core.message.Message;
-import com.ms4systems.devs.core.message.MessageBag;
 import com.ms4systems.devs.core.message.Port;
-import com.ms4systems.devs.core.message.impl.MessageBagImpl;
-import com.ms4systems.devs.core.model.impl.AtomicModelImpl;
-import com.ms4systems.devs.core.simulation.Simulation;
-import com.ms4systems.devs.core.simulation.Simulator;
-import com.ms4systems.devs.extensions.StateVariableBased;
-import com.ms4systems.devs.helpers.impl.SimulationOptionsImpl;
-import com.ms4systems.devs.simviewer.standalone.SimViewer;
 import com.ms4systems.devs.core.util.WriteAnimation;
 import java.io.*;
 
 public class RollRateControl extends WriteAnimation.GenericInputOutput{ 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public final Port<Serializable> inCmdJoystick = addInputPort("inCmdJoystick",Serializable.class);
 	public final Port<Serializable> outFeedbackRoll = addOutputPort("outFeedbackRoll",Serializable.class);
 	public final Port<Serializable> outAngleRight = addOutputPort("outAngleRight",Serializable.class);

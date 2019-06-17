@@ -31,11 +31,10 @@ public class Aircraft extends CoupledModelImpl implements StateVariableBased{
 		FlightDeck FlightDeck = new FlightDeck();
 		addChildModel(FlightDeck);
 		addCoupling(FlightDeck.outCmdJoystick,RollRateControl.inCmdJoystick);
+		addCoupling(Wings.outYawAngle,RollRateControl.inYawAngle);
 		addCoupling(RollRateControl.outAngleRight,Wings.inAngleRight);
-		addCoupling(Wings.outYawAngleRight,RollRateControl.inYawAngleRight);
 		addCoupling(RollRateControl.outAngleLeft,Wings.inAngleLeft);
 		addCoupling(RollRateControl.outFeedbackRoll,FlightDeck.inFeedbackRoll);
-		addCoupling(Wings.outYawAngleLeft,RollRateControl.inYawAngleLeft);
 
 	}
     @Override

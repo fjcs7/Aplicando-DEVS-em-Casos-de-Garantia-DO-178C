@@ -16,9 +16,8 @@ public class Wings extends CoupledModelImpl implements StateVariableBased{
 	protected SimulationOptionsImpl options = new SimulationOptionsImpl();
 	
 		public final Port<? extends Serializable> inAngleRight= addInputPort("inAngleRight",Serializable.class);
+		public final Port<? extends Serializable> outYawAngle= addOutputPort("outYawAngle",Serializable.class);
 		public final Port<? extends Serializable> inAngleLeft= addInputPort("inAngleLeft",Serializable.class);
-		public final Port<? extends Serializable> outYawAngleRight= addOutputPort("outYawAngleRight",Serializable.class);
-		public final Port<? extends Serializable> outYawAngleLeft= addOutputPort("outYawAngleLeft",Serializable.class);
 	public Wings(){
 		this("Wings");
 	}
@@ -37,10 +36,10 @@ public class Wings extends CoupledModelImpl implements StateVariableBased{
 		ServingAileronLeft ServingAileronLeft = new ServingAileronLeft();
 		addChildModel(ServingAileronLeft);
 		addCoupling(this.inAngleRight,WingRight.inAngleRight);
+		addCoupling(WingRight.outYawAngle,this.outYawAngle);
 		addCoupling(ServingAileronLeft.outExecutedCmd,WingLeft.inExecutedCmd);
+		addCoupling(WingLeft.outYawAngle,this.outYawAngle);
 		addCoupling(this.inAngleLeft,WingLeft.inAngleLeft);
-		addCoupling(WingRight.outYawAngleRight,this.outYawAngleRight);
-		addCoupling(WingLeft.outYawAngleLeft,this.outYawAngleLeft);
 		addCoupling(WingLeft.outAngleExecution,ServingAileronLeft.inAngleExecution);
 		addCoupling(WingRight.outAngleExecution,ServingAileronRight.inAngleExecution);
 		addCoupling(ServingAileronRight.outExecutedCmd,WingRight.inExecutedCmd);

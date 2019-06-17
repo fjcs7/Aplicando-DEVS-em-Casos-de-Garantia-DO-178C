@@ -1,24 +1,27 @@
 add Library
 <%
 	import Models.utils.CmdJoystick;
+	import Models.utils.rollModes.FeedbackRoll;
 %>!
 
 A CmdJoystick has a value!
 the range of CmdJoystick's value is CmdJoystick!
+A FeedbackRoll has a value!
+the range of FeedbackRoll's value is FeedbackRoll!
 A Sound has a value!
 the range of Sound's value is String!
 A CmdOnOff has a value!
 the range of CmdOnOff's value is Boolean!
-A FeedbackRoll has a value!
-the range of FeedbackRoll's value is Integer!
 A Sound has a value!
 the range of Sound's value is String!
 
 use sendCommand with type CmdJoystick!
+use measureFeedback with type FeedbackRoll!
 
 Initialize variables
 <%
 	sendCommand = new CmdJoystick();
+	measureFeedback = new FeedbackRoll();
 %>!
 
 accepts input on FeedbackRoll with type FeedbackRoll!
@@ -32,10 +35,17 @@ generates output on FeedbackRoll with type FeedbackRoll!
 
 to start passivate in InitialState!
 when in InitialState and receive CmdJoystick go to SendJoystickCommand!
+when in InitialState and receive FeedbackRoll go to MeasureFeedbackRoll!
 
 hold in SendJoystickCommand for time 0.0!
 after SendJoystickCommand output CmdJoystick!
 from SendJoystickCommand go to InitialState!
+
+hold in MeasureFeedbackRoll for time 0.0!
+after MeasureFeedbackRoll output RightSound!
+after MeasureFeedbackRoll output LeftSound!
+after MeasureFeedbackRoll output FeedbackRoll!
+from MeasureFeedbackRoll go to InitialState!
 
 external event for InitialState with CmdJoystick
 <%
@@ -45,4 +55,16 @@ external event for InitialState with CmdJoystick
 output event for SendJoystickCommand
 <%
 	output.add(outCmdJoystick, sendCommand);		
+%>!
+
+external event for MeasureFeedbackRoll with FeedbackRoll
+<%
+	measureFeedback = (FeedbackRoll)messageList.get(0).getData();
+	output.add(outFeedbackRoll, measureFeedback);
+%>!
+
+output event for MeasureFeedbackRoll
+<%
+	output.add(outLeftSound, new Sound("OFF"));
+	output.add(outRightSound, new Sound("OFF"));		
 %>!

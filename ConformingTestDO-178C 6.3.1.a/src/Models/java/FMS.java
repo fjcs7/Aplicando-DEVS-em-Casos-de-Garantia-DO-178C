@@ -2,7 +2,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/FMS.dnl
-868297533
+1491314372
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -31,6 +31,7 @@ import com.ms4systems.devs.simviewer.standalone.SimViewer;
 //ID:LIB:0
 
 	import Models.utils.CmdJoystick;
+	import Models.utils.rollModes.FeedbackRoll;
 
 //ENDID
 // End custom library code
@@ -48,6 +49,11 @@ public class FMS extends AtomicModelImpl
 //ID:SVAR:0
 private static final int ID_SENDCOMMAND = 0;
 protected CmdJoystick sendCommand
+;
+//ENDID
+//ID:SVAR:1
+private static final int ID_MEASUREFEEDBACK = 1;
+protected FeedbackRoll measureFeedback
 ;
 //ENDID
     String phase = "InitialState";
@@ -123,6 +129,7 @@ public FMS(){ this("FMS"); }
         //ID:INIT
         
 	sendCommand = new CmdJoystick();
+	measureFeedback = new FeedbackRoll();
 
         //ENDID
         // End initialize variables
@@ -143,6 +150,15 @@ public FMS(){ this("FMS"); }
 		    getSimulator().modelMessage("Internal transition from SendJoystickCommand");
 		     
 			//ID:TRA:SendJoystickCommand
+			passivateIn("InitialState");
+			//ENDID
+			
+		    return;
+		}
+		if (phaseIs("MeasureFeedbackRoll")) {
+		    getSimulator().modelMessage("Internal transition from MeasureFeedbackRoll");
+		     
+			//ID:TRA:MeasureFeedbackRoll
 			passivateIn("InitialState");
 			//ENDID
 			
@@ -189,8 +205,22 @@ public FMS(){ this("FMS"); }
 					                        
 					return;
 				}
+				if (input.hasMessages(inFeedbackRoll)){
+					ArrayList<Message<FeedbackRoll>> messageList = inFeedbackRoll.getMessages(input);
+                    
+					holdIn("MeasureFeedbackRoll",0.0);
+					
+					
+					                        
+					return;
+				}
 			}
 
+
+			if (phaseIs("MeasureFeedbackRoll")) {
+                 
+			     
+			}
 
 
         
@@ -224,6 +254,16 @@ public FMS(){ this("FMS"); }
 //ID:OUT:SendJoystickCommand
 
 	output.add(outCmdJoystick, sendCommand);		
+
+//ENDID
+// End output event code
+		}
+		if (phaseIs("MeasureFeedbackRoll")) {
+// Output event code
+//ID:OUT:MeasureFeedbackRoll
+
+	output.add(outLeftSound, new Sound("OFF"));
+	output.add(outRightSound, new Sound("OFF"));		
 
 //ENDID
 // End output event code
@@ -290,22 +330,33 @@ public FMS(){ this("FMS"); }
     
 	     
     // End getter/setter for sendCommand
+    
+   // Getter/setter for measureFeedback
+    public void setMeasureFeedback(FeedbackRoll measureFeedback) {
+        propertyChangeSupport.firePropertyChange("measureFeedback", this.measureFeedback,this.measureFeedback = measureFeedback);
+    }
+    public FeedbackRoll getMeasureFeedback() {
+        return this.measureFeedback;
+    }
+    
+	     
+    // End getter/setter for measureFeedback
  
     // State variables
     public String[] getStateVariableNames() {
          return new String[] {
-            "sendCommand"
+            "sendCommand","measureFeedback"
         };
     };
     public Object[] getStateVariableValues() {
          return new Object[] {
-            sendCommand
+            sendCommand,measureFeedback
         };
     };
     
     public Class<?>[] getStateVariableTypes() {
     	return new Class<?>[] {
-    		CmdJoystick.class
+    		CmdJoystick.class,FeedbackRoll.class
     	};
     }
     
@@ -315,6 +366,10 @@ public FMS(){ this("FMS"); }
     		
     		case ID_SENDCOMMAND:
 			    setSendCommand((CmdJoystick)value);
+    			return;
+			
+    		case ID_MEASUREFEEDBACK:
+			    setMeasureFeedback((FeedbackRoll)value);
     			return;
 			
 			default:
@@ -389,7 +444,7 @@ public FMS(){ this("FMS"); }
     }
     public String[] getPhaseNames() {
         return new String[] {
-            "InitialState","SendJoystickCommand"
+            "InitialState","SendJoystickCommand","MeasureFeedbackRoll"
         };
     }
  

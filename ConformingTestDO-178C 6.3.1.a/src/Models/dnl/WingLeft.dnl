@@ -1,13 +1,14 @@
 add library
 <%
 	import Models.utils.ExecutedCmd;
+	import Models.utils.types.*;
+	import Models.utils.types.YawAngle;
 %>!
 
+A YawAngle has a value!
+the range of YawAngle's value is YawAngle!
 A ExecutedCmd has a value!
 the range of ExecutedCmd's value is ExecutedCmd!
-
-A YawAngleLeft has a value!
-the range of YawAngleLeft's value is Double!
 A AngleLeft has a value!
 the range of AngleLeft's value is Double!
 A AngleExecution has a value!
@@ -16,16 +17,16 @@ the range of AngleExecution's value is Double!
 accepts input on AngleLeft !
 accepts input on ExecutedCmd !
 
-generates output on YawAngleLeft !
+generates output on YawAngle !
 generates output on AngleExecution !
 
 use receivedCmdAngle with type AngleExecution!
-use angleActualMeasure with type YawAngleLeft!
+use angleActualMeasure with type YawAngle!
 
 Initialize variables
 <%
 	receivedCmdAngle = new AngleExecution(0.0);
-	angleActualMeasure = new YawAngleLeft(0.0);
+	angleActualMeasure = new YawAngle(EnumWingSide.LEFT,0.0);
 %>!
 
 to start passivate in InitialState!
@@ -37,7 +38,7 @@ after SendYawAngleLeft output AngleExecution!
 from SendYawAngleLeft go to InitialState!
 
 hold in SendActualAngleLeft for time 0!
-after SendActualAngleLeft output AngleExecution!
+after SendActualAngleLeft output YawAngle!
 from SendActualAngleLeft go to InitialState!
 
 external event for InitialState with AngleLeft
@@ -55,11 +56,11 @@ external event for InitialState with ExecutedCmd
 <%
 	ExecutedCmd cmd = (ExecutedCmd)messageList.get(0).getData();
 	if(cmd.isExecuted()){
-		angleActualMeasure = new YawAngleLeft(angleActualMeasure.getValue() + cmd.getExecAngle());
+		angleActualMeasure.addAngleYaw(cmd.getExecAngle());
 	}
 %>!
 
 output event for SendActualAngleLeft
 <%
-	output.add(outYawAngleLeft, angleActualMeasure);		
+	output.add(outYawAngle, angleActualMeasure);		
 %>!

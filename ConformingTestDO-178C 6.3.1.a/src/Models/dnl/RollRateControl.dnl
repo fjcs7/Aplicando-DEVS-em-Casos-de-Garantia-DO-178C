@@ -1,35 +1,39 @@
 add Library
 <%
 	import Models.utils.CmdJoystick;
+	import Models.utils.rollModes.*;
+	import Models.utils.rollModes.FeedbackRoll;
+	import Models.utils.types.YawAngle;
 %>!
 
+A YawAngle has a value!
+the range of YawAngle's value is YawAngle!
 A CmdJoystick has a value!
 the range of CmdJoystick's value is CmdJoystick!
+A FeedbackRoll has a value!
+the range of FeedbackRoll's value is FeedbackRoll!
 A AngleRight has a value!
 the range of AngleRight's value is Double!
 A AngleLeft has a value!
 the range of AngleLeft's value is Double!
-A FeedbackRoll has a value!
-the range of FeedbackRoll's value is integer!
-A YawAngleLeft has a Double!
-the range of YawAngleLeft's value is Double!
-A YawAngleRight has a Double!
-the range of YawAngleRight's value is Double!
 
 use measureCommand with type CmdJoystick!
 use sendAngleLeft with type AngleLeft!
 use sendAngleRight with type AngleRight!
+use measureYawAngleLeft with type Double!
+use measureYawAngleRight with type Double!
 
 Initialize variables
 <%
 	measureCommand = new CmdJoystick();
 	sendAngleLeft  = new AngleLeft(0.0);
 	sendAngleRight = new AngleRight(0.0);
+	measureYawAngleLeft = 0.0;
+	measureYawAngleRight = 0.0;
 %>!
 
 accepts input on CmdJoystick with type CmdJoystick!
-accepts input on YawAngleLeft with type YawAngleLeft!
-accepts input on YawAngleRight with type YawAngleRight!
+accepts input on YawAngle with type YawAngle!
 
 generates output on FeedbackRoll with type FeedbackRoll!
 generates output on AngleLeft with type AngleLeft!
@@ -37,11 +41,16 @@ generates output on AngleRight with type AngleRight!
 
 to start passivate in InitialState!
 when in InitialState and receive CmdJoystick go to SendJoystickCommand!
+when in InitialState and receive YawAngle go to SendFeedbackRoll!
 
 hold in SendJoystickCommand for time 0.0!
 after SendJoystickCommand output AngleLeft!
 after SendJoystickCommand output AngleRight!
 from SendJoystickCommand go to InitialState!
+
+hold in SendFeedbackRoll for time 0.0!
+after SendFeedbackRoll output FeedbackRoll!
+from SendFeedbackRoll go to InitialState!
 
 external event for InitialState with CmdJoystick
 <%
@@ -54,6 +63,30 @@ output event for SendJoystickCommand
 <%
 	output.add(outAngleLeft, sendAngleLeft);
 	output.add(outAngleRight, sendAngleRight);		
+%>!
+
+external event for InitialState with YawAngle
+<%
+	for(Message<YawAngle> msg : messageList){
+		YawAngle yaw = (YawAngle)msg.getData();
+		switch (yaw.getSide()) {
+			case LEFT:
+				measureYawAngleLeft = yaw.getAngleYaw();
+				break;
+			case RIGHT:
+				measureYawAngleRight = yaw.getAngleYaw();
+				break;
+		}
+	}
+%>!
+
+output event for SendFeedbackRoll
+<%
+    System.out.println("SendFeedbackRoll: measureYawAngleLeft = " + measureYawAngleLeft);
+    System.out.println("SendFeedbackRoll: measureYawAngleRight = " + measureYawAngleRight);
+    
+    output.add(outFeedbackRoll, measureYawRollRate(measureYawAngleLeft,
+    											   measureYawAngleRight));	
 %>!
 
 add additional code
@@ -75,4 +108,12 @@ add additional code
 		
 		return _return;
 	}
-%>! 
+	
+	private FeedbackRoll measureYawRollRate(Double left, Double right){
+		return FeedbackRoll.calcFeedbackRoll(left, right);
+	}
+	
+	private void mesureAnglesYawForFeedback(){
+
+	} 
+%>!
