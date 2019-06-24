@@ -30,9 +30,9 @@ import com.ms4systems.devs.simviewer.standalone.SimViewer;
 
 // Custom library code
 //ID:LIB:0
-import Models.utils.CmdJoystick;
 import Models.utils.rollModes.*;
 import Models.utils.rollModes.FeedbackRoll;
+import Models.utils.types.CmdJoystick;
 import Models.utils.types.YawAngle;
 
 //ENDID

@@ -1,6 +1,7 @@
-package Models.utils;
+package Models.utils.types;
 
 import java.io.Serializable;
+
 
 public class CmdJoystick implements Serializable{
 

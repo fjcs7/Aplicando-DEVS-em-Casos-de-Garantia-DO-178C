@@ -3,6 +3,10 @@ package Models.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import Models.utils.files.ReadFiles;
+import Models.utils.files.WriteFiles;
+import Models.utils.types.CmdJoystick;
+
 public class ExampleArchiveGenerator {
 
 	/**

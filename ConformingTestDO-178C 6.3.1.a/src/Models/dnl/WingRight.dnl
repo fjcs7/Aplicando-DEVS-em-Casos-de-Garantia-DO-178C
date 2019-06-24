@@ -1,7 +1,7 @@
 add library
 <%
-	import Models.utils.ExecutedCmd;
 	import Models.utils.types.*;
+	import Models.utils.types.ExecutedCmd;
 	import Models.utils.types.YawAngle;
 %>!
 

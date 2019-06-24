@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/WingRight.dnl
-1572369693
+-2043971786
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -30,8 +30,8 @@ import com.ms4systems.devs.simviewer.standalone.SimViewer;
 
 // Custom library code
 //ID:LIB:0
-import Models.utils.ExecutedCmd;
 import Models.utils.types.*;
+import Models.utils.types.ExecutedCmd;
 import Models.utils.types.YawAngle;
 
 //ENDID

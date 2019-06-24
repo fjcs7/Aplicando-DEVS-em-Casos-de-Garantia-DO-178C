@@ -17,7 +17,6 @@ import java.net.URISyntaxException;
 // Custom library code
 //ID:LIB:0
 import java.util.*;
-import java.util.ArrayList;
 
 import com.ms4systems.devs.core.message.Message;
 import com.ms4systems.devs.core.message.MessageBag;
@@ -31,9 +30,9 @@ import com.ms4systems.devs.extensions.StateVariableBased;
 import com.ms4systems.devs.helpers.impl.SimulationOptionsImpl;
 import com.ms4systems.devs.simviewer.standalone.SimViewer;
 
-import Models.utils.CmdJoystick;
-import Models.utils.ReadFiles;
+import Models.utils.files.ReadFiles;
 import Models.utils.rollModes.FeedbackRoll;
+import Models.utils.types.CmdJoystick;
 
 //ENDID
 // End custom library code

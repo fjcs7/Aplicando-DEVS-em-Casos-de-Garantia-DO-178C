@@ -30,7 +30,7 @@ import com.ms4systems.devs.simviewer.standalone.SimViewer;
 // Custom library code
 //ID:LIB:0
 
-	import Models.utils.CmdJoystick;
+import Models.utils.types.CmdJoystick;
 
 //ENDID
 // End custom library code
