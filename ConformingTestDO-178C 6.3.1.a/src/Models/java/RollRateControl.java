@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/RollRateControl.dnl
-1508577203
+766822582
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -28,11 +28,12 @@ import com.ms4systems.devs.extensions.StateVariableBased;
 import com.ms4systems.devs.helpers.impl.SimulationOptionsImpl;
 import com.ms4systems.devs.simviewer.standalone.SimViewer;
 
-// Custom library code
-//ID:LIB:0
 import Models.utils.rollModes.*;
 import Models.utils.rollModes.FeedbackRoll;
 import Models.utils.types.CmdJoystick;
+
+// Custom library code
+//ID:LIB:0
 import Models.utils.types.YawAngle;
 
 //ENDID

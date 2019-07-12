@@ -2,8 +2,8 @@ add library
 <%
 	import java.util.*;
 	import Models.utils.rollModes.FeedbackRoll;
-	import Models.utils.CmdJoystick;
-	import Models.utils.ReadFiles;
+	import Models.utils.types.CmdJoystick;
+	import Models.utils.files.ReadFiles;
 %>!
 
 A CmdJoystick has a value!

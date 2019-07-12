@@ -1,6 +1,6 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
-platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/Pilot.dnl
+platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/RollRateControl.dnl
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -10,21 +10,21 @@ public class CmdJoystick implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //ID:VAR:CmdJoystick:0
-    String value;
+    Double value;
 
     //ENDIF
     public CmdJoystick() {
     }
 
-    public CmdJoystick(String value) {
+    public CmdJoystick(Double value) {
         this.value = value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 
-    public String getValue() {
+    public Double getValue() {
         return this.value;
     }
 

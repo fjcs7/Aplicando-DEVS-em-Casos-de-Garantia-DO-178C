@@ -1,6 +1,6 @@
 add library
 <%
-	import Models.utils.ExecutedCmd;
+	import Models.utils.types.ExecutedCmd;
 %>!
 
 A ExecutedCmd has a value!

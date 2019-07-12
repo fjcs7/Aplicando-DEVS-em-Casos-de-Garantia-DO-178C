@@ -1,6 +1,6 @@
 add Library
 <%
-	import Models.utils.CmdJoystick;
+	import Models.utils.types.CmdJoystick;
 	import Models.utils.rollModes.FeedbackRoll;
 %>!
 

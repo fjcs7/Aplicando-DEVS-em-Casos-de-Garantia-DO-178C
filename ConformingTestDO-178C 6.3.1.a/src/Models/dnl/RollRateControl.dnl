@@ -1,9 +1,9 @@
 add Library
 <%
-	import Models.utils.CmdJoystick;
+	import Models.utils.types.YawAngle;
+	import Models.utils.types.CmdJoystick;
 	import Models.utils.rollModes.*;
 	import Models.utils.rollModes.FeedbackRoll;
-	import Models.utils.types.YawAngle;
 %>!
 
 A YawAngle has a value!

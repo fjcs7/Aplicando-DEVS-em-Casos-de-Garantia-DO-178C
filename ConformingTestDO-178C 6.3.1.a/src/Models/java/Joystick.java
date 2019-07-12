@@ -2,7 +2,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/Joystick.dnl
--1996310013
+-344933496
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -30,7 +30,7 @@ import com.ms4systems.devs.simviewer.standalone.SimViewer;
 // Custom library code
 //ID:LIB:0
 
-import Models.utils.types.CmdJoystick;
+	import Models.utils.types.CmdJoystick;
 
 //ENDID
 // End custom library code
