@@ -13,17 +13,10 @@ the range of FeedbackRoll's value is FeedbackRoll!
 A CmdOnOff has a value!
 the range of CmdOnOff's value is Boolean!
 
-A Sound has a value!
-the range of Sound's value is String!
-
 use sendCommand with type CmdJoystick and default "new CmdJoystick()"!
-//use archive with type ReadFiles!
 use index with type int and default "0"!
 use listText with type List<String>!
-//use commands with type String[]
 
-accepts input on RightSound with type Sound!
-accepts input on LeftSound with type Sound! 
 accepts input on FeedbackRoll with type FeedbackRoll!
  
 generates output on CmdJoystick with type CmdJoystick!

@@ -5,6 +5,7 @@ import java.util.List;
 
 import Models.utils.files.ReadFiles;
 import Models.utils.files.WriteFiles;
+import Models.utils.rollModes.FeedbackRoll;
 import Models.utils.types.CmdJoystick;
 
 public class ExampleArchiveGenerator {
@@ -13,8 +14,13 @@ public class ExampleArchiveGenerator {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		GererateArchSample();
+		//GererateArchSample();
 		//TesteArchSample();
+		FeedbackRoll fb = FeedbackRoll.calcFeedbackRoll(0.0, 0.0);
+		System.out.println(fb.getRollMode().toString());
+		System.out.println(fb.getRollRate().toString());
+		System.out.println(fb.getRollWarning().toString());
+		System.out.println(fb.toString());
 	}
 	public static void TesteArchSample(){
 		ReadFiles archive = new ReadFiles("PilotCommands.txt");

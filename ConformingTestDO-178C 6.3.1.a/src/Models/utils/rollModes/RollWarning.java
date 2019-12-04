@@ -4,30 +4,38 @@ import java.io.Serializable;
 
 public class RollWarning implements Serializable{
 	private static final long serialVersionUID = 1657296958165280096L;
-	private Double rollRate;
-	private EnumDirectionalWarning dirWarning;
+	private RollRate rollRate;
+	private RollRateWarning kRollRateWarning;
 	
 	public RollWarning(){
-		this.rollRate = 0.0;
-		this.dirWarning = EnumDirectionalWarning.NOTHING;
+		this.rollRate = new RollRate();
+		this.kRollRateWarning = new RollRateWarning();
 	}
 	
-	public RollWarning(Double rollRate){
+	public RollWarning(RollRate rollRate){
+		this();
 		this.rollRate = rollRate;
-		this.dirWarning = EnumDirectionalWarning.NOTHING;
 	}
 	
-	public Double getRollRate() {
+	public RollWarning(Double yawAngleLeft, Double yawAngleRight){
+		this();
+		this.rollRate = new RollRate(yawAngleLeft,yawAngleRight);
+	}
+	
+	public RollRate getRollRate() {
 		return rollRate;
 	}
-	public void setRollRate(Double rollRate) {
+
+	public void setRollRate(RollRate rollRate) {
 		this.rollRate = rollRate;
 	}
-	public EnumDirectionalWarning getDirWarning() {
-		return dirWarning;
+	
+	public void setkRollRateWarning(RollRateWarning kRollRateWarning) {
+		this.kRollRateWarning = kRollRateWarning;
 	}
-	public void setDirWarning(EnumDirectionalWarning dirWarning) {
-		this.dirWarning = dirWarning;
+
+	public RollRateWarning getkRollRateWarning() {
+		return kRollRateWarning;
 	}
 	
     @Override
@@ -35,8 +43,8 @@ public class RollWarning implements Serializable{
         return new StringBuffer("RollWarning")
         				.append("\n\trollRate: ")
         				.append(this.rollRate.toString())
-        				.append("\n\texecAngle: ")
-        				.append(this.dirWarning.toString())
+        				.append("\n\tkRollRateWarning: ")
+        				.append(this.kRollRateWarning.toString())
         				.toString();
     }
 	

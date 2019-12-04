@@ -54,15 +54,15 @@ from SendFeedbackRoll go to InitialState!
 
 external event for InitialState with CmdJoystick
 <%
-	measureCommand = (CmdJoystick)messageList.get(0).getData();
-	sendAngleLeft = new AngleLeft(angleLeftMesure(measureCommand));
-	sendAngleRight = new AngleRight(angleRightMesure(measureCommand));
+	measureCommand = MesureExecuteAngles((CmdJoystick)messageList.get(0).getData());
+	sendAngleLeft = new AngleLeft(measureCommand.getLeft());
+	sendAngleRight = new AngleRight(measureCommand.getRigth());
 %>!
 
 output event for SendJoystickCommand
 <%
 	output.add(outAngleLeft, sendAngleLeft);
-	output.add(outAngleRight, sendAngleRight);		
+	output.add(outAngleRight, sendAngleRight);
 %>!
 
 external event for InitialState with YawAngle
@@ -82,38 +82,26 @@ external event for InitialState with YawAngle
 
 output event for SendFeedbackRoll
 <%
-    System.out.println("SendFeedbackRoll: measureYawAngleLeft = " + measureYawAngleLeft);
-    System.out.println("SendFeedbackRoll: measureYawAngleRight = " + measureYawAngleRight);
-    
     output.add(outFeedbackRoll, measureYawRollRate(measureYawAngleLeft,
-    											   measureYawAngleRight));	
+    											   measureYawAngleRight));		
 %>!
 
 add additional code
 <%
-	private Double angleLeftMesure(CmdJoystick cmd){
+
+	private CmdJoystick MesureExecuteAngles(CmdJoystick cmd){
 		
-		Double _return = 0.0;
-		_return += cmd.getLeft();
-		_return += ((-1) *cmd.getRigth());
+		if(cmd.getRigth()>cmd.getLeft()){
+			cmd.setLeft(cmd.getLeft() - cmd.getRigth());
+		} else {
+			cmd.setRigth(cmd.getRigth() - cmd.getLeft());
+		}
 		
-		return _return;
-	}
-	
-	private Double angleRightMesure(CmdJoystick cmd){
-		
-		Double _return = 0.0;
-		_return += cmd.getRigth();
-		_return += ((-1) *cmd.getLeft());
-		
-		return _return;
+		return cmd;
 	}
 	
 	private FeedbackRoll measureYawRollRate(Double left, Double right){
 		return FeedbackRoll.calcFeedbackRoll(left, right);
 	}
 	
-	private void mesureAnglesYawForFeedback(){
-
-	} 
 %>!

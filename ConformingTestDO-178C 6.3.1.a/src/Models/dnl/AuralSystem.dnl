@@ -1,0 +1,34 @@
+add Library
+<%
+	import Models.utils.rollModes.FeedbackRoll;
+%>!
+
+A FeedbackRoll has a value!
+the range of FeedbackRoll's value is FeedbackRoll!
+
+accepts input on FeedbackRoll with type FeedbackRoll!
+generates output on FeedbackRoll with type FeedbackRoll!
+
+use measureFeedback with type FeedbackRoll!
+Initialize variables
+<%
+	measureFeedback = new FeedbackRoll();
+%>!
+
+to start passivate in WaitFeedbackCommand!
+when in WaitFeedbackCommand and receive FeedbackRoll go to SendFeedback!
+
+hold in SendFeedback for time 0!
+after SendFeedback output FeedbackRoll!
+from SendFeedback go to WaitFeedbackCommand!
+
+external event for WaitFeedbackCommand with FeedbackRoll
+<%
+	measureFeedback = (FeedbackRoll)messageList.get(0).getData();
+%>!
+
+output event for SendFeedback
+<%
+	output.add(outFeedbackRoll, measureFeedback);
+%>!
+

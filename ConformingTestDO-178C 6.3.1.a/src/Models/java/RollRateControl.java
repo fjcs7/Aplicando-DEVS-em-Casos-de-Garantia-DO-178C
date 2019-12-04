@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/RollRateControl.dnl
-766822582
+785829252
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -193,9 +193,10 @@ public class RollRateControl extends AtomicModelImpl implements PhaseBased,
                 holdIn("SendJoystickCommand", 0.0);
                 // Fire state and port specific external transition functions
                 //ID:EXT:InitialState:inCmdJoystick
-                measureCommand = (CmdJoystick) messageList.get(0).getData();
-                sendAngleLeft = new AngleLeft(angleLeftMesure(measureCommand));
-                sendAngleRight = new AngleRight(angleRightMesure(measureCommand));
+                measureCommand = MesureExecuteAngles((CmdJoystick) messageList.get(
+                            0).getData());
+                sendAngleLeft = new AngleLeft(measureCommand.getLeft());
+                sendAngleRight = new AngleRight(measureCommand.getRigth());
 
                 //ENDID
                 // End external event code
@@ -258,11 +259,6 @@ public class RollRateControl extends AtomicModelImpl implements PhaseBased,
         if (phaseIs("SendFeedbackRoll")) {
             // Output event code
             //ID:OUT:SendFeedbackRoll
-            System.out.println("SendFeedbackRoll: measureYawAngleLeft = " +
-                measureYawAngleLeft);
-            System.out.println("SendFeedbackRoll: measureYawAngleRight = " +
-                measureYawAngleRight);
-
             output.add(outFeedbackRoll,
                 measureYawRollRate(measureYawAngleLeft, measureYawAngleRight));
 
@@ -275,27 +271,18 @@ public class RollRateControl extends AtomicModelImpl implements PhaseBased,
     // Custom function definitions
 
     //ID:CUST:0
-    private Double angleLeftMesure(CmdJoystick cmd) {
-        Double _return = 0.0;
-        _return += cmd.getLeft();
-        _return += ((-1) * cmd.getRigth());
+    private CmdJoystick MesureExecuteAngles(CmdJoystick cmd) {
+        if (cmd.getRigth() > cmd.getLeft()) {
+            cmd.setLeft(cmd.getLeft() - cmd.getRigth());
+        } else {
+            cmd.setRigth(cmd.getRigth() - cmd.getLeft());
+        }
 
-        return _return;
-    }
-
-    private Double angleRightMesure(CmdJoystick cmd) {
-        Double _return = 0.0;
-        _return += cmd.getRigth();
-        _return += ((-1) * cmd.getLeft());
-
-        return _return;
+        return cmd;
     }
 
     private FeedbackRoll measureYawRollRate(Double left, Double right) {
         return FeedbackRoll.calcFeedbackRoll(left, right);
-    }
-
-    private void mesureAnglesYawForFeedback() {
     }
 
     //ENDID

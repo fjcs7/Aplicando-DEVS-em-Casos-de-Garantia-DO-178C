@@ -2,7 +2,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/ServingAileronLeft.dnl
--466710277
+-45317759
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -216,6 +216,7 @@ public ServingAileronLeft(){ this("ServingAileronLeft"); }
 // Output event code
 //ID:OUT:ExecuteReceivedCommand
 
+	System.out.println("Value ExecutedCmd: " + sendCommand);
 	output.add(outExecutedCmd, sendCommand);		
 
 //ENDID

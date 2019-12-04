@@ -6,25 +6,32 @@ public class FeedbackRoll implements Serializable{
 
 	private static final long serialVersionUID = -1211103354384705295L;
 	private RollWarning rollWarning;
-	private String rollMode;
-	private Double rollRate;
-	private Boolean rollProblemn;
+	private RollMode rollMode;
+	private RollRate rollRate;
 
 	public FeedbackRoll(){
 		this.rollWarning = new RollWarning();
-		this.rollMode = "";
-		this.rollRate = 0.0;
-		this.rollProblemn = false;
+		this.rollMode = new RollMode();
+		this.rollRate = new RollRate();
 	}
 	
-	/*
-	 * This function is reserved for future implementation of adverse yaw roll.
-	 */
+	public FeedbackRoll(Double yawAngleLeft, Double yawAngleRight){
+		this.rollRate = new RollRate(yawAngleLeft,yawAngleRight);
+		this.rollWarning = new RollWarning(this.rollRate);
+		this.rollMode = new RollMode(this.rollRate);
+	}
+	
 	public static FeedbackRoll calcFeedbackRoll(Double leftYawAngle, Double rightYawAngle){
-		FeedbackRoll fb = new FeedbackRoll(); 
-		fb.setRollWarning(new RollWarning(fb.getRollRate()));
-		fb.setRollProblemn(false);
+		FeedbackRoll fb = new FeedbackRoll(leftYawAngle,rightYawAngle);
 		return fb;
+	}
+	
+	public RollRate getRollRate() {
+		return rollRate;
+	}
+
+	public void setRollRate(RollRate rollRate) {
+		this.rollRate = rollRate;
 	}
 	
 	public RollWarning getRollWarning() {
@@ -33,23 +40,11 @@ public class FeedbackRoll implements Serializable{
 	public void setRollWarning(RollWarning rollWarning) {
 		this.rollWarning = rollWarning;
 	}
-	public String getRollMode() {
+	public RollMode getRollMode() {
 		return rollMode;
 	}
-	public void setRollMode(String rollMode) {
+	public void setRollMode(RollMode rollMode) {
 		this.rollMode = rollMode;
-	}
-	public Double getRollRate() {
-		return rollRate;
-	}
-	public void setRollRate(Double rollRate) {
-		this.rollRate = rollRate;
-	}
-	public Boolean isRollProblemn() {
-		return rollProblemn;
-	}
-	public void setRollProblemn(Boolean rollProblemn) {
-		this.rollProblemn = rollProblemn;
 	}
 	
     @Override
@@ -61,8 +56,6 @@ public class FeedbackRoll implements Serializable{
         				.append(this.rollMode.toString())
         				.append("\n\trollWarning: ")
         				.append(this.rollWarning.toString())
-        				.append("\n\trollProblemn: ")
-        				.append(this.rollProblemn.toString())
         				.toString();
     }
 	

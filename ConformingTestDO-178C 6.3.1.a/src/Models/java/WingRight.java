@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/WingRight.dnl
--2043971786
+1128148491
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -186,7 +186,7 @@ public class WingRight extends AtomicModelImpl implements PhaseBased,
                 //ID:EXT:InitialState:inExecutedCmd
                 ExecutedCmd cmd = (ExecutedCmd) messageList.get(0).getData();
                 if (cmd.isExecuted()) {
-                    angleActualMeasure.addAngleYaw(cmd.getExecAngle());
+                    angleActualMeasure.setAngleYaw(cmd.getExecAngle());
                 }
 
                 //ENDID

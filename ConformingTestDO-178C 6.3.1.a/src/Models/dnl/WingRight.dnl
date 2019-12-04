@@ -56,7 +56,7 @@ external event for InitialState with ExecutedCmd
 <%
 	ExecutedCmd cmd = (ExecutedCmd)messageList.get(0).getData();
 	if(cmd.isExecuted()){
-		angleActualMeasure.addAngleYaw(cmd.getExecAngle());
+		angleActualMeasure.setAngleYaw(cmd.getExecAngle());
 	}
 %>!
 

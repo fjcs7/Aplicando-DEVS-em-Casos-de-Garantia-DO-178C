@@ -1,6 +1,6 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
-platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/RollRateControl.dnl
+platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/FMS.dnl
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -10,21 +10,21 @@ public class FeedbackRoll implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //ID:VAR:FeedbackRoll:0
-    Double value;
+    Boolean value;
 
     //ENDIF
     public FeedbackRoll() {
     }
 
-    public FeedbackRoll(Double value) {
+    public FeedbackRoll(Boolean value) {
         this.value = value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(Boolean value) {
         this.value = value;
     }
 
-    public Double getValue() {
+    public Boolean isValue() {
         return this.value;
     }
 

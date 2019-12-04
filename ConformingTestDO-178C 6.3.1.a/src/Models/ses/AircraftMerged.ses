@@ -17,13 +17,10 @@ From the wings perspective, ServingAileronRight sends  outExecutedCmd to WingRig
 
 From the flightDeck perspective, FlightDeck is made of Joystick, FMS, AuralSystem, and Pilot!
 From the flightDeck perspective, Pilot sends  outCmdJoystick to Joystick as inCmdJoystick!
-From the flightDeck perspective, AuralSystem sends  outLeftSound to Pilot as inLeftSound!
-From the flightDeck perspective, FMS sends  outLeftSound to AuralSystem as inLeftSound!
 From the flightDeck perspective, Joystick sends  outCmdJoystick to FMS as inCmdJoystick!
 From the flightDeck perspective, Pilot sends  outCmdOnOff to FMS as inCmdOnOff!
 From the flightDeck perspective, FlightDeck sends  inFeedbackRoll to FMS as inFeedbackRoll!
-From the flightDeck perspective, FMS sends  outRightSound to AuralSystem as inRightSound!
-From the flightDeck perspective, FMS sends  outFeedbackRoll to Pilot as inFeedbackRoll!
+From the flightDeck perspective, FMS sends  outFeedbackRoll to AuralSystem as inFeedbackRoll!
+From the flightDeck perspective, AuralSystem sends  outFeedbackRoll to Pilot as inFeedbackRoll!
 From the flightDeck perspective, FMS sends  outCmdJoystick to FlightDeck as outCmdJoystick!
-From the flightDeck perspective, AuralSystem sends  outRightSound to Pilot as inRightSound!
 

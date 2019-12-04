@@ -35,15 +35,12 @@ public class FlightDeck extends CoupledModelImpl implements StateVariableBased{
 		AuralSystem AuralSystem = new AuralSystem();
 		addChildModel(AuralSystem);
 		addCoupling(Pilot.outCmdJoystick,Joystick.inCmdJoystick);
-		addCoupling(AuralSystem.outLeftSound,Pilot.inLeftSound);
-		addCoupling(FMS.outLeftSound,AuralSystem.inLeftSound);
 		addCoupling(Joystick.outCmdJoystick,FMS.inCmdJoystick);
 		addCoupling(Pilot.outCmdOnOff,FMS.inCmdOnOff);
 		addCoupling(this.inFeedbackRoll,FMS.inFeedbackRoll);
-		addCoupling(FMS.outRightSound,AuralSystem.inRightSound);
-		addCoupling(FMS.outFeedbackRoll,Pilot.inFeedbackRoll);
+		addCoupling(FMS.outFeedbackRoll,AuralSystem.inFeedbackRoll);
+		addCoupling(AuralSystem.outFeedbackRoll,Pilot.inFeedbackRoll);
 		addCoupling(FMS.outCmdJoystick,this.outCmdJoystick);
-		addCoupling(AuralSystem.outRightSound,Pilot.inRightSound);
 
 	}
     @Override

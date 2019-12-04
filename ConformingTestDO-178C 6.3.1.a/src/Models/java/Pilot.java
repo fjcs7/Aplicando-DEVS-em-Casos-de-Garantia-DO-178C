@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/Pilot.dnl
-493560482
+1936594642
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -70,18 +70,18 @@ public class Pilot extends AtomicModelImpl implements PhaseBased,
 
     // Input ports
     //ID:INP:0
-    public final Port<Sound> inRightSound =
-        addInputPort("inRightSound", Sound.class);
+    public final Port<FeedbackRoll> inFeedbackRoll =
+        addInputPort("inFeedbackRoll", FeedbackRoll.class);
 
     //ENDID
     //ID:INP:1
-    public final Port<Sound> inLeftSound =
-        addInputPort("inLeftSound", Sound.class);
+    public final Port<Serializable> inRightSound =
+        addInputPort("inRightSound", Serializable.class);
 
     //ENDID
     //ID:INP:2
-    public final Port<FeedbackRoll> inFeedbackRoll =
-        addInputPort("inFeedbackRoll", FeedbackRoll.class);
+    public final Port<Serializable> inLeftSound =
+        addInputPort("inLeftSound", Serializable.class);
 
     //ENDID
     // End input ports
@@ -211,7 +211,7 @@ public class Pilot extends AtomicModelImpl implements PhaseBased,
                 return;
             }
             if (input.hasMessages(inRightSound)) {
-                ArrayList<Message<Sound>> messageList =
+                ArrayList<Message<Serializable>> messageList =
                     inRightSound.getMessages(input);
 
                 holdIn("SendRightCorrectionCommand", 0.0);
@@ -219,7 +219,7 @@ public class Pilot extends AtomicModelImpl implements PhaseBased,
                 return;
             }
             if (input.hasMessages(inLeftSound)) {
-                ArrayList<Message<Sound>> messageList =
+                ArrayList<Message<Serializable>> messageList =
                     inLeftSound.getMessages(input);
 
                 holdIn("SendLeftCorrectionCommand", 0.0);

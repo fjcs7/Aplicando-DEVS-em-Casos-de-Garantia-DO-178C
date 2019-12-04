@@ -2,7 +2,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/FMS.dnl
-751649439
+-210561075
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -81,15 +81,9 @@ public final Port<CmdJoystick> inCmdJoystick = addInputPort("inCmdJoystick",CmdJ
     
     // Output ports
 //ID:OUTP:0
-public final Port<Sound> outRightSound = addOutputPort("outRightSound",Sound.class);
-//ENDID
-//ID:OUTP:1
-public final Port<Sound> outLeftSound = addOutputPort("outLeftSound",Sound.class);
-//ENDID
-//ID:OUTP:2
 public final Port<CmdJoystick> outCmdJoystick = addOutputPort("outCmdJoystick",CmdJoystick.class);
 //ENDID
-//ID:OUTP:3
+//ID:OUTP:1
 public final Port<FeedbackRoll> outFeedbackRoll = addOutputPort("outFeedbackRoll",FeedbackRoll.class);
 //ENDID
     // End output ports
@@ -209,6 +203,13 @@ public FMS(){ this("FMS"); }
 					ArrayList<Message<FeedbackRoll>> messageList = inFeedbackRoll.getMessages(input);
                     
 					holdIn("MeasureFeedbackRoll",0.0);
+					// Fire state and port specific external transition functions
+					//ID:EXT:InitialState:inFeedbackRoll
+					
+	measureFeedback = (FeedbackRoll)messageList.get(0).getData();
+
+					//ENDID
+					// End external event code
 					
 					
 					                        
@@ -217,10 +218,6 @@ public FMS(){ this("FMS"); }
 			}
 
 
-			if (phaseIs("MeasureFeedbackRoll")) {
-                 
-			     
-			}
 
 
         
@@ -262,10 +259,6 @@ public FMS(){ this("FMS"); }
 // Output event code
 //ID:OUT:MeasureFeedbackRoll
 
-	if (measureFeedback.isRollProblemn()){
-		output.add(outLeftSound, new Sound("OFF"));
-		output.add(outRightSound, new Sound("OFF"));
-	}
 	output.add(outFeedbackRoll, measureFeedback);		
 
 //ENDID
