@@ -101,7 +101,7 @@ add additional code
 	}
 	
 	private FeedbackRoll measureYawRollRate(Double left, Double right){
-		return FeedbackRoll.calcFeedbackRoll(left, right);
+		return FeedbackRoll.calcFeedbackRoll(left, right, false);
 	}
 	
 %>!

@@ -2,6 +2,7 @@ add Library
 <%
 	import Models.utils.types.CmdJoystick;
 	import Models.utils.rollModes.FeedbackRoll;
+	import Models.utils.rollModes.RollMode;
 %>!
 
 A CmdJoystick has a value!
@@ -13,11 +14,15 @@ the range of CmdOnOff's value is Boolean!
 
 use sendCommand with type CmdJoystick!
 use measureFeedback with type FeedbackRoll!
+use isTurnedOn with type Boolean!
+use rollMode with type RollMode!
 
 Initialize variables
 <%
 	sendCommand = new CmdJoystick();
 	measureFeedback = new FeedbackRoll();
+	isTurnedOn = false;
+	rollMode = new RollMode();
 %>!
 
 accepts input on FeedbackRoll with type FeedbackRoll!
@@ -28,8 +33,12 @@ generates output on CmdJoystick with type CmdJoystick!
 generates output on FeedbackRoll with type FeedbackRoll!
 
 to start passivate in InitialState!
+when in InitialState and receive CmdOnOff go to HandlingCmdOnOffReceived!
 when in InitialState and receive CmdJoystick go to SendJoystickCommand!
 when in InitialState and receive FeedbackRoll go to MeasureFeedbackRoll!
+
+hold in HandlingCmdOnOffReceived for time 0.0!
+from HandlingCmdOnOffReceived go to InitialState!
 
 hold in SendJoystickCommand for time 0.0!
 after SendJoystickCommand output CmdJoystick!
@@ -39,9 +48,15 @@ hold in MeasureFeedbackRoll for time 0.0!
 after MeasureFeedbackRoll output FeedbackRoll!
 from MeasureFeedbackRoll go to InitialState!
 
+external event for InitialState with CmdOnOff
+<%
+	isTurnedOn = ((CmdOnOff)messageList.get(0).getData()).isValue();
+	rollMode.setCmdFmsOnOff(isTurnedOn);
+%>!
+
 external event for InitialState with CmdJoystick
 <%
-	sendCommand = (CmdJoystick)messageList.get(0).getData();
+	sendCommand = rollMode.measureJoystickCommand((CmdJoystick)messageList.get(0).getData());
 %>!
 
 external event for InitialState with FeedbackRoll
@@ -56,5 +71,8 @@ output event for SendJoystickCommand
 
 output event for MeasureFeedbackRoll
 <%
+	measureFeedback.getRollMode().setCmdFmsOnOff(isTurnedOn);
+	rollMode = measureFeedback.getRollMode();
+	measureFeedback.getRollWarning().measureWarning();
 	output.add(outFeedbackRoll, measureFeedback);		
 %>!

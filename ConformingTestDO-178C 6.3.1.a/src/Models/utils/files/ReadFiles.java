@@ -1,6 +1,7 @@
 package Models.utils.files;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,15 +9,17 @@ import java.util.List;
 
 public class ReadFiles {
 	private String path = System.getProperty("user.dir")+"\\src\\Models\\txt";
+	private String fileName;
 	private BufferedReader br;
-
+	
 	public ReadFiles() {
 	}
 
-	public ReadFiles(String archiveName) {
-		this.path = this.path + '\\' + archiveName;
+	public ReadFiles(String fileName) {
+		this.fileName = fileName;
+		this.path = this.path + '\\' + this.fileName;
 	}
-
+	
 	public void ReadFile() {
 		try {
 			br = new BufferedReader(new FileReader(path));
@@ -24,10 +27,25 @@ public class ReadFiles {
 			System.out.println("ReadFile Error: " + e.getMessage());
 		}
 	}
+	
+	private void ReadPackageFile() {
+		File fl = new File(getClass().getResource("/Models/txt/"+this.fileName).getFile());
+		this.path = fl.getPath();
+		this.path = this.path.replace("/", "\\").replace("%20", " ");
+		this.ReadFile();
+	}
 
 	public List<String> ReadAllFileInList() {
-
 		this.ReadFile();
+		return gestStringList();
+	}
+	
+	public List<String> ReadAllFileInListFromPackage() {
+		this.ReadPackageFile();
+		return gestStringList();
+	}
+	
+	private List<String> gestStringList(){
 		List<String> listText = new ArrayList<String>();
 		try {
 			while (br.ready()) {
@@ -38,7 +56,6 @@ public class ReadFiles {
 		}
 		
 		return listText;
-
 	}
 
 	public String getNextRow() {

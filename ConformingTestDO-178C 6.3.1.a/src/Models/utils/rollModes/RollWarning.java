@@ -38,6 +38,19 @@ public class RollWarning implements Serializable{
 		return kRollRateWarning;
 	}
 	
+	public void measureWarning(){
+		Double yawAngleLeft = rollRate.getYawAngleLeft();
+		Double yawAngleRight = rollRate.getYawAngleRight();
+		
+		if(yawAngleLeft > 0.0 && yawAngleLeft == 15.0){
+			kRollRateWarning.setWarningLeft(true);
+		}
+		
+		if(yawAngleRight > 0.0 && yawAngleRight == 15.0){
+			kRollRateWarning.setWarningRight(true);
+		}
+	}
+	
     @Override
     public String toString() {
         return new StringBuffer("RollWarning")

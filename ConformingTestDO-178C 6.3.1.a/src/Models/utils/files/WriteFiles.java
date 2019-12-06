@@ -10,6 +10,14 @@ import java.util.Date;
 public class WriteFiles {
 	private String path = System.getProperty("user.dir")+"\\src\\Models\\txt";
 
+	public WriteFiles(){}
+	
+	public WriteFiles(String path, String name){
+		String timeName = new SimpleDateFormat("yyyy_MM_dd_hh_mm")
+										.format(new Date());
+		this.path = path  + '\\' + timeName + "_" + name;
+	}
+	
 	public void writeInLogFile(String value) {
 		String logTime = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS")
 										.format(new Date());
@@ -17,12 +25,12 @@ public class WriteFiles {
 								.append("  ")
 								.append(value).toString());
 	}
+	
 
 	public void writeInFile(String value) {
 		try {
 			File file = new File(path);
-			BufferedWriter writer = new BufferedWriter(new FileWriter(file,
-					true));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(file,true));
 			writer.write(value);
 			writer.newLine();
 			// Criando o conteúdo do arquivo

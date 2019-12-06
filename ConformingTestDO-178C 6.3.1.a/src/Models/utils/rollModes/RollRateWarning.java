@@ -25,6 +25,10 @@ public class RollRateWarning implements Serializable {
 	public void setWarningRight(boolean warningRight) {
 		this.warningRight = warningRight;
 	}
+	
+	public Boolean hasAnyWarning(){
+		return (warningLeft || warningRight);
+	}
     
 	@Override
     public String toString() {

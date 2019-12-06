@@ -1,9 +1,10 @@
 add library
 <%
-	import java.util.*;
+	import java.util.List;
 	import Models.utils.rollModes.FeedbackRoll;
 	import Models.utils.types.CmdJoystick;
 	import Models.utils.files.ReadFiles;
+	import Models.utils.files.WriteFiles;
 %>!
 
 A CmdJoystick has a value!
@@ -14,49 +15,62 @@ A CmdOnOff has a value!
 the range of CmdOnOff's value is Boolean!
 
 use sendCommand with type CmdJoystick and default "new CmdJoystick()"!
+use feedbackRollMeasure with type FeedbackRoll and default "new FeedbackRoll()"!
+use writeFile with type WriteFiles and default "new WriteFiles(\"c:\\\\TesteSimulator\",\"MeasureCommands.csv\")"!
 use index with type int and default "0"!
 use listText with type List<String>!
+use sendedCommand with type String!
 
 accepts input on FeedbackRoll with type FeedbackRoll!
  
 generates output on CmdJoystick with type CmdJoystick!
 generates output on CmdOnOff with type CmdOnOff!
 
+
 to start hold in InitialState for time 0.0!
-from InitialState go to SendNormalCommand!
+from InitialState go to SendOnOffFMSCommand!
+
+passivate in WaitFeedbackRoll!
+when in WaitFeedbackRoll and receive FeedbackRoll go to SendNormalCommand!
+
+hold in SendOnOffFMSCommand for time 0.0!
+after SendOnOffFMSCommand output CmdOnOff!
+from SendOnOffFMSCommand go to SendNormalCommand!
 
 hold in SendNormalCommand for time 0.0!
 after SendNormalCommand output FeedbackRoll!
 from SendNormalCommand go to WaitFeedbackRoll!
 
-passivate in WaitFeedbackRoll!
-when in WaitFeedbackRoll and receive FeedbackRoll go to SendNormalCommand!
-when in WaitFeedbackRoll and receive RightSound go to SendRightCorrectionCommand!
-when in WaitFeedbackRoll and receive LeftSound go to SendLeftCorrectionCommand!
-
-hold in SendRightCorrectionCommand for time 0.0!
-after SendRightCorrectionCommand output FeedbackRoll!
-from SendRightCorrectionCommand go to WaitFeedbackRoll!
-
-hold in SendLeftCorrectionCommand for time 0.0!
-after SendLeftCorrectionCommand output FeedbackRoll!
-from SendLeftCorrectionCommand go to WaitFeedbackRoll!
-
 internal event for InitialState
 <%
-	ReadFiles archive = new ReadFiles();
-	archive.setCompletPath("C:\\Users\\Fernando Junio\\git\\Simulacoes\\ConformingTestDO-178C 6.3.1.a\\PilotCommands.txt");
-	listText = archive.ReadAllFileInList();
+	ReadFiles archive = new ReadFiles("PilotCommands2.txt");
+	writeFile.writeInFile("s_Right;s_Left;s_Up;s_Down;s_hasWarning;m_Right;m_Left;m_Up;m_Down;m_hasWarning");
+	listText = archive.ReadAllFileInListFromPackage();
+%>!
+
+output event for SendOnOffFMSCommand
+<%
+	CmdOnOff cmdOnOffFms = new CmdOnOff(true);
+	output.add(outCmdOnOff, cmdOnOffFms);		
+%>!
+
+external event for WaitFeedbackRoll with FeedbackRoll
+<%
+	feedbackRollMeasure = (FeedbackRoll)messageList.get(0).getData();
+	writeFile.writeInFile(feedbackRollMeasure.measureExecutedRoll(sendedCommand));
+	index++;
 %>!
 
 output event for SendNormalCommand
-<%
-	
-	sendCommand = new CmdJoystick();
-
-	if(listText.size() >= index){
-		sendCommand = CmdJoystick.parseStringToCmdJoystick(listText.get(index));
-		index++;
-		output.add(outCmdJoystick, sendCommand);		
+<%	
+	if(listText.size() > index){
+		sendedCommand = listText.get(index);
+		sendCommand = CmdJoystick.parseStringToCmdJoystick(sendedCommand);
+		output.add(outCmdJoystick, sendCommand);	
+	} else {
+		if(options.isDisableViewer()){
+			getSimulator().getSimulation().stopSimulation();
+		}
 	}
+	
 %>!

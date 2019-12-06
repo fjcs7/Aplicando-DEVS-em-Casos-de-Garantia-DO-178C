@@ -16,7 +16,13 @@ public class CmdJoystick implements Serializable{
 		try {
 			for(String element : entrada.split(";")){
 				String direction = element.toUpperCase().split(":")[0];
-				Double angle = Double.parseDouble(element.toUpperCase().split(":")[1]);
+				Double angle = 0.0;
+				
+				if(direction.toUpperCase().trim().contains("ISPROBLEMN")){
+					continue;
+				}
+				
+				angle=Double.parseDouble(element.toUpperCase().split(":")[1]);
 				switch (JoystickDirections.valueOf(direction)) {
 					case RIGHT:
 						_return.setRigth(angle);
@@ -36,6 +42,40 @@ public class CmdJoystick implements Serializable{
 			System.out.println("Falha no parse. " + e);
 		}
 		return _return;
+	}
+	
+	public String parseStringToCmdJoystickMeasure(String entrada){
+		String strReturn = "";
+		try {
+			for(String element : entrada.split(";")){
+				String direction = element.toUpperCase().split(":")[0];
+				Double angle = 0.0;
+				
+				if(direction.toUpperCase().trim().contains("ISPROBLEMN")){
+					strReturn = element.toUpperCase().split(":")[1].toLowerCase();
+					continue;
+				}
+				
+				angle=Double.parseDouble(element.toUpperCase().split(":")[1]);
+				switch (JoystickDirections.valueOf(direction)) {
+					case RIGHT:
+						this.setRigth(angle);
+						break;
+					case LEFT:
+						this.setLeft(angle);
+						break;
+					case UP:
+						this.setUp(angle);
+						break;
+					case DOWN:
+						this.setDown(angle);
+						break;
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Falha no parse. " + e);
+		}
+		return strReturn;
 	}
 	
 	public double getRigth() {
@@ -87,6 +127,18 @@ public class CmdJoystick implements Serializable{
 			        	.append(this.up)
 			        	.append(";")
         				.append("Down:")
+			        	.append(this.down)
+			        	.toString();
+    }
+    
+    public String toStringForMeasure() {
+        return new StringBuffer()
+        				.append(this.rigth)
+        				.append(";")
+			        	.append(this.left)
+			        	.append(";")
+			        	.append(this.up)
+			        	.append(";")
 			        	.append(this.down)
 			        	.toString();
     }

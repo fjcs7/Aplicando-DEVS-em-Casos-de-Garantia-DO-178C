@@ -1,7 +1,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/RollRateControl.dnl
-785829252
+686489713
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -282,7 +282,7 @@ public class RollRateControl extends AtomicModelImpl implements PhaseBased,
     }
 
     private FeedbackRoll measureYawRollRate(Double left, Double right) {
-        return FeedbackRoll.calcFeedbackRoll(left, right);
+        return FeedbackRoll.calcFeedbackRoll(left, right, false);
     }
 
     //ENDID

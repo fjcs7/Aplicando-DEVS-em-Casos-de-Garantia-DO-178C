@@ -1,12 +1,11 @@
 package Models.utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import Models.utils.files.ReadFiles;
 import Models.utils.files.WriteFiles;
-import Models.utils.rollModes.FeedbackRoll;
 import Models.utils.types.CmdJoystick;
+import Models.utils.types.JoystickDirections;
 
 public class ExampleArchiveGenerator {
 
@@ -14,26 +13,22 @@ public class ExampleArchiveGenerator {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		//GererateArchSample();
+		GererateArchSample();
 		//TesteArchSample();
-		FeedbackRoll fb = FeedbackRoll.calcFeedbackRoll(0.0, 0.0);
-		System.out.println(fb.getRollMode().toString());
-		System.out.println(fb.getRollRate().toString());
-		System.out.println(fb.getRollWarning().toString());
-		System.out.println(fb.toString());
 	}
 	public static void TesteArchSample(){
-		ReadFiles archive = new ReadFiles("PilotCommands.txt");
-		archive.ReadFile();
-		List<String> listText = new ArrayList<String>();
+		ReadFiles archive = new ReadFiles("PilotCommands2.txt");
+		List<String> listText = archive.ReadAllFileInListFromPackage();
+		//listText = new ArrayList<String>();
 		
-		CmdJoystick cmdJoy = new CmdJoystick();
+		/*
 		while(archive.hasNextRow()){
 			if(archive.hasNextRow()){
 				listText.add(archive.getNextRow());
 			}
-		}
+		}*/
 		
+		CmdJoystick cmdJoy = new CmdJoystick();
 		for(String item : listText){
 			//System.out.println(item);
 			cmdJoy = CmdJoystick.parseStringToCmdJoystick(item);
@@ -48,37 +43,54 @@ public class ExampleArchiveGenerator {
 	}
 	
 	public static void GererateArchSample(){
+		generateAngles(20, 1, JoystickDirections.LEFT);
+		generateAngles(20, 1, JoystickDirections.RIGHT);
+		generateAngles(20, 2, JoystickDirections.LEFT);
+		generateAngles(20, 2, JoystickDirections.RIGHT);
+		generateAngles(20, 3, JoystickDirections.LEFT);
+		generateAngles(20, 3, JoystickDirections.RIGHT);
+		generateAngles(20, 4, JoystickDirections.LEFT);
+		generateAngles(20, 4, JoystickDirections.RIGHT);
+	}
+	
+	private static void generateAngles(int numberOfCommands, int numberOfProblems, JoystickDirections direction){
 		WriteFiles stimuliArch = new WriteFiles();
-		stimuliArch.setFileName("PilotCommands.txt");
+		stimuliArch.setFileName("PilotCommands2.txt");
+		int numberOfAgleProblemn = numberOfProblems;
+		int numberOfAgleProblemnGenerate = 0;
 		CmdJoystick cmdsForFile;
-		for(int leftCmd = 1; leftCmd <= 20; leftCmd++){
-			cmdsForFile = new CmdJoystick();
-			cmdsForFile.setLeft(leftCmd);
-			stimuliArch.writeInFile(cmdsForFile.toStringForExample());
-		}
-		
-		for(int rightCmd = 1; rightCmd <= 20; rightCmd++){
-			cmdsForFile = new CmdJoystick();
-			cmdsForFile.setRigth(rightCmd);
-			stimuliArch.writeInFile(cmdsForFile.toStringForExample());
-		}
-		
-		for(int rightCmd = 1; rightCmd <= 20; rightCmd++){
-			cmdsForFile = new CmdJoystick();
-			cmdsForFile.setRigth(rightCmd);
-			stimuliArch.writeInFile(cmdsForFile.toStringForExample());
-		}
-		
-		for(int leftCmd = 1; leftCmd <= 20; leftCmd++){
-			cmdsForFile = new CmdJoystick();
-			cmdsForFile.setLeft(leftCmd);
-			stimuliArch.writeInFile(cmdsForFile.toStringForExample());
-		}
-		
-		for(int leftCmd = 1; leftCmd <= 20; leftCmd++){
-			cmdsForFile = new CmdJoystick();
-			cmdsForFile.setLeft(leftCmd);
-			stimuliArch.writeInFile(cmdsForFile.toStringForExample());
+		for(int joyCmd = 1; joyCmd <= numberOfCommands; joyCmd++){
+			boolean isProblemn = false;
+			cmdsForFile = new CmdJoystick();			
+			switch (direction) {
+				case RIGHT:
+					cmdsForFile.setRigth(joyCmd);
+					break;
+				case LEFT:
+					cmdsForFile.setLeft(joyCmd);
+					break;
+				case DOWN:
+					cmdsForFile.setDown(joyCmd);
+					break;
+				case UP:
+					cmdsForFile.setUp(joyCmd);
+					break;
+			}
+			
+			if(joyCmd == 15){
+				if(numberOfAgleProblemnGenerate <= numberOfAgleProblemn){
+					if((numberOfAgleProblemnGenerate%2)==0){
+						isProblemn = true;
+					} 
+					
+					if(numberOfAgleProblemnGenerate < numberOfAgleProblemn){
+						joyCmd--;
+					}
+					numberOfAgleProblemnGenerate++;
+				}
+			}
+			
+			stimuliArch.writeInFile(cmdsForFile.toStringForExample()+";isProblemn:"+isProblemn);
 		}
 	}
 

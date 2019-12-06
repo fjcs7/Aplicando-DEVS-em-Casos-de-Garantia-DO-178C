@@ -2,7 +2,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/FMS.dnl
--210561075
+-160433617
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -32,6 +32,7 @@ import com.ms4systems.devs.simviewer.standalone.SimViewer;
 
 	import Models.utils.types.CmdJoystick;
 	import Models.utils.rollModes.FeedbackRoll;
+	import Models.utils.rollModes.RollMode;
 
 //ENDID
 // End custom library code
@@ -54,6 +55,16 @@ protected CmdJoystick sendCommand
 //ID:SVAR:1
 private static final int ID_MEASUREFEEDBACK = 1;
 protected FeedbackRoll measureFeedback
+;
+//ENDID
+//ID:SVAR:2
+private static final int ID_ISTURNEDON = 2;
+protected Boolean isTurnedOn
+;
+//ENDID
+//ID:SVAR:3
+private static final int ID_ROLLMODE = 3;
+protected RollMode rollMode
 ;
 //ENDID
     String phase = "InitialState";
@@ -124,6 +135,8 @@ public FMS(){ this("FMS"); }
         
 	sendCommand = new CmdJoystick();
 	measureFeedback = new FeedbackRoll();
+	isTurnedOn = false;
+	rollMode = new RollMode();
 
         //ENDID
         // End initialize variables
@@ -140,6 +153,15 @@ public FMS(){ this("FMS"); }
         
         
         
+		if (phaseIs("HandlingCmdOnOffReceived")) {
+		    getSimulator().modelMessage("Internal transition from HandlingCmdOnOffReceived");
+		     
+			//ID:TRA:HandlingCmdOnOffReceived
+			passivateIn("InitialState");
+			//ENDID
+			
+		    return;
+		}
 		if (phaseIs("SendJoystickCommand")) {
 		    getSimulator().modelMessage("Internal transition from SendJoystickCommand");
 		     
@@ -183,6 +205,23 @@ public FMS(){ this("FMS"); }
 			if (phaseIs("InitialState")) {
                  
 			     
+				if (input.hasMessages(inCmdOnOff)){
+					ArrayList<Message<CmdOnOff>> messageList = inCmdOnOff.getMessages(input);
+                    
+					holdIn("HandlingCmdOnOffReceived",0.0);
+					// Fire state and port specific external transition functions
+					//ID:EXT:InitialState:inCmdOnOff
+					
+	isTurnedOn = ((CmdOnOff)messageList.get(0).getData()).isValue();
+	rollMode.setCmdFmsOnOff(isTurnedOn);
+
+					//ENDID
+					// End external event code
+					
+					
+					                        
+					return;
+				}
 				if (input.hasMessages(inCmdJoystick)){
 					ArrayList<Message<CmdJoystick>> messageList = inCmdJoystick.getMessages(input);
                     
@@ -190,7 +229,7 @@ public FMS(){ this("FMS"); }
 					// Fire state and port specific external transition functions
 					//ID:EXT:InitialState:inCmdJoystick
 					
-	sendCommand = (CmdJoystick)messageList.get(0).getData();
+	sendCommand = rollMode.measureJoystickCommand((CmdJoystick)messageList.get(0).getData());
 
 					//ENDID
 					// End external event code
@@ -216,6 +255,7 @@ public FMS(){ this("FMS"); }
 					return;
 				}
 			}
+
 
 
 
@@ -259,6 +299,9 @@ public FMS(){ this("FMS"); }
 // Output event code
 //ID:OUT:MeasureFeedbackRoll
 
+	measureFeedback.getRollMode().setCmdFmsOnOff(isTurnedOn);
+	rollMode = measureFeedback.getRollMode();
+	measureFeedback.getRollWarning().measureWarning();
 	output.add(outFeedbackRoll, measureFeedback);		
 
 //ENDID
@@ -337,22 +380,47 @@ public FMS(){ this("FMS"); }
     
 	     
     // End getter/setter for measureFeedback
+    
+   // Getter/setter for isTurnedOn
+    public void setIsTurnedOn(Boolean isTurnedOn) {
+        propertyChangeSupport.firePropertyChange("isTurnedOn", this.isTurnedOn,this.isTurnedOn = isTurnedOn);
+    }
+    public Boolean getIsTurnedOn() {
+        return this.isTurnedOn;
+    }
+    public Boolean isIsTurnedOn() {
+        return this.isTurnedOn;
+    }
+	
+	     
+    // End getter/setter for isTurnedOn
+    
+   // Getter/setter for rollMode
+    public void setRollMode(RollMode rollMode) {
+        propertyChangeSupport.firePropertyChange("rollMode", this.rollMode,this.rollMode = rollMode);
+    }
+    public RollMode getRollMode() {
+        return this.rollMode;
+    }
+    
+	     
+    // End getter/setter for rollMode
  
     // State variables
     public String[] getStateVariableNames() {
          return new String[] {
-            "sendCommand","measureFeedback"
+            "sendCommand","measureFeedback","isTurnedOn","rollMode"
         };
     };
     public Object[] getStateVariableValues() {
          return new Object[] {
-            sendCommand,measureFeedback
+            sendCommand,measureFeedback,isTurnedOn,rollMode
         };
     };
     
     public Class<?>[] getStateVariableTypes() {
     	return new Class<?>[] {
-    		CmdJoystick.class,FeedbackRoll.class
+    		CmdJoystick.class,FeedbackRoll.class,Boolean.class,RollMode.class
     	};
     }
     
@@ -366,6 +434,14 @@ public FMS(){ this("FMS"); }
 			
     		case ID_MEASUREFEEDBACK:
 			    setMeasureFeedback((FeedbackRoll)value);
+    			return;
+			
+    		case ID_ISTURNEDON:
+			    setIsTurnedOn((Boolean)value);
+    			return;
+			
+    		case ID_ROLLMODE:
+			    setRollMode((RollMode)value);
     			return;
 			
 			default:
@@ -440,7 +516,7 @@ public FMS(){ this("FMS"); }
     }
     public String[] getPhaseNames() {
         return new String[] {
-            "InitialState","SendJoystickCommand","MeasureFeedbackRoll"
+            "InitialState","HandlingCmdOnOffReceived","SendJoystickCommand","MeasureFeedbackRoll"
         };
     }
  

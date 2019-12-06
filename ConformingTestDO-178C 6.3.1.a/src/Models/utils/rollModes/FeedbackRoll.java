@@ -2,6 +2,8 @@ package Models.utils.rollModes;
 
 import java.io.Serializable;
 
+import Models.utils.types.CmdJoystick;
+
 public class FeedbackRoll implements Serializable{
 
 	private static final long serialVersionUID = -1211103354384705295L;
@@ -15,15 +17,38 @@ public class FeedbackRoll implements Serializable{
 		this.rollRate = new RollRate();
 	}
 	
-	public FeedbackRoll(Double yawAngleLeft, Double yawAngleRight){
+	public FeedbackRoll(Double yawAngleLeft, Double yawAngleRight, Boolean turnOnFMS){
 		this.rollRate = new RollRate(yawAngleLeft,yawAngleRight);
 		this.rollWarning = new RollWarning(this.rollRate);
-		this.rollMode = new RollMode(this.rollRate);
+		this.rollMode = new RollMode(this.rollRate, turnOnFMS);
 	}
 	
-	public static FeedbackRoll calcFeedbackRoll(Double leftYawAngle, Double rightYawAngle){
-		FeedbackRoll fb = new FeedbackRoll(leftYawAngle,rightYawAngle);
+	public static FeedbackRoll calcFeedbackRoll(Double leftYawAngle, Double rightYawAngle, Boolean turnOnFMS){
+		FeedbackRoll fb = new FeedbackRoll(leftYawAngle,rightYawAngle, turnOnFMS);
 		return fb;
+	}
+	
+	public String measureExecutedRoll(String strSendedCmd){
+		
+		StringBuilder strMesured = new StringBuilder();  
+		
+		CmdJoystick cmdJoy = new CmdJoystick();
+		String strProblemn = cmdJoy.parseStringToCmdJoystickMeasure(strSendedCmd);
+		
+		strMesured.append(cmdJoy.toStringForMeasure());
+		strMesured.append(";");
+		strMesured.append(strProblemn);
+		
+		cmdJoy = new CmdJoystick();
+		cmdJoy.setLeft(rollRate.getYawAngleLeft());
+		cmdJoy.setRigth(rollRate.getYawAngleRight());
+		
+		strMesured.append(";");
+		strMesured.append(cmdJoy.toStringForMeasure());
+		strMesured.append(";");
+		strMesured.append(rollWarning.getkRollRateWarning().hasAnyWarning());
+
+		return strMesured.toString();
 	}
 	
 	public RollRate getRollRate() {
