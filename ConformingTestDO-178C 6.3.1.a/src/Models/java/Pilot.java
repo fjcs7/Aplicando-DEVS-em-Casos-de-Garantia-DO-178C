@@ -2,7 +2,7 @@
 /* Do not remove or modify this comment!  It is required for file identification!
 DNL
 platform:/resource/ConformingTestDO-178C%206.3.1.a/src/Models/dnl/Pilot.dnl
-886837275
+-487096404
  Do not remove or modify this comment!  It is required for file identification! */
 package Models.java;
 
@@ -102,9 +102,6 @@ public final Port<CmdJoystick> outCmdJoystick = addOutputPort("outCmdJoystick",C
 //ENDID
 //ID:OUTP:1
 public final Port<CmdOnOff> outCmdOnOff = addOutputPort("outCmdOnOff",CmdOnOff.class);
-//ENDID
-//ID:OUTP:2
-public final Port<Serializable> outFeedbackRoll = addOutputPort("outFeedbackRoll",Serializable.class);
 //ENDID
     // End output ports
 
@@ -274,24 +271,6 @@ public Pilot(){ this("Pilot"); }
 
 	CmdOnOff cmdOnOffFms = new CmdOnOff(true);
 	output.add(outCmdOnOff, cmdOnOffFms);		
-
-//ENDID
-// End output event code
-		}
-		if (phaseIs("SendNormalCommand")) {
-// Output event code
-//ID:OUT:SendNormalCommand
-	
-	if(listText.size() > index){
-		sendedCommand = listText.get(index);
-		sendCommand = CmdJoystick.parseStringToCmdJoystick(sendedCommand);
-		output.add(outCmdJoystick, sendCommand);	
-	} else {
-		if(options.isDisableViewer()){
-			getSimulator().getSimulation().stopSimulation();
-		}
-	}
-	
 
 //ENDID
 // End output event code

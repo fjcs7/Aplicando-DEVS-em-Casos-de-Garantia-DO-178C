@@ -38,7 +38,6 @@ after SendOnOffFMSCommand output CmdOnOff!
 from SendOnOffFMSCommand go to SendNormalCommand!
 
 hold in SendNormalCommand for time 0.0!
-after SendNormalCommand output FeedbackRoll!
 from SendNormalCommand go to WaitFeedbackRoll!
 
 internal event for InitialState
